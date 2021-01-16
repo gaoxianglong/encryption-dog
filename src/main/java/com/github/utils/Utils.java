@@ -39,6 +39,6 @@ public class Utils {
             System.out.print(" ");
         }
         System.out.print("]");
-        System.out.print(String.format(" %s", percent >= 99 ? 100 : percent + "%"));
+        System.out.print(String.format(" %s", (percent >= 99 ? 100 : percent) + "%"));
     }
 }
