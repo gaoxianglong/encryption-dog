@@ -45,5 +45,5 @@ public class Constants {
     /**
      * 进度条总长度
      */
-    public static int TOTLE_LENGTH = 70;
+    public static int TOTLE_LENGTH = 100;
 }

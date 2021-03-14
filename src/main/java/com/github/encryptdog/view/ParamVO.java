@@ -23,7 +23,7 @@ package com.github.encryptdog.view;
 public class ParamVO {
     private String sourceFile;
     private String targetPath;
-    private String secretKey;
+    private char[] secretKey;
     private boolean encrypt;
     private boolean delete;
 
@@ -43,11 +43,11 @@ public class ParamVO {
         this.targetPath = targetPath;
     }
 
-    public String getSecretKey() {
+    public char[] getSecretKey() {
         return secretKey;
     }
 
-    public void setSecretKey(String secretKey) {
+    public void setSecretKey(char[] secretKey) {
         this.secretKey = secretKey;
     }
 

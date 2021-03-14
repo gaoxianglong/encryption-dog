@@ -24,6 +24,7 @@ import javax.crypto.KeyGenerator;
 import javax.crypto.spec.SecretKeySpec;
 import java.io.*;
 import java.security.SecureRandom;
+import java.util.Arrays;
 import java.util.Base64;
 
 /**
@@ -78,12 +79,14 @@ public class ContextOperation {
                 out.write(result, 0, result.length);
                 out.flush();
                 count += len;
-                Utils.printSchedule((double) count / available * 100);//输出进度条
+                Utils.printSchedule((double) count / available * 100);// 输出进度条
             }
+            Utils.printSchedule(100);// 确保最终进度条100%
             System.out.println(String.format("\n%s\toperation success...", isEncrypt ? "Encrypt" : "Decrypt"));
         } catch (Throwable e) {
             e.printStackTrace();
         } finally {
+            Arrays.fill(param.getSecretKey(), ' ');// 清空数组
             if (param.isDelete()) {//操作结束后是否删除源文件
                 new File(param.getSourceFile()).delete();
             }
@@ -110,9 +113,10 @@ public class ContextOperation {
      * @return
      * @throws Throwable
      */
-    private SecretKeySpec getSecretKey(String key) throws Throwable {
+    private SecretKeySpec getSecretKey(char[] key) throws Throwable {
         var random = SecureRandom.getInstance(Constants.ALGORITHM);
-        random.setSeed(key.getBytes(Constants.CHARSET));
+//        random.setSeed(key.getBytes(Constants.CHARSET));
+        random.setSeed(Utils.toBytes(key));
         var kg = KeyGenerator.getInstance(Constants.KEY_ALGORITHM);//获取秘钥生成器
         kg.init(random);
         var generateKey = kg.generateKey();//生成秘钥

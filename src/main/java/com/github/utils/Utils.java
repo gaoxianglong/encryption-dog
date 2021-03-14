@@ -15,6 +15,9 @@
  */
 package com.github.utils;
 
+import java.nio.ByteBuffer;
+import java.nio.CharBuffer;
+import java.nio.charset.Charset;
 import java.util.Scanner;
 import java.util.concurrent.TimeUnit;
 
@@ -26,19 +29,52 @@ import java.util.concurrent.TimeUnit;
 public class Utils {
     public static void printSchedule(double value) {
         var percent = (int) value;
-        for (var i = 0; i < Constants.TOTLE_LENGTH + 10; i++) {
+        int length = Constants.TOTLE_LENGTH;
+        // 清空前一次的控制台输出
+        for (var i = 0; i < length + 10; i++) {
             System.out.print("\b");
         }
         System.out.print("[");
-        var now = Constants.TOTLE_LENGTH * percent / 100;
-        for (var i = 0; i < now; i++) {
+        // 字符'='的数量等于百分比
+        for (var i = 0; i < percent; i++) {
             System.out.print("=");
         }
         System.out.print(">");
-        for (var i = 0; i < Constants.TOTLE_LENGTH - now; i++) {
+        // 空位补空格占位
+        for (var i = 0; i < length - percent; i++) {
             System.out.print(" ");
         }
         System.out.print("]");
-        System.out.print(String.format(" %s", (percent >= 99 ? 100 : percent) + "%"));
+//        System.out.print(String.format(" %s", (percent >= 99 ? 100 : percent) + "%"));
+        System.out.print(String.format(" %s", percent + "%"));
+    }
+
+    /**
+     * 字符转字节
+     *
+     * @param chars
+     * @return
+     */
+    public static byte[] toBytes(char[] chars) {
+        Charset cs = Charset.forName(Constants.CHARSET);
+        CharBuffer cb = CharBuffer.allocate(chars.length);
+        cb.put(chars);
+        cb.flip();
+        ByteBuffer bb = cs.encode(cb);
+        return bb.array();
+    }
+
+    /**
+     * 字节转字符
+     *
+     * @param bytes
+     * @return
+     */
+    public static char[] toChars(byte[] bytes) {
+        Charset cs = Charset.forName(Constants.CHARSET);
+        ByteBuffer bb = ByteBuffer.allocate(bytes.length);
+        bb.put(bytes).flip();
+        CharBuffer cb = cs.decode(bb);
+        return cb.array();
     }
 }
