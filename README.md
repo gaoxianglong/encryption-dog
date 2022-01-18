@@ -1,4 +1,4 @@
-# encrypt-dog
+# encryption-dog
 
 ```shell
 $ dog -h
