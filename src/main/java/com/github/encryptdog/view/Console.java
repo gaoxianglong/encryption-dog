@@ -26,7 +26,7 @@ import java.util.Objects;
  * 控制台程序
  *
  * @author gao_xianglong@sina.com
- * @version 0.1-SNAPSHOT
+ * @version 1.1-SNAPSHOT
  * @date created in 2021/1/16 4:53 下午
  */
 @CommandLine.Command(name = "encrypt-dog", footer = "Copyright(c) 2021-2031", version = "1.1-SNAPSHOT", mixinStandardHelpOptions = true)

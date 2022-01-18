@@ -24,7 +24,7 @@ import java.util.concurrent.TimeUnit;
 
 /**
  * @author gao_xianglong@sina.com
- * @version 0.1-SNAPSHOT
+ * @version 1.1-SNAPSHOT
  * @date created in 2021/1/17 12:05 上午
  */
 public class Utils {

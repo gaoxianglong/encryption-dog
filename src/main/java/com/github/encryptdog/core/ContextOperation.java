@@ -31,7 +31,7 @@ import java.util.Base64;
  * 加/解密操作类
  *
  * @author gao_xianglong@sina.com
- * @version 0.1-SNAPSHOT
+ * @version 1.1-SNAPSHOT
  * @date created in 2021/1/16 10:47 下午
  */
 public class ContextOperation {

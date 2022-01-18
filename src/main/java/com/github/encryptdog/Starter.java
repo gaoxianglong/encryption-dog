@@ -23,7 +23,7 @@ import picocli.CommandLine;
  * 加密狗启动器
  *
  * @author gao_xianglong@sina.com
- * @version 0.1-SNAPSHOT
+ * @version 1.1-SNAPSHOT
  * @date created in 2021/1/16 4:51 下午
  */
 public class Starter {
