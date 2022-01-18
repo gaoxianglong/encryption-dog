@@ -1,5 +1,6 @@
 # encrypt-dog
-```java
+
+```shell
 $ dog -h
 Welcome to 
    ____                       __  _           ___           
