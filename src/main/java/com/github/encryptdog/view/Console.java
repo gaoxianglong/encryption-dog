@@ -16,8 +16,10 @@
 package com.github.encryptdog.view;
 
 import com.github.encryptdog.core.ContextOperation;
+import com.github.utils.Utils;
 import picocli.CommandLine;
 
+import java.util.Arrays;
 import java.util.Objects;
 
 /**
@@ -27,7 +29,7 @@ import java.util.Objects;
  * @version 0.1-SNAPSHOT
  * @date created in 2021/1/16 4:53 下午
  */
-@CommandLine.Command(name = "encrypt-dog", footer = "Copyright(c) 2021", version = "1.0-SNAPSHOT", mixinStandardHelpOptions = true)
+@CommandLine.Command(name = "encrypt-dog", footer = "Copyright(c) 2021-2031", version = "1.1-SNAPSHOT", mixinStandardHelpOptions = true)
 public class Console implements Runnable {
     /**
      * 需要加/解密的目标文件
@@ -76,6 +78,32 @@ public class Console implements Runnable {
         param.setDelete(delete);
         param.setEncrypt(encrypt);
         param.setSecretKey(secretKey);
-        new ContextOperation(param).start();
+        try {
+            new ContextOperation(param).start();
+        } catch (Throwable t) {
+            print(t.getMessage());
+        }
+    }
+
+    private void print(String msg) {
+        for (int i = 0; i < msg.length(); i++) {
+            System.out.print("-");
+        }
+        System.out.println(String.format("\n%s failed", encrypt ? "Encryption" : "Decryption"));
+        System.out.println(String.format("%s", msg));
+        for (int i = 0; i < msg.length(); i++) {
+            System.out.print("-");
+        }
+    }
+
+    @Override
+    public String toString() {
+        return "Console{" +
+                "sourceFile='" + sourceFile + '\'' +
+                ", targetPath='" + targetPath + '\'' +
+                ", secretKey=" + Arrays.toString(secretKey) +
+                ", encrypt=" + encrypt +
+                ", delete=" + delete +
+                '}';
     }
 }

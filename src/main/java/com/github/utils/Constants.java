@@ -46,4 +46,14 @@ public class Constants {
      * 进度条总长度
      */
     public static int TOTLE_LENGTH = 100;
+    /**
+     * .dog文件魔术
+     */
+    public static int MAGIC_NUMBER = 0x19890225;
+    /**
+     * 魔术长度4bytes
+     */
+    public static int MAGIC_NUMBER_SIZE = 4;
+    public static String VERSION = "1.1-SNAPSHOT";
+    public static final String LINE = System.getProperty("line.separator");
 }

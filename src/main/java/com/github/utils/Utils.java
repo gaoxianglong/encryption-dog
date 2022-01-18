@@ -18,6 +18,7 @@ package com.github.utils;
 import java.nio.ByteBuffer;
 import java.nio.CharBuffer;
 import java.nio.charset.Charset;
+import java.util.Objects;
 import java.util.Scanner;
 import java.util.concurrent.TimeUnit;
 
@@ -37,7 +38,7 @@ public class Utils {
         System.out.print("[");
         // 字符'='的数量等于百分比
         for (var i = 0; i < percent; i++) {
-            System.out.print("=");
+            System.out.print(">");
         }
         System.out.print(">");
         // 空位补空格占位
@@ -76,5 +77,35 @@ public class Utils {
         bb.put(bytes).flip();
         CharBuffer cb = cs.decode(bb);
         return cb.array();
+    }
+
+    /**
+     * 整型转字节数组
+     *
+     * @param n
+     * @return
+     */
+    public static byte[] int2Bytes(int n) {
+        byte[] result = new byte[4];
+        result[3] = (byte) (n & 0xff);
+        result[2] = (byte) (n >> 8 & 0xff);
+        result[1] = (byte) (n >> 16 & 0xff);
+        result[0] = (byte) (n >> 24 & 0xff);
+        return result;
+    }
+
+    /**
+     * 字节数组转整型
+     *
+     * @param b
+     * @return
+     */
+    public static int bytes2Int(byte[] b) {
+        Objects.requireNonNull(b);
+        int result = 0;
+        for (int i = 0; i < b.length; i++) {
+            result += (b[i] & 0xff) << ((3 - i) * 8);
+        }
+        return result;
     }
 }

@@ -16,6 +16,7 @@
 package com.github.encryptdog;
 
 import com.github.encryptdog.view.Console;
+import com.github.utils.Banner;
 import picocli.CommandLine;
 
 /**
@@ -27,6 +28,7 @@ import picocli.CommandLine;
  */
 public class Starter {
     public static void main(String[] agrs) {
+        Banner.print();
         var code = new CommandLine(new Console()).execute(agrs);
         System.exit(code);
     }
