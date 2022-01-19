@@ -15,8 +15,8 @@
  */
 package com.github.encryptdog;
 
+import com.github.encryptdog.view.Banner;
 import com.github.encryptdog.view.Console;
-import com.github.utils.Banner;
 import picocli.CommandLine;
 
 /**
