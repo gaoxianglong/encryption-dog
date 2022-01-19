@@ -1,6 +1,6 @@
 # encryption-dog
 
-![image](https://user-images.githubusercontent.com/7719685/150054687-eb89fee8-7b77-4cec-8505-3fa9abbe63b8.png)
+![image](https://user-images.githubusercontent.com/7719685/150054885-7db6632c-5727-49e9-afcd-9304ccb1bf17.png)
 
 ```shell
 $ dog -h
