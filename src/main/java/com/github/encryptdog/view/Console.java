@@ -77,7 +77,7 @@ public class Console implements Runnable {
             param.setDelete(delete);
             param.setEncrypt(encrypt);
             param.setSecretKey(secretKey);
-            //checkSecretKey();
+            checkSecretKey();
             (encrypt ? new DataEncrypt(param) : new DateDecrypt(param)).execute();
         } catch (Throwable t) {
             printErrMsg(t.getMessage());
