@@ -31,6 +31,7 @@ Copyright(c) 2021-2031
 # encrypt&remove source
 $ dog -des /Users/jiushu/Desktop/test.txt -t /Users/jiushu/Desktop -k
 Enter value for --secret-key (Both encrypt and decrypt require the same secret key):
+Enter the secret-key again: 
 Please wait...
 [>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>] 100%
 Encrypt	success
