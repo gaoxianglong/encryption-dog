@@ -1,7 +1,12 @@
 # encryption-dog
-
-![image](https://user-images.githubusercontent.com/7719685/150054885-7db6632c-5727-49e9-afcd-9304ccb1bf17.png)
-
+### 下载&安装
+下载
+```shell
+git clone https://github.com/gaoxianglong/encrypt-dog.git
+mvn package
+alias dog = 'java -Xms512m -Xmx512m -Xmn128m -jar encryption-dog.jar'
+```
+### 使用帮助
 ```shell
 $ dog -h
 Welcome to 
@@ -23,4 +28,28 @@ Usage: encrypt-dog [-dehV] -k [-k]... -s=<source file> -t=<storage path>
                      Storage path after operation
   -V, --version      Print version information and exit.
 Copyright(c) 2021-2031
+```
+### 基本使用
+```shell
+# 加密
+$ dog -des /Users/jiushu/Desktop/test.txt -t /Users/jiushu/Desktop -k
+
+Enter value for --secret-key (Both encrypt and decrypt require the same secret key):
+Please wait...
+[>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>] 100%
+
+Encrypt	success
+[Time-consuming]:0.08ms,[Before size]:0.01MB,[After size]:0.03MB
+[Target path]:/Users/jiushu/Desktop/test.txt.dog
+
+# 解密
+$ dog -s /Users/jiushu/Desktop/test.txt.dog -t /Users/jiushu/Desktop -k
+
+Enter value for --secret-key (Both encrypt and decrypt require the same secret key):
+Please wait...
+[>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>] 100%
+
+Encrypt	success
+[Time-consuming]:0.08ms,[Before size]:0.03MB,[After size]:0.01MB
+[Target path]:/Users/jiushu/Desktop/test.txt
 ```
