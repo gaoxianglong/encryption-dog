@@ -51,6 +51,6 @@ Decrypt	success
 [Target path]:/Users/jiushu/Desktop/test.txt
 ```
 ### file structure
-|  file        | extension name |  type          |   magic number |   location   |    amount     |     ascii    |
-|  :-:         | :-:            |  :-:           |   :-:          |    :-:       |     :-:       |      :-:     |
-| DOG FORMAT   |     .dog       |  u4/32bit      |   0x19890225   |    header    |       1       |      ...     |
+|  file        | file extension name |  type          |   magic number |   location   |    amount     |     ascii    |
+|  :-:         |        :-:          |  :-:           |   :-:          |    :-:       |     :-:       |      :-:     |
+| DOG FORMAT   |        .dog         |  u4/32bit      |   0x19890225   |    header    |       1       |      ...     |
