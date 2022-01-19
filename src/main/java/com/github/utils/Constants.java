@@ -51,9 +51,13 @@ public class Constants {
      */
     public static int MAGIC_NUMBER = 0x19890225;
     /**
+     * targetpath为空时使用临时目录
+     */
+    public static String DEFAULT_TARGET_PATH = System.getProperty("java.io.tmpdir");
+    /**
      * 魔术长度4bytes
      */
     public static int MAGIC_NUMBER_SIZE = 4;
-    public static String VERSION = "1.1-SNAPSHOT";
+    public static String VERSION = "1.2-SNAPSHOT";
     public static final String LINE = System.getProperty("line.separator");
 }
