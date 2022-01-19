@@ -34,7 +34,7 @@ $ dog -des /Users/jiushu/Desktop/test.txt -t /Users/jiushu/Desktop -k
 Enter value for --secret-key (Both encrypt and decrypt require the same secret key):
 Enter the secret-key again: 
 Please wait...
-Estimated time:0.11s
+Estimated completion time:0.11s
 [>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>] 100%
 Encrypt	success
 [Time-consuming]:0.08ms,[Before size]:0.01MB,[After size]:0.03MB
@@ -44,7 +44,7 @@ Encrypt	success
 $ dog -s /Users/jiushu/Desktop/test.txt.dog -t /Users/jiushu/Desktop -k
 Enter value for --secret-key (Both encrypt and decrypt require the same secret key):
 Please wait...
-Estimated time:0.10s
+Estimated completion time:0.10s
 [>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>] 100%
 Decrypt	success
 [Time-consuming]:0.07ms,[Before size]:0.03MB,[After size]:0.01MB
