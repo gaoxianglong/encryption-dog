@@ -26,8 +26,8 @@ public class DataEncrypt extends AbstractOperationTemplate {
 
     @Override
     protected <T> void checkMagicNumber(T stream) throws Throwable {
-        BufferedOutputStream out = (BufferedOutputStream) stream;
-        byte[] mn = Utils.int2Bytes(Constants.MAGIC_NUMBER);
+        var out = (BufferedOutputStream) stream;
+        var mn = Utils.int2Bytes(Constants.MAGIC_NUMBER);
         // 文件起始位写入u4/32bit魔术码
         out.write(mn, 0, mn.length);
         out.flush();
@@ -44,6 +44,9 @@ public class DataEncrypt extends AbstractOperationTemplate {
                          BufferedInputStream in, BufferedOutputStream out) throws Throwable {
         var len = -1;
         var count = len;
+        // 显示预计耗时标识
+        var visibleFlag = true;
+        var begin = System.currentTimeMillis();
         while ((len = in.read(content)) != -1) {
             if (len < defaultSize) {
                 var temp = new byte[len];
@@ -54,6 +57,13 @@ public class DataEncrypt extends AbstractOperationTemplate {
             out.write(result, 0, result.length);
             out.flush();
             count += len;
+            // 输出加密的预计耗时
+            if (visibleFlag) {
+                var end = System.currentTimeMillis();
+                Utils.printTimeConsuming(available, (double) (end - begin) / 1000,
+                        Constants.DEFAULT_ENCRYPT_CONTENT_SIZE);
+                visibleFlag = false;
+            }
             Utils.printSchedule((double) count / available * 100);// 输出进度条
         }
     }

@@ -58,6 +58,6 @@ public class Constants {
      * 魔术长度4bytes
      */
     public static int MAGIC_NUMBER_SIZE = 4;
-    public static String VERSION = "1.2-SNAPSHOT";
+    public static String VERSION = "1.3-SNAPSHOT";
     public static final String LINE = System.getProperty("line.separator");
 }

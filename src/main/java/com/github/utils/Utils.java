@@ -30,7 +30,7 @@ import java.util.concurrent.TimeUnit;
 public class Utils {
     public static void printSchedule(double value) {
         var percent = (int) value;
-        int length = Constants.TOTLE_LENGTH;
+        var length = Constants.TOTLE_LENGTH;
         // 清空前一次的控制台输出
         for (var i = 0; i < length + 10; i++) {
             System.out.print("\b");
@@ -57,11 +57,11 @@ public class Utils {
      * @return
      */
     public static byte[] toBytes(char[] chars) {
-        Charset cs = Charset.forName(Constants.CHARSET);
-        CharBuffer cb = CharBuffer.allocate(chars.length);
+        var cs = Charset.forName(Constants.CHARSET);
+        var cb = CharBuffer.allocate(chars.length);
         cb.put(chars);
         cb.flip();
-        ByteBuffer bb = cs.encode(cb);
+        var bb = cs.encode(cb);
         return bb.array();
     }
 
@@ -72,10 +72,10 @@ public class Utils {
      * @return
      */
     public static char[] toChars(byte[] bytes) {
-        Charset cs = Charset.forName(Constants.CHARSET);
-        ByteBuffer bb = ByteBuffer.allocate(bytes.length);
+        var cs = Charset.forName(Constants.CHARSET);
+        var bb = ByteBuffer.allocate(bytes.length);
         bb.put(bytes).flip();
-        CharBuffer cb = cs.decode(bb);
+        var cb = cs.decode(bb);
         return cb.array();
     }
 
@@ -86,7 +86,7 @@ public class Utils {
      * @return
      */
     public static byte[] int2Bytes(int n) {
-        byte[] result = new byte[4];
+        var result = new byte[4];
         result[3] = (byte) (n & 0xff);
         result[2] = (byte) (n >> 8 & 0xff);
         result[1] = (byte) (n >> 16 & 0xff);
@@ -102,10 +102,23 @@ public class Utils {
      */
     public static int bytes2Int(byte[] b) {
         Objects.requireNonNull(b);
-        int result = 0;
-        for (int i = 0; i < b.length; i++) {
+        var result = 0;
+        for (var i = 0; i < b.length; i++) {
             result += (b[i] & 0xff) << ((3 - i) * 8);
         }
         return result;
+    }
+
+    /**
+     * 输出预计耗时
+     *
+     * @param available
+     * @param tc
+     * @param cs
+     */
+    public static void printTimeConsuming(long available, double tc, int cs) {
+        var tca = available / cs;
+        var result = (double) ((tca < 1 ? 0.1D : tca) * tc);
+        System.out.println(String.format("Estimated time:%.2f%s", result, result > 1 ? "s" : "ms"));
     }
 }

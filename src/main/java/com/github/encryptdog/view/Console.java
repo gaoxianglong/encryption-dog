@@ -30,7 +30,7 @@ import java.util.Objects;
  * @version 1.1-SNAPSHOT
  * @date created in 2021/1/16 4:53 下午
  */
-@CommandLine.Command(name = "encrypt-dog", footer = "Copyright(c) 2021-2031", version = "1.2-SNAPSHOT", mixinStandardHelpOptions = true)
+@CommandLine.Command(name = "encrypt-dog", footer = "Copyright(c) 2021-2031", version = "1.3-SNAPSHOT", mixinStandardHelpOptions = true)
 public class Console implements Runnable {
     /**
      * 需要加/解密的目标文件
@@ -77,7 +77,7 @@ public class Console implements Runnable {
             param.setDelete(delete);
             param.setEncrypt(encrypt);
             param.setSecretKey(secretKey);
-            checkSecretKey();
+            //checkSecretKey();
             (encrypt ? new DataEncrypt(param) : new DateDecrypt(param)).execute();
         } catch (Throwable t) {
             printErrMsg(t.getMessage());
@@ -109,12 +109,12 @@ public class Console implements Runnable {
      * @param msg
      */
     private void printErrMsg(String msg) {
-        for (int i = 0; i < msg.length(); i++) {
+        for (var i = 0; i < msg.length(); i++) {
             System.out.print("-");
         }
         System.out.println(String.format("\n%s failed", encrypt ? "Encryption" : "Decryption"));
         System.out.println(String.format("%s", msg));
-        for (int i = 0; i < msg.length(); i++) {
+        for (var i = 0; i < msg.length(); i++) {
             System.out.print("-");
         }
     }

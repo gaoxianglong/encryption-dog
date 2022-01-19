@@ -51,7 +51,7 @@ public abstract class AbstractOperationTemplate {
                 throw new Exception("There is nothing in the target file");
             }
             // 获取每次读取的文件内容大小
-            int defaultSize = getDefaultSize(available);
+            var defaultSize = getDefaultSize(available);
             var content = new byte[defaultSize];
             System.out.println("Please wait...");
             // 魔术检测,如果是加密操作,则在文件起始位写入u4/32bit魔术码
