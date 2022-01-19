@@ -1,6 +1,5 @@
 # encryption-dog
 ### 下载&安装
-下载
 ```shell
 git clone https://github.com/gaoxianglong/encrypt-dog.git
 mvn package
@@ -29,7 +28,7 @@ Usage: encrypt-dog [-dehV] -k [-k]... -s=<source file> -t=<storage path>
   -V, --version      Print version information and exit.
 Copyright(c) 2021-2031
 ```
-### 基本使用
+### 基本操作
 ```shell
 # 加密
 $ dog -des /Users/jiushu/Desktop/test.txt -t /Users/jiushu/Desktop -k
@@ -49,7 +48,7 @@ Enter value for --secret-key (Both encrypt and decrypt require the same secret k
 Please wait...
 [>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>] 100%
 
-Encrypt	success
+Decrypt	success
 [Time-consuming]:0.08ms,[Before size]:0.03MB,[After size]:0.01MB
 [Target path]:/Users/jiushu/Desktop/test.txt
 ```
