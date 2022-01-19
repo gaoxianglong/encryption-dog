@@ -14,9 +14,9 @@ Welcome to
  / _// _ \/ __/ __/ // / _ \/ __/ / _ \/ _ \/ // / _ \/ _ `/
 /___/_//_/\__/_/  \_, / .__/\__/_/\___/_//_/____/\___/\_, / 
                  /___/_/                             /___/  
-        version: 1.1-SNAPSHOT
+        version: 1.2-SNAPSHOT
 
-Usage: encrypt-dog [-dehV] -k [-k]... -s=<source file> -t=<storage path>
+Usage: encrypt-dog [-dehV] -k [-k]... -s=<source file> [-t=<storage path>]
   -d, --delete       The source file is not deleted after the default operation
   -e, --encrypt      The default is decryption mode
   -h, --help         Show this help message and exit.
@@ -24,7 +24,8 @@ Usage: encrypt-dog [-dehV] -k [-k]... -s=<source file> -t=<storage path>
   -s, --source-file=<source file>
                      Target files that need to be encrypt and decrypt
   -t, --target-path=<storage path>
-                     Storage path after operation
+                     Storage path after operation,The default is stored in the
+                       temporary directory
   -V, --version      Print version information and exit.
 Copyright(c) 2021-2031
 
