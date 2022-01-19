@@ -49,4 +49,4 @@ Decrypt	success
 ### file structure
 |  file        | extension name |  type          |   magic number |   location   |
 |  ----        | ----           |  ----          |   ----         |    ----      |
-| DOG FORMAT   |     .dog       |        u4      |   0x19890225   |    header    |
+| DOG FORMAT   |     .dog       |  u4/32bit      |   0x19890225   |    header    |
