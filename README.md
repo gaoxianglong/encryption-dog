@@ -1,12 +1,12 @@
 # encryption-dog
 ### install
-```shell
+```Shell
 git clone https://github.com/gaoxianglong/encrypt-dog.git
 mvn package
 alias dog = 'java -Xms512m -Xmx512m -Xmn128m -jar encryption-dog.jar'
 ```
 ### help
-```shell
+```Shell
 $ dog -h
 Welcome to 
    ____                       __  _           ___           
@@ -29,7 +29,7 @@ Usage: encrypt-dog [-dehV] -k [-k]... -s=<source file> -t=<storage path>
 Copyright(c) 2021-2031
 ```
 ### operation
-```shell
+```Shell
 # encrypt
 $ dog -des /Users/jiushu/Desktop/test.txt -t /Users/jiushu/Desktop -k
 
@@ -52,3 +52,8 @@ Decrypt	success
 [Time-consuming]:0.08ms,[Before size]:0.03MB,[After size]:0.01MB
 [Target path]:/Users/jiushu/Desktop/test.txt
 ```
+### file structure
+|  file type   | 表头  |
+|  ----        | ----  |
+| 单元格        | 单元格 |
+| 单元格        | 单元格 |
