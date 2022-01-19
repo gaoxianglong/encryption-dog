@@ -119,6 +119,6 @@ public class Utils {
     public static void printTimeConsuming(long available, double tc, int cs) {
         var tca = available / cs;
         var result = (double) ((tca < 1 ? 0.1D : tca) * tc);
-        System.out.println(String.format("Estimated completion time:%.2f%s", result, result > 1 ? "s" : "ms"));
+        System.out.println(String.format("[Estimated completion time]:%.2f%s", result, result > 1 ? "s" : "ms"));
     }
 }
