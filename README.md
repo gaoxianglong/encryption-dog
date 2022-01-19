@@ -52,5 +52,5 @@ Decrypt	success
 ```
 ### file structure
 |  file        | extension name |  type          |   magic number |   location   |    amount     |
-|  ----        | ----           |  ----          |   ----         |    ----      |     ----      |
+|  :-:         | :-:            |  :-:           |   :-:          |    :-:       |     :-:       |
 | DOG FORMAT   |     .dog       |  u4/32bit      |   0x19890225   |    header    |       1       |
