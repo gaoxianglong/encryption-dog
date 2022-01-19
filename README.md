@@ -1,7 +1,7 @@
 # encryption-dog
 ### install
 ```Shell
-git clone https://github.com/gaoxianglong/encrypt-dog.git
+git clone https://github.com/gaoxianglong/encryption-dog.git
 mvn package
 alias dog = 'java -Xms512m -Xmx512m -Xmn128m -jar dog-1.1.jar'
 ```
