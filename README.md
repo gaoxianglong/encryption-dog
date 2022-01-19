@@ -5,7 +5,7 @@ git clone https://github.com/gaoxianglong/encrypt-dog.git
 mvn package
 alias dog = 'java -Xms512m -Xmx512m -Xmn128m -jar dog-1.1.jar'
 ```
-### help
+### use
 ```Shell
 $ dog -h
 Welcome to 
@@ -27,9 +27,7 @@ Usage: encrypt-dog [-dehV] -k [-k]... -s=<source file> -t=<storage path>
                      Storage path after operation
   -V, --version      Print version information and exit.
 Copyright(c) 2021-2031
-```
-### operation
-```Shell
+
 # encrypt
 $ dog -des /Users/jiushu/Desktop/test.txt -t /Users/jiushu/Desktop -k
 Enter value for --secret-key (Both encrypt and decrypt require the same secret key):
