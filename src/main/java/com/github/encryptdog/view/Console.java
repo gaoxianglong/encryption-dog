@@ -15,8 +15,9 @@
  */
 package com.github.encryptdog.view;
 
-import com.github.encryptdog.core.ContextOperation;
-import com.github.utils.Utils;
+import com.github.encryptdog.core.DataEncrypt;
+import com.github.encryptdog.core.DateDecrypt;
+import com.github.utils.Constants;
 import picocli.CommandLine;
 
 import java.util.Arrays;
@@ -29,7 +30,7 @@ import java.util.Objects;
  * @version 1.1-SNAPSHOT
  * @date created in 2021/1/16 4:53 下午
  */
-@CommandLine.Command(name = "encrypt-dog", footer = "Copyright(c) 2021-2031", version = "1.1-SNAPSHOT", mixinStandardHelpOptions = true)
+@CommandLine.Command(name = "encrypt-dog", footer = "Copyright(c) 2021-2031", version = "1.2-SNAPSHOT", mixinStandardHelpOptions = true)
 public class Console implements Runnable {
     /**
      * 需要加/解密的目标文件
@@ -38,10 +39,10 @@ public class Console implements Runnable {
     private String sourceFile;
 
     /**
-     * 加/解密内容的转储目录
+     * 加/解密内容的转储目录,非必填选项，缺省存储在临时目录下
      */
-    @CommandLine.Option(names = {"-t", "--target-path"}, paramLabel = "<storage path>", required = true, description = "Storage path after operation")
-    private String targetPath;
+    @CommandLine.Option(names = {"-t", "--target-path"}, paramLabel = "<storage path>", description = "Storage path after operation,The default is stored in the temporary directory")
+    private String targetPath = Constants.DEFAULT_TARGET_PATH;
 
     /**
      * 秘钥,采用密码选项，不在控制台回显密码
@@ -63,29 +64,51 @@ public class Console implements Runnable {
 
     @Override
     public void run() {
-        if (Objects.isNull(secretKey) || secretKey.length <= 0) {
-            throw new RuntimeException("Password cannot be empty");
-        }
-        if (Objects.isNull(sourceFile) || sourceFile.isBlank()) {
-            throw new RuntimeException("SourceFile cannot be empty");
-        }
-        if (Objects.isNull(targetPath) || targetPath.isBlank()) {
-            throw new RuntimeException("TargetPath cannot be empty");
-        }
-        var param = new ParamVO();
-        param.setSourceFile(sourceFile);
-        param.setTargetPath(targetPath);
-        param.setDelete(delete);
-        param.setEncrypt(encrypt);
-        param.setSecretKey(secretKey);
         try {
-            new ContextOperation(param).start();
+            if (Objects.isNull(secretKey) || secretKey.length <= 0) {
+                throw new Exception("Secret-key cannot be empty");
+            }
+            if (Objects.isNull(sourceFile) || sourceFile.isBlank()) {
+                throw new Exception("Source file cannot be empty");
+            }
+            var param = new ParamDTO();
+            param.setSourceFile(sourceFile);
+            param.setTargetPath(targetPath);
+            param.setDelete(delete);
+            param.setEncrypt(encrypt);
+            param.setSecretKey(secretKey);
+            checkSecretKey();
+            (encrypt ? new DataEncrypt(param) : new DateDecrypt(param)).execute();
         } catch (Throwable t) {
-            print(t.getMessage());
+            printErrMsg(t.getMessage());
         }
     }
 
-    private void print(String msg) {
+    /**
+     * 由于秘钥不回显,加密操作时为了防止输错，所以需要重复一次
+     *
+     * @throws Throwable
+     */
+    private void checkSecretKey() throws Throwable {
+        if (!encrypt) {
+            return;
+        }
+        java.io.Console console = System.console();
+        if (Objects.isNull(console)) {
+            throw new Exception("Couldn't get Console instance, maybe you're running this from within an IDE?");
+        }
+        var newSecretKey = console.readPassword("Enter the secret-key again: ");
+        if (Objects.isNull(newSecretKey) || !(Objects.equals(new String(secretKey), new String(newSecretKey)))) {
+            throw new Exception("The two secret-key do not match");
+        }
+    }
+
+    /**
+     * 输出所有异常提示信息
+     *
+     * @param msg
+     */
+    private void printErrMsg(String msg) {
         for (int i = 0; i < msg.length(); i++) {
             System.out.print("-");
         }
