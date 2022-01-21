@@ -17,11 +17,14 @@ package com.github.encryptdog.view;
 
 import com.github.encryptdog.core.DataEncrypt;
 import com.github.encryptdog.core.DateDecrypt;
+import com.github.encryptdog.core.NameParser;
+import com.github.encryptdog.exception.DogException;
+import com.github.encryptdog.exception.OperationException;
 import com.github.utils.Constants;
+import com.github.utils.Utils;
 import picocli.CommandLine;
 
-import java.util.Arrays;
-import java.util.Objects;
+import java.util.*;
 
 /**
  * 控制台程序
@@ -30,12 +33,12 @@ import java.util.Objects;
  * @version 1.1-SNAPSHOT
  * @date created in 2021/1/16 4:53 下午
  */
-@CommandLine.Command(name = "encrypt-dog", footer = "Copyright(c) 2021-2031", version = "1.3-SNAPSHOT", mixinStandardHelpOptions = true)
+@CommandLine.Command(name = "encrypt-dog", footer = "Copyright(c) 2021-2031", version = Constants.VERSION, mixinStandardHelpOptions = true)
 public class Console implements Runnable {
     /**
      * 需要加/解密的目标文件
      */
-    @CommandLine.Option(names = {"-s", "--source-file"}, paramLabel = "<source file>", required = true, description = "Target files that need to be encrypt and decrypt")
+    @CommandLine.Option(names = {"-s", "--source-file"}, paramLabel = "<source file>", required = true, description = "Target files that need to be encrypt and decrypt,Wildcards are supported")
     private String sourceFile;
 
     /**
@@ -62,60 +65,52 @@ public class Console implements Runnable {
     @CommandLine.Option(names = {"-d", "--delete"}, description = "The source file is not deleted after the default operation")
     private boolean delete;
 
+    /**
+     * 仅限加/解密操作在同一台物理设备上,提升安全系数
+     */
+    @CommandLine.Option(names = {"-o", "--only-local"}, description = "Encryption and decryption operations can only be performed on the same physical device")
+    private boolean onlyLocal;
+
     @Override
     public void run() {
         try {
             if (Objects.isNull(secretKey) || secretKey.length <= 0) {
-                throw new Exception("Secret-key cannot be empty");
+                throw new OperationException("Secret-key cannot be empty");
             }
             if (Objects.isNull(sourceFile) || sourceFile.isBlank()) {
-                throw new Exception("Source file cannot be empty");
+                throw new OperationException("Source file cannot be empty");
             }
-            var param = new ParamDTO();
-            param.setSourceFile(sourceFile);
+            ParamDTO param = new ParamDTO();
             param.setTargetPath(targetPath);
             param.setDelete(delete);
             param.setEncrypt(encrypt);
             param.setSecretKey(secretKey);
+            param.setStore(Boolean.parseBoolean(System.getProperty(Constants.STORE)));
+            param.setOnlyLocal(onlyLocal);
             checkSecretKey();
-            (encrypt ? new DataEncrypt(param) : new DateDecrypt(param)).execute();
-        } catch (Throwable t) {
-            printErrMsg(t.getMessage());
+            var aot = encrypt ? new DataEncrypt(param) : new DateDecrypt(param);
+            new NameParser().parse(param, sourceFile, aot);
+        } catch (DogException t) {
+            Utils.printErrMsg(t.getMessage(), encrypt);
         }
     }
 
     /**
      * 由于秘钥不回显,加密操作时为了防止输错，所以需要重复一次
      *
-     * @throws Throwable
+     * @throws OperationException
      */
-    private void checkSecretKey() throws Throwable {
+    private void checkSecretKey() throws OperationException {
         if (!encrypt) {
             return;
         }
         java.io.Console console = System.console();
         if (Objects.isNull(console)) {
-            throw new Exception("Couldn't get Console instance, maybe you're running this from within an IDE?");
+            throw new OperationException("Couldn't get Console instance, maybe you're running this from within an IDE?");
         }
         var newSecretKey = console.readPassword("Enter the secret-key again: ");
         if (Objects.isNull(newSecretKey) || !(Objects.equals(new String(secretKey), new String(newSecretKey)))) {
-            throw new Exception("The two secret-key do not match");
-        }
-    }
-
-    /**
-     * 输出所有异常提示信息
-     *
-     * @param msg
-     */
-    private void printErrMsg(String msg) {
-        for (var i = 0; i < msg.length(); i++) {
-            System.out.print("-");
-        }
-        System.out.println(String.format("\n%s failed", encrypt ? "Encryption" : "Decryption"));
-        System.out.println(String.format("%s", msg));
-        for (var i = 0; i < msg.length(); i++) {
-            System.out.print("-");
+            throw new OperationException("The two secret-key do not match");
         }
     }
 

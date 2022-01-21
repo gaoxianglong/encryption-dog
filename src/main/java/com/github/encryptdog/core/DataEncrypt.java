@@ -4,7 +4,6 @@
  */
 package com.github.encryptdog.core;
 
-import com.github.encryptdog.exception.DogException;
 import com.github.encryptdog.exception.EncryptException;
 import com.github.encryptdog.exception.NameParseException;
 import com.github.encryptdog.exception.OperationException;
@@ -16,7 +15,6 @@ import javax.crypto.Cipher;
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
 import java.io.File;
-import java.io.UnsupportedEncodingException;
 
 /**
  * 数据加密操作

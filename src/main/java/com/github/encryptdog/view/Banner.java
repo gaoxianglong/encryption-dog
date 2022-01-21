@@ -35,8 +35,4 @@ public class Banner {
                 Constants.VERSION, LINE));
         System.out.println(bannerBuf.toString());
     }
-
-    public static void main(String[] args) {
-        print();
-    }
 }

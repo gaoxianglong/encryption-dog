@@ -27,9 +27,9 @@ import picocli.CommandLine;
  * @date created in 2021/1/16 4:51 下午
  */
 public class Starter {
-    public static void main(String[] agrs) {
+    public static void main(String[] args) {
         Banner.print();
-        var code = new CommandLine(new Console()).execute(agrs);
+        var code = new CommandLine(new Console()).execute(args);
         System.exit(code);
     }
 }

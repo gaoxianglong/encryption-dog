@@ -26,11 +26,11 @@ public class Constants {
     /**
      * 加密时缺省每次读取10MB
      */
-    public static int DEFAULT_ENCRYPT_CONTENT_SIZE = 0xa00000;
+    public static final int DEFAULT_ENCRYPT_CONTENT_SIZE = 0xa00000;
     /**
      * 解密时缺省每次读取13981024bytes
      */
-    public static int DEFAULT_DECRYPT_CONTENT_SIZE = 0xd55560;
+    public static final int DEFAULT_DECRYPT_CONTENT_SIZE = 0xd55560;
     public static final String KEY_ALGORITHM = "DESede";
     /**
      * 基于3DES加密算法
@@ -38,26 +38,50 @@ public class Constants {
     public static final String DEFAULT_CIPHER_ALGORITHM = "DESede/ECB/PKCS5Padding";
     public static final String ALGORITHM = "SHA1PRNG";
     public static final String CHARSET = "utf-8";
+    public static final String VERSION = "1.4-SNAPSHOT";
     /**
      * 加密文件缺省后缀
      */
-    public static String DEFAULT_SUFFIX = ".dog";
+    public static final String DEFAULT_SUFFIX = ".dog";
     /**
      * 进度条总长度
      */
-    public static int TOTLE_LENGTH = 100;
+    public static final int TOTLE_LENGTH = 100;
     /**
-     * .dog文件魔术
+     * magic number
      */
-    public static int MAGIC_NUMBER = 0x19890225;
+    public static final int MAGIC_NUMBER = 0x19890225;
     /**
      * targetpath为空时使用临时目录
      */
-    public static String DEFAULT_TARGET_PATH = System.getProperty("java.io.tmpdir");
+    public static final String DEFAULT_TARGET_PATH = System.getProperty("java.io.tmpdir");
     /**
      * 魔术长度4bytes
      */
-    public static int MAGIC_NUMBER_SIZE = 4;
-    public static String VERSION = "1.3-SNAPSHOT";
+    public static final int MAGIC_NUMBER_SIZE = 4;
+    /**
+     * UUID长度4bytes
+     */
+    public static final int UUID_FLAG_SIZE = 4;
     public static final String LINE = System.getProperty("line.separator");
+    /**
+     * VM参数,加密操作时在系统临时目录下转储对应加密文件的秘钥信息,慎用
+     */
+    public static final String STORE = "dog-store";
+    /**
+     * 秘钥存储地址
+     */
+    public static final String STORE_SK_PATH = String.format("%s/%s", DEFAULT_TARGET_PATH, "dog-secret-key");
+    /**
+     * 通配符
+     */
+    public static final char WILDCARD = '*';
+    /**
+     * 路径分隔符
+     */
+    public static final String SEPARATOR = System.getProperty("file.separator");
+    /**
+     * 获取mac系统的硬件UUID命令
+     */
+    public final static String UUID_COMMAND = "system_profiler SPHardwareDataType";
 }

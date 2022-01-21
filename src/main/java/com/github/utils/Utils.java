@@ -15,12 +15,16 @@
  */
 package com.github.utils;
 
+import com.github.encryptdog.exception.OperationException;
+
+import java.io.*;
+import java.net.NetworkInterface;
 import java.nio.ByteBuffer;
 import java.nio.CharBuffer;
 import java.nio.charset.Charset;
-import java.util.Objects;
-import java.util.Scanner;
-import java.util.concurrent.TimeUnit;
+import java.text.SimpleDateFormat;
+import java.util.*;
+import java.util.stream.Collectors;
 
 /**
  * @author gao_xianglong@sina.com
@@ -28,6 +32,27 @@ import java.util.concurrent.TimeUnit;
  * @date created in 2021/1/17 12:05 上午
  */
 public class Utils {
+    /**
+     * base64加密
+     *
+     * @param s
+     * @return
+     * @throws UnsupportedEncodingException
+     */
+    public static String toBase64Encode(byte[] s) throws UnsupportedEncodingException {
+        return Base64.getEncoder().encodeToString(s);
+    }
+
+    /**
+     * base64解密
+     *
+     * @param s
+     * @return
+     */
+    public static byte[] toBase64Decode(byte[] s) {
+        return Base64.getDecoder().decode(s);
+    }
+
     public static void printSchedule(double value) {
         var percent = (int) value;
         var length = Constants.TOTLE_LENGTH;
@@ -120,5 +145,106 @@ public class Utils {
         var tca = available / cs;
         var result = (double) ((tca < 1 ? 0.1D : tca) * tc);
         System.out.println(String.format("[Estimated completion time]:%.2f%s", result, result > 1 ? "s" : "ms"));
+    }
+
+    /**
+     * 获取当前时间
+     *
+     * @return
+     */
+    public static String getTime() {
+        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        return format.format(System.currentTimeMillis());
+    }
+
+    /**
+     * 输出所有异常提示信息
+     *
+     * @param msg
+     */
+    public static void printErrMsg(String msg, boolean encrypt) {
+        for (var i = 0; i < msg.length(); i++) {
+            System.out.print("-");
+        }
+        System.out.println(String.format("\n[%s result]:failed", encrypt ? "Encryption" : "Decryption"));
+        System.out.println(String.format("%s", msg));
+        for (var i = 0; i < msg.length(); i++) {
+            System.out.print("-");
+        }
+        System.out.println("\n");
+    }
+
+    /**
+     * 获取设备唯一标识,如果是mac取Hardware UUID,如果是win或linux则取MAC物理地址
+     *
+     * @return
+     * @throws OperationException
+     */
+    public static String getUUID() throws OperationException {
+        String uuid = null;
+        var os = System.getProperty("os.name");
+        try {
+            uuid = "Mac OS X".equalsIgnoreCase(os) ? getHardwareUUID() : getMacAddress();
+        } catch (Throwable e) {
+            throw new OperationException("Failed to get hardware-uuid", e);
+        }
+        return uuid;
+    }
+
+    /**
+     * 借助system_profiler命令获取Hardware UUID
+     *
+     * @return
+     * @throws IOException
+     * @throws OperationException
+     */
+    private static String getHardwareUUID() throws Throwable {
+        var process = Runtime.getRuntime().exec(Constants.UUID_COMMAND);
+        try (var reader = new BufferedReader(new InputStreamReader(process.getInputStream()))) {
+            String line = null;
+            while (Objects.nonNull(line = reader.readLine())) {
+                line = line.trim();
+                if (line.indexOf("Hardware UUID") != -1) {
+                    return line.substring(line.indexOf(":") + 1).trim();
+                }
+            }
+        }
+        return null;
+    }
+
+    /**
+     * 获取MAC物理地址
+     *
+     * @return
+     * @throws Throwable
+     */
+    private static String getMacAddress() throws Throwable {
+        var en = NetworkInterface.getNetworkInterfaces();
+        final var builder = new StringBuilder();
+        var list = new ArrayList<>();
+        while (en.hasMoreElements()) {
+            var iface = en.nextElement();
+            var addrs = iface.getInterfaceAddresses();
+            for (var addr : addrs) {
+                var ip = addr.getAddress();
+                var network = NetworkInterface.getByInetAddress(ip);
+                if (Objects.isNull(network)) {
+                    continue;
+                }
+                var mac = network.getHardwareAddress();
+                if (Objects.isNull(mac)) {
+                    continue;
+                }
+                builder.delete(0, builder.length());
+                for (var i = 0; i < mac.length; i++) {
+                    builder.append(String.format("%02X", mac[i]));
+                }
+                list.add(builder.toString());
+            }
+        }
+        builder.delete(0, builder.length());
+        var unique = list.stream().distinct().collect(Collectors.toList());
+        unique.forEach(x -> builder.append(String.format("%s-", x)));
+        return String.format("M:%s", builder.toString().substring(0, builder.length() - 1));
     }
 }
