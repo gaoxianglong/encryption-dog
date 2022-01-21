@@ -57,7 +57,7 @@ Please wait...
 [Decrypt file number]:1/1
 [Source path]:/Users/jiushu/Desktop/a.mp4.dog
 [Estimated completion time]:6.38s
-[>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>] 100%
+[>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>] 100%
 [Decrypt result]:success
 [Time-consuming]:5.92s,[Before size]:142.96MB,[After size]:107.22MB
 [Target path]:/Users/jiushu/Desktop//a.mp4
