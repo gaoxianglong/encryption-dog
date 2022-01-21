@@ -73,7 +73,7 @@ Please wait...
 ### batch
 ```shell
 # command
-$ dog -deos /Users/jiushu/Desktop/*.mp4 -t /Users/jiushu/Desktop -k
+$ dog -deos '/Users/jiushu/Desktop/*.mp4' -t /Users/jiushu/Desktop -k
 ```
 ### store secret-key
 ```shell
