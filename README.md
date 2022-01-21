@@ -65,14 +65,16 @@ Please wait...
 >>> Operation complete <<<
 [Total time]:5.92s
 [Results]:total files:1,successes:1,failures:0
-
-# batch
-$ dog -deos /Users/jiushu/Desktop/*.mp4 -t /Users/jiushu/Desktop -k
 ```
 ### file structure
 |  file        | file extension name |  type          |   magic number |   location   |    amount     |     ascii    |
 |  :-:         |        :-:          |  :-:           |   :-:          |    :-:       |     :-:       |      :-:     |
 | DOG FORMAT   |        .dog         |  u4/32bit      |   0x19890225   |    header    |       1       |      ...     |
+### batch
+```shell
+# command
+$ dog -deos /Users/jiushu/Desktop/*.mp4 -t /Users/jiushu/Desktop -k
+```
 ### store secret-key
 ```shell
 # command
