@@ -28,7 +28,7 @@ Usage: encrypt-dog [-dehoV] -k [-k]... -s=<source file> [-t=<storage path>]
                        are supported
   -t, --target-path=<storage path>
                      Storage path after operation,The default is stored in the
-                       temporary directory
+                       user home directory
   -V, --version      Print version information and exit.
 Copyright(c) 2021-2031
 

@@ -44,7 +44,7 @@ public class Console implements Runnable {
     /**
      * 加/解密内容的转储目录,非必填选项，缺省存储在桌面
      */
-    @CommandLine.Option(names = {"-t", "--target-path"}, paramLabel = "<storage path>", description = "Storage path after operation,The default is stored in the temporary directory")
+    @CommandLine.Option(names = {"-t", "--target-path"}, paramLabel = "<storage path>", description = "Storage path after operation,The default is stored in the user home directory")
     private String targetPath = Constants.DEFAULT_USER_DESKTOP_PATH;
 
     /**
