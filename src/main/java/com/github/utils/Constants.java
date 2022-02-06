@@ -38,7 +38,7 @@ public class Constants {
     public static final String DEFAULT_CIPHER_ALGORITHM = "DESede/ECB/PKCS5Padding";
     public static final String ALGORITHM = "SHA1PRNG";
     public static final String CHARSET = "utf-8";
-    public static final String VERSION = "1.4-SNAPSHOT";
+    public static final String VERSION = "1.5-SNAPSHOT";
     /**
      * 加密文件缺省后缀
      */
@@ -52,8 +52,9 @@ public class Constants {
      */
     public static final int MAGIC_NUMBER = 0x19890225;
     /**
-     * targetpath为空时使用临时目录
+     * targetpath为空时使用桌面路径
      */
+    @Deprecated
     public static final String DEFAULT_TARGET_PATH = System.getProperty("java.io.tmpdir");
     /**
      * 魔术长度4bytes
@@ -84,4 +85,12 @@ public class Constants {
      * 获取mac系统的硬件UUID命令
      */
     public final static String UUID_COMMAND = "system_profiler SPHardwareDataType";
+    /**
+     * 通配符匹配规则
+     */
+    public final static String WILDCARD_MATCHING_RULE = "[\\\\u4e00-\\\\u9fa5\\\\w\\\\s-~@\\$#\\^&.\\(\\)]{0,}";
+    /**
+     * 缺省用户桌面路径
+     */
+    public final static String DEFAULT_USER_DESKTOP_PATH = String.format("%s%s%s", System.getProperty("user.home"), SEPARATOR, "Desktop");
 }

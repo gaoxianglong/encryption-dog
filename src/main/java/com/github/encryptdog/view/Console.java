@@ -42,10 +42,10 @@ public class Console implements Runnable {
     private String sourceFile;
 
     /**
-     * 加/解密内容的转储目录,非必填选项，缺省存储在临时目录下
+     * 加/解密内容的转储目录,非必填选项，缺省存储在桌面
      */
     @CommandLine.Option(names = {"-t", "--target-path"}, paramLabel = "<storage path>", description = "Storage path after operation,The default is stored in the temporary directory")
-    private String targetPath = Constants.DEFAULT_TARGET_PATH;
+    private String targetPath = Constants.DEFAULT_USER_DESKTOP_PATH;
 
     /**
      * 秘钥,采用密码选项，不在控制台回显密码

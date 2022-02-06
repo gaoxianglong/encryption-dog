@@ -8,6 +8,7 @@ import com.github.encryptdog.exception.DogException;
 import com.github.encryptdog.exception.NameParseException;
 import com.github.encryptdog.exception.OperationException;
 import com.github.encryptdog.view.ParamDTO;
+import com.github.encryptdog.view.Tooltips;
 import com.github.utils.Constants;
 import com.github.utils.Utils;
 
@@ -15,8 +16,6 @@ import javax.crypto.KeyGenerator;
 import javax.crypto.spec.SecretKeySpec;
 import java.io.*;
 import java.security.SecureRandom;
-import java.util.Arrays;
-import java.util.Base64;
 
 /**
  * 数据加/解密模板抽象类
@@ -69,10 +68,7 @@ public abstract class AbstractOperationTemplate {
             var tc = (double) (end - begin) / 1000;
             beforeSize = (double) available / 0X100000;
             afterSize = (double) new File(targetPath).length() / 0X100000;
-            System.out.println(String.format("\n[%s result]:success\n[Time-consuming]:%.2f%s," +
-                            "[Before size]:%.2fMB,[After size]:%.2fMB\n[Target path]:%s",
-                    isEncrypt ? "Encrypt" : "Decrypt",
-                    tc, tc >= 1 ? "s" : "ms", beforeSize, afterSize, targetPath));
+            Tooltips.print(Tooltips.Number._5, isEncrypt, tc, beforeSize, afterSize, targetPath);
             // 当设置启动参数-Dstore=true时,将会在临时目录下固化base64秘钥
             new StoreSecretKey().store(param, beforeSize, targetPath, afterSize);
             deleteSource(param.isDelete());

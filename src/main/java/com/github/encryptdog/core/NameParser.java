@@ -7,8 +7,10 @@ package com.github.encryptdog.core;
 import com.github.encryptdog.exception.DogException;
 import com.github.encryptdog.exception.NameParseException;
 import com.github.encryptdog.view.ParamDTO;
+import com.github.encryptdog.view.Tooltips;
 import com.github.utils.Constants;
 import com.github.utils.Utils;
+
 import java.io.File;
 import java.util.*;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -31,7 +33,7 @@ public class NameParser {
     public void parse(ParamDTO param, String sourceFile, AbstractOperationTemplate aot) throws NameParseException {
         var sfs = parseSourceFileName(sourceFile);
         operationConfirmation(sfs);
-        System.out.println("Please wait...\n");
+        Tooltips.print(Tooltips.Number._3);
         final var i = new AtomicInteger();
         final var fc = new AtomicInteger();
         var size = sfs.size();
@@ -39,8 +41,7 @@ public class NameParser {
         try {
             sfs.forEach(sf -> {
                 try {
-                    System.out.println(String.format("[%s file number]:%s/%s\n[Source path]:%s",
-                            param.isEncrypt() ? "Encrypt" : "Decrypt", i.incrementAndGet(), size, sf));
+                    Tooltips.print(Tooltips.Number._4, param.isEncrypt(), i.incrementAndGet(), size, sf);
                     param.setSourceFile(sf);
                     aot.execute();
                 } catch (DogException t) {
@@ -52,11 +53,9 @@ public class NameParser {
             release(param);
         }
         var tc = (double) (System.currentTimeMillis() - begin) / 1000;
-        System.out.println(String.format(">>> Operation complete <<<\n[Total time]:%.2f%s\n[Results]:" +
-                        "total files:%s,successes:%s,failures:%s",
-                tc, tc >= 1 ? "s" : "ms", size, size - fc.get(), fc));
+        Tooltips.print(Tooltips.Number._6, tc, size, fc.get());
         if (param.isStore()) {
-            System.out.println(String.format("[SecretKey path]:%s", Constants.STORE_SK_PATH));
+            Tooltips.print(Tooltips.Number._7);
         }
     }
 
@@ -69,12 +68,12 @@ public class NameParser {
         if (sfs.size() < 2) {
             return;
         }
-        System.out.println("Source file list:");
+        Tooltips.print(Tooltips.Number._1);
         var i = 0;
         for (var sf : sfs) {
             System.out.println(String.format("%s.%s", ++i, sf));
         }
-        System.out.println("Please confirm whether it is these files [Y/N]:");
+        Tooltips.print(Tooltips.Number._2);
         var scanner = new Scanner(System.in);
         var line = scanner.nextLine();
         if (!"Y".equalsIgnoreCase(line)) {
@@ -98,7 +97,8 @@ public class NameParser {
             var t2 = t1[t1.length - 1];
             var t3 = nsf.substring(0, nsf.indexOf(t2));
             nsf = String.format("%s%s%s", "^", nsf, "$");
-            nsf = nsf.replaceAll("\\*", "[\\\\u4e00-\\\\u9fa5\\\\w\\\\s-~@\\$#\\^&.]{0,}");
+            nsf = nsf.replaceAll("\\*\\.", "*\\\\.").
+                    replaceAll("\\*", Constants.WILDCARD_MATCHING_RULE);
             var file = new File(t3);
             if (!file.exists()) {
                 throw new NameParseException(String.format("directory %s does not exist", t3));
@@ -112,6 +112,9 @@ public class NameParser {
                     // 将满足通配符规则的都添加到集合中
                     result.add(path);
                 }
+            }
+            if (result.isEmpty()) {
+                throw new NameParseException(String.format("file %s does not exist", sf));
             }
         } else {
             result.add(sf);
