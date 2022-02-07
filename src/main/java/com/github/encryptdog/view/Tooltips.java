@@ -17,6 +17,9 @@ package com.github.encryptdog.view;
 
 import com.github.utils.Constants;
 
+import java.sql.Time;
+import java.util.concurrent.TimeUnit;
+
 /**
  * @author gao_xianglong@sina.com
  * @version 0.1-SNAPSHOT
@@ -25,20 +28,47 @@ import com.github.utils.Constants;
 public class Tooltips {
     public static void print(Number number, Object... str) {
         switch (number) {
-            case _1 -> System.out.println("Source file list:");
-            case _2 -> System.out.println("Please confirm whether it is these files [Y/N]:");
-            case _3 -> System.out.println("Please wait...\n");
-            case _4 -> System.out.println(String.format("[%s file number]:%s/%s\n[Source path]:%s",
+            case _1 -> print("Source file list:");
+            case _2 -> print("Please confirm whether it is these files [Y/N]:");
+            case _3 -> print("Please wait...\n");
+            case _4 -> print(String.format("[%s file number]:%s/%s\n[Source path]:%s",
                     (boolean) str[0] ? "Encrypt" : "Decrypt", str[1], str[2], str[3]));
-            case _5 -> System.out.println(String.format("\n[%s result]:success\n[Time-consuming]:%.2f%s," +
+            case _5 -> print(String.format("\n[%s result]:success\n[Time-consuming]:%.2f%s," +
                             "[Before size]:%.2fMB,[After size]:%.2fMB\n[Target path]:%s",
                     (boolean) str[0] ? "Encrypt" : "Decrypt",
                     str[1], (double) str[1] >= 1 ? "s" : "ms", str[2], str[3], str[4]));
-            case _6 -> System.out.println(String.format(">>> Operation complete <<<\n[Total time]:%.2f%s\n[Results]:" +
+            case _6 -> print(String.format(">>> Operation complete <<<\n[Total time]:%.2f%s\n[Results]:" +
                             "total files:%s,successes:%s,failures:%s",
                     str[0], (double) str[0] >= 1 ? "s" : "ms", str[1], (int) str[1] - (int) str[2], str[2]));
-            case _7 ->  System.out.println(String.format("[SecretKey path]:%s", Constants.STORE_SK_PATH));
+            case _7 -> print(String.format("[SecretKey path]:%s", Constants.STORE_SK_PATH));
         }
+    }
+
+    public static void printSchedule(double value) {
+        var percent = (int) value;
+        var length = Constants.TOTLE_LENGTH;
+        // 清空前一次的控制台输出
+//        for (var i = 0; i < length + 10; i++) {
+//            System.out.print("\b");
+//        }
+        // 使用\r替代\b
+        System.out.print("\r");
+        System.out.print("[");
+        // 字符'>'的数量等于百分比
+        for (var i = 0; i < percent; i++) {
+            System.out.print(">");
+        }
+        System.out.print(">");
+        // 空位补空格占位
+        for (var i = 0; i < length - percent; i++) {
+            System.out.print(" ");
+        }
+        System.out.print("]");
+        System.out.print(String.format(" %s", percent + "%"));
+    }
+
+    private static void print(String str) {
+        System.out.println(str);
     }
 
     public enum Number {

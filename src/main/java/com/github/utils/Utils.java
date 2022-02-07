@@ -24,6 +24,7 @@ import java.nio.CharBuffer;
 import java.nio.charset.Charset;
 import java.text.SimpleDateFormat;
 import java.util.*;
+import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 
 /**
@@ -51,28 +52,6 @@ public class Utils {
      */
     public static byte[] toBase64Decode(byte[] s) {
         return Base64.getDecoder().decode(s);
-    }
-
-    public static void printSchedule(double value) {
-        var percent = (int) value;
-        var length = Constants.TOTLE_LENGTH;
-        // 清空前一次的控制台输出
-        for (var i = 0; i < length + 10; i++) {
-            System.out.print("\b");
-        }
-        System.out.print("[");
-        // 字符'='的数量等于百分比
-        for (var i = 0; i < percent; i++) {
-            System.out.print(">");
-        }
-        System.out.print(">");
-        // 空位补空格占位
-        for (var i = 0; i < length - percent; i++) {
-            System.out.print(" ");
-        }
-        System.out.print("]");
-//        System.out.print(String.format(" %s", (percent >= 99 ? 100 : percent) + "%"));
-        System.out.print(String.format(" %s", percent + "%"));
     }
 
     /**

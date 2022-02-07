@@ -9,6 +9,7 @@ import com.github.encryptdog.exception.DogException;
 import com.github.encryptdog.exception.NameParseException;
 import com.github.encryptdog.exception.OperationException;
 import com.github.encryptdog.view.ParamDTO;
+import com.github.encryptdog.view.Tooltips;
 import com.github.utils.Constants;
 import com.github.utils.Utils;
 
@@ -98,7 +99,7 @@ public class DateDecrypt extends AbstractOperationTemplate {
                     visibleFlag = false;
                 }
                 // 输出进度条
-                Utils.printSchedule((double) count / available * 100);
+                Tooltips.printSchedule((double) count / available * 100);
             }
         } catch (Throwable e) {
             throw new OperationException(e.getMessage(), e);

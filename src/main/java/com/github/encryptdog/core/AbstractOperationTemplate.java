@@ -63,7 +63,7 @@ public abstract class AbstractOperationTemplate {
             // 将加/解密内容写入目标文件
             write(content, defaultSize, available, in, out);
             // 确保最终进度条最终能够追加到100%
-            Utils.printSchedule(100);
+            Tooltips.printSchedule(100);
             var end = System.currentTimeMillis();
             var tc = (double) (end - begin) / 1000;
             beforeSize = (double) available / 0X100000;
