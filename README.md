@@ -3,7 +3,7 @@
 ```Shell
 git clone https://github.com/gaoxianglong/encryption-dog.git
 mvn package
-alias dog = 'java -Xms512m -Xmx512m -Xmn128m -jar dog-1.5.jar'
+alias dog = 'java -Xms512m -Xmx512m -Xmn128m -jar dog-1.5.1.jar'
 ```
 ### use
 ```Shell
@@ -14,7 +14,7 @@ Welcome to
  / _// _ \/ __/ __/ // / _ \/ __/ / _ \/ _ \/ // / _ \/ _ `/
 /___/_//_/\__/_/  \_, / .__/\__/_/\___/_//_/____/\___/\_, / 
                  /___/_/                             /___/  
-        version: 1.5-SNAPSHOT
+        version: 1.5.1-SNAPSHOT
 
 Usage: encrypt-dog [-dehoV] -k [-k]... -s=<source file> [-t=<storage path>]
   -d, --delete       The source file is not deleted after the default operation
@@ -78,7 +78,7 @@ $ dog -deos '/Users/jiushu/Desktop/*.mp4' -t /Users/jiushu/Desktop -k
 ### store secret-key
 ```shell
 # command
-alias dog = 'java -Ddog-store=true -Xms512m -Xmx512m -Xmn128m -jar dog-1.5.jar'
+alias dog = 'java -Ddog-store=true -Xms512m -Xmx512m -Xmn128m -jar dog-1.5.1.jar'
 # store style(secret-key to base64)
 [dog-file]\:a.b.dog,[source]\:a.b,[source-size]\:0.02MB,[target]\:a.b.dog,[target-size]\:0.05MB=MTIzNDU2bmloYW96YXE\=
 ```
