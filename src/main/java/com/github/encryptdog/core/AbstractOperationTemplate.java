@@ -182,6 +182,6 @@ public abstract class AbstractOperationTemplate {
         if (!isDelete) {
             return;
         }
-        new File(param.getSourceFile()).delete();
+        new DelSource().del(param.getSourceFile());
     }
 }

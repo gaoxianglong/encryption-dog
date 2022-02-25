@@ -17,6 +17,7 @@ package com.github.encryptdog.view;
 
 import com.github.encryptdog.core.DataEncrypt;
 import com.github.encryptdog.core.DateDecrypt;
+import com.github.encryptdog.core.DelSource;
 import com.github.encryptdog.core.NameParser;
 import com.github.encryptdog.exception.DogException;
 import com.github.encryptdog.exception.OperationException;
@@ -80,14 +81,15 @@ public class Console implements Runnable {
             if (Objects.isNull(sourceFile) || sourceFile.isBlank()) {
                 throw new OperationException("Source file cannot be empty");
             }
+            // double check pwd
+            checkSecretKey();
             ParamDTO param = new ParamDTO();
             param.setTargetPath(targetPath);
-            param.setDelete(delete);
+            param.setDelete(new DelSource().deleteConfirmation(delete));
             param.setEncrypt(encrypt);
             param.setSecretKey(secretKey);
             param.setStore(Boolean.parseBoolean(System.getProperty(Constants.STORE)));
             param.setOnlyLocal(onlyLocal);
-            checkSecretKey();
             var aot = encrypt ? new DataEncrypt(param) : new DateDecrypt(param);
             new NameParser().parse(param, sourceFile, aot);
         } catch (DogException t) {

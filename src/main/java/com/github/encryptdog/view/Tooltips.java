@@ -29,7 +29,7 @@ public class Tooltips {
     public static void print(Number number, Object... str) {
         switch (number) {
             case _1 -> print("Source file list:");
-            case _2 -> print("Please confirm whether it is these files [Y/N]:");
+            case _2 -> print("Please confirm whether it is these files [Y/N]");
             case _3 -> print("Please wait...\n");
             case _4 -> print(String.format("[%s file number]:%s/%s\n[Source path]:%s",
                     (boolean) str[0] ? "Encrypt" : "Decrypt", str[1], str[2], str[3]));
@@ -41,6 +41,7 @@ public class Tooltips {
                             "total files:%s,successes:%s,failures:%s",
                     str[0], (double) str[0] >= 1 ? "s" : "ms", str[1], (int) str[1] - (int) str[2], str[2]));
             case _7 -> print(String.format("[SecretKey path]:%s", Constants.STORE_SK_PATH));
+            case _8 -> print("Please confirm whether the source file needs to be deleted？[Y/N]");
         }
     }
 
@@ -72,6 +73,6 @@ public class Tooltips {
     }
 
     public enum Number {
-        _1, _2, _3, _4, _5, _6, _7
+        _1, _2, _3, _4, _5, _6, _7, _8
     }
 }
