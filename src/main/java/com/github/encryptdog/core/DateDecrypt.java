@@ -76,7 +76,7 @@ public class DateDecrypt extends AbstractOperationTemplate {
     protected void write(byte[] content, int defaultSize, long available,
                          BufferedInputStream in, BufferedOutputStream out) throws OperationException {
         var len = -1;
-        var count = len;
+        long count = len;
         // 显示预计耗时标识
         var visibleFlag = true;
         var begin = System.currentTimeMillis();
