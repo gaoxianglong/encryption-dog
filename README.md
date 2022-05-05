@@ -3,7 +3,7 @@
 ```Shell
 git clone https://github.com/gaoxianglong/encryption-dog.git
 mvn package
-alias dog = 'java -Xms512m -Xmx512m -Xmn128m -jar dog-1.5.2.jar'
+alias dog = 'java -Xms512m -Xmx512m -Xmn128m -jar dog-1.5.3.jar'
 ```
 ### use
 ```Shell
@@ -14,7 +14,7 @@ Welcome to
  / _// _ \/ __/ __/ // / _ \/ __/ / _ \/ _ \/ // / _ \/ _ `/
 /___/_//_/\__/_/  \_, / .__/\__/_/\___/_//_/____/\___/\_, / 
                  /___/_/                             /___/  
-        version: 1.5.2-SNAPSHOT
+        version: 1.5.3-SNAPSHOT
 
 Usage: encrypt-dog [-dehoV] -k [-k]... -s=<source file> [-t=<storage path>]
   -d, --delete       The source file is not deleted after the default operation
@@ -39,14 +39,14 @@ Please wait...
 
 [Encrypt file number]:1/1
 [Source path]:/Users/jiushu/Desktop/a.mp4
-[Estimated completion time]:6.60s
+[Estimated time]:00:00:06
 [>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>] 100%
 [Encrypt result]:success
-[Time-consuming]:5.86s,[Before size]:107.22MB,[After size]:142.96MB
+[Time consuming]:00:00:05,[Before size]:107.22MB,[After size]:142.96MB
 [Target path]:/Users/jiushu/Desktop//a.mp4.dog
 
 >>> Operation complete <<<
-[Total time]:5.87s
+[Total time]:00:00:05
 [Results]:total files:1,successes:1,failures:0
 
 # decrypt
@@ -56,14 +56,14 @@ Please wait...
 
 [Decrypt file number]:1/1
 [Source path]:/Users/jiushu/Desktop/a.mp4.dog
-[Estimated completion time]:6.38s
+[Estimated time]:00:00:06
 [>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>] 100%
 [Decrypt result]:success
-[Time-consuming]:5.92s,[Before size]:142.96MB,[After size]:107.22MB
+[Time consuming]:00:00:05,[Before size]:142.96MB,[After size]:107.22MB
 [Target path]:/Users/jiushu/Desktop//a.mp4
 
 >>> Operation complete <<<
-[Total time]:5.92s
+[Total time]:00:00:05
 [Results]:total files:1,successes:1,failures:0
 ```
 ### file structure
@@ -78,7 +78,7 @@ $ dog -deos '/Users/jiushu/Desktop/*.mp4' -t /Users/jiushu/Desktop -k
 ### store secret-key
 ```shell
 # command
-alias dog = 'java -Ddog-store=true -Xms512m -Xmx512m -Xmn128m -jar dog-1.5.2.jar'
+alias dog = 'java -Ddog-store=true -Xms512m -Xmx512m -Xmn128m -jar dog-1.5.3.jar'
 # store style(secret-key to base64)
 [dog-file]\:a.b.dog,[source]\:a.b,[source-size]\:0.02MB,[target]\:a.b.dog,[target-size]\:0.05MB=MTIzNDU2bmloYW96YXE\=
 ```
