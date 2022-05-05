@@ -13,6 +13,7 @@ import com.github.utils.Utils;
 
 import java.io.File;
 import java.util.*;
+import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicInteger;
 
 /**
@@ -52,7 +53,7 @@ public class NameParser {
         } finally {
             release(param);
         }
-        var tc = (double) (System.currentTimeMillis() - begin) / 1000;
+        var tc = Utils.timeFormat((System.currentTimeMillis() - begin) / 1000);
         Tooltips.print(Tooltips.Number._6, tc, size, fc.get());
         if (param.isStore()) {
             Tooltips.print(Tooltips.Number._7);

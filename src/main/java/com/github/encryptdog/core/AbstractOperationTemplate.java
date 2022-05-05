@@ -43,8 +43,6 @@ public abstract class AbstractOperationTemplate {
         // 加/解密文件的后缀检测与拼接
         fileName = checkSourceFile(file, fileName, isEncrypt);
         var targetPath = String.format("%s/%s", param.getTargetPath(), fileName);
-        Double beforeSize = null;
-        Double afterSize = null;
         try (var in = new BufferedInputStream(new FileInputStream(param.getSourceFile()));
              var out = new BufferedOutputStream(new FileOutputStream(targetPath))) {
             // 文件总大小，计算百分比进度条时需要使用
@@ -65,9 +63,9 @@ public abstract class AbstractOperationTemplate {
             // 确保最终进度条最终能够追加到100%
             Tooltips.printSchedule(100);
             var end = System.currentTimeMillis();
-            var tc = (double) (end - begin) / 1000;
-            beforeSize = (double) available / 0X100000;
-            afterSize = (double) new File(targetPath).length() / 0X100000;
+            var tc = Utils.timeFormat((end - begin) / 1000);
+            var beforeSize = Utils.capacityFormat(available);
+            var afterSize = Utils.capacityFormat(new File(targetPath).length());
             Tooltips.print(Tooltips.Number._5, isEncrypt, tc, beforeSize, afterSize, targetPath);
             // 当设置启动参数-Dstore=true时,将会在临时目录下固化base64秘钥
             new StoreSecretKey().store(param, beforeSize, targetPath, afterSize);

@@ -38,7 +38,7 @@ public class Constants {
     public static final String DEFAULT_CIPHER_ALGORITHM = "DESede/ECB/PKCS5Padding";
     public static final String ALGORITHM = "SHA1PRNG";
     public static final String CHARSET = "utf-8";
-    public static final String VERSION = "1.5.2-SNAPSHOT";
+    public static final String VERSION = "1.5.3-SNAPSHOT";
     /**
      * 加密文件缺省后缀
      */
@@ -93,4 +93,20 @@ public class Constants {
      * 缺省用户桌面路径
      */
     public final static String DEFAULT_USER_DESKTOP_PATH = String.format("%s%s%s", System.getProperty("user.home"), SEPARATOR, "Desktop");
+    /**
+     * 一小时所对应的秒数
+     */
+    public static final int HOUR = 0xe10;
+    /**
+     * 一分钟所对应的秒数
+     */
+    public static final int MINUTE = 0x3c;
+    /**
+     * 1GB对应的字节大小
+     */
+    public static final int _1GB = 0x40000000;
+    /**
+     * 1MB对应的字节大小
+     */
+    public static final int _1MB = 0X100000;
 }

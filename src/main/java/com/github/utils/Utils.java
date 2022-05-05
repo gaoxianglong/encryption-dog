@@ -122,8 +122,9 @@ public class Utils {
      */
     public static void printTimeConsuming(long available, double tc, int cs) {
         var tca = available / cs;
-        var result = (double) ((tca < 1 ? 0.1D : tca) * tc);
-        System.out.println(String.format("[Estimated completion time]:%.2f%s", result, result > 1 ? "s" : "ms"));
+        var result = ((tca < 1 ? 1 : tca) * tc);
+        //System.out.println(String.format("[Estimated time]:%.2f%s", result, result > 1 ? "s" : "ms"));
+        System.out.println(String.format("[Estimated time]:%s", Utils.timeFormat((long) result)));
     }
 
     /**
@@ -225,5 +226,36 @@ public class Utils {
         var unique = list.stream().distinct().collect(Collectors.toList());
         unique.forEach(x -> builder.append(String.format("%s-", x)));
         return String.format("M:%s", builder.toString().substring(0, builder.length() - 1));
+    }
+
+    /**
+     * 将耗时(单位s)换为指定的时间格式 hh:mm:ss
+     *
+     * @param time
+     * @return
+     */
+    public static String timeFormat(long time) {
+        var result = new StringBuilder();
+        var hour = time / Constants.HOUR;
+        time -= hour * Constants.HOUR;
+        var min = time / Constants.MINUTE;
+        time -= min * Constants.MINUTE;
+        result.append(String.format("%02d", hour)).append(":").
+                append(String.format("%02d", min)).append(":").
+                append(String.format("%02d", time));
+        return result.toString();
+    }
+
+    /**
+     * 容量单位转换
+     *
+     * @param size
+     * @return
+     */
+    public static String capacityFormat(long size) {
+        if (size >= Constants._1GB) {
+            return String.format("%.2fGB", (double) size / Constants._1GB);
+        }
+        return String.format("%.2fMB", (double) size / Constants._1MB);
     }
 }

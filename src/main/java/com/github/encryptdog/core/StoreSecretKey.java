@@ -30,7 +30,7 @@ public class StoreSecretKey {
      * @param ts
      * @throws OperationException
      */
-    protected void store(ParamDTO param, double ss, String t, double ts) throws OperationException {
+    protected void store(ParamDTO param, String ss, String t, String ts) throws OperationException {
         Objects.requireNonNull(param);
         if (!param.isEncrypt()) {
             return;
@@ -43,8 +43,8 @@ public class StoreSecretKey {
         Properties properties = new Properties();
         // 转储文件格式:加密文件,源文件,源文件大小,目标文件,目标文件大小=秘钥
         try (var out = new BufferedWriter(new FileWriter(Constants.STORE_SK_PATH, true))) {
-            var key = String.format("[dog-file]:%s,[source]:%s,[source-size]:%.2fMB," +
-                    "[target]:%s,[target-size]:%.2fMB", t, s, ss, t, ts);
+            var key = String.format("[dog-file]:%s,[source]:%s,[source-size]:%s," +
+                    "[target]:%s,[target-size]:%s", t, s, ss, t, ts);
             properties.setProperty(key, Utils.toBase64Encode(new String(sk).getBytes(Constants.CHARSET)));
             properties.store(out, "store secret-key");
         } catch (Throwable e) {
