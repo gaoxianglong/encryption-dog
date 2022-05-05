@@ -113,6 +113,8 @@ public class DateDecrypt extends AbstractOperationTemplate {
                 // 输出进度条
                 Tooltips.printSchedule((double) count / available * 100);
             }
+            // 确保最终进度条最终能够追加到100%
+            Tooltips.printSchedule(100);
         } catch (Throwable e) {
             throw new OperationException(e.getMessage(), e);
         }
