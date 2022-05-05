@@ -8,7 +8,6 @@ import com.github.encryptdog.exception.DogException;
 import com.github.encryptdog.exception.NameParseException;
 import com.github.encryptdog.exception.OperationException;
 import com.github.encryptdog.view.ParamDTO;
-import com.github.encryptdog.view.Tooltips;
 import com.github.utils.Constants;
 import com.github.utils.Utils;
 
@@ -25,6 +24,7 @@ import java.security.SecureRandom;
  */
 public abstract class AbstractOperationTemplate {
     protected ParamDTO param;
+    protected String targetPath;
 
     public AbstractOperationTemplate(ParamDTO param) {
         this.param = param;
@@ -36,13 +36,12 @@ public abstract class AbstractOperationTemplate {
      * @throws DogException
      */
     public void execute() throws DogException {
-        var begin = System.currentTimeMillis();
         var fileName = param.getSourceFile();
         var file = new File(fileName);
         var isEncrypt = param.isEncrypt();
         // 加/解密文件的后缀检测与拼接
         fileName = checkSourceFile(file, fileName, isEncrypt);
-        var targetPath = String.format("%s/%s", param.getTargetPath(), fileName);
+        targetPath = String.format("%s/%s", param.getTargetPath(), fileName);
         try (var in = new BufferedInputStream(new FileInputStream(param.getSourceFile()));
              var out = new BufferedOutputStream(new FileOutputStream(targetPath))) {
             // 文件总大小，计算百分比进度条时需要使用
@@ -54,28 +53,30 @@ public abstract class AbstractOperationTemplate {
             var defaultSize = getDefaultSize(available);
             var content = new byte[defaultSize];
             var stream = isEncrypt ? out : in;
+            var begin = System.currentTimeMillis();
             // 魔术检测,如果是加密操作,则在文件起始位写入u4/32bit魔术码
             checkMagicNumber(stream);
             // 设置是否仅限在相同的物理设备上完成加/解密操作
             bind(stream);
             // 将加/解密内容写入目标文件
             write(content, defaultSize, available, in, out);
-            // 确保最终进度条最终能够追加到100%
-            Tooltips.printSchedule(100);
-            var end = System.currentTimeMillis();
-            var tc = Utils.timeFormat((end - begin) / 1000);
-            var beforeSize = Utils.capacityFormat(available);
-            var afterSize = Utils.capacityFormat(new File(targetPath).length());
-            Tooltips.print(Tooltips.Number._5, isEncrypt, tc, beforeSize, afterSize, targetPath);
-            // 当设置启动参数-Dstore=true时,将会在临时目录下固化base64秘钥
-            new StoreSecretKey().store(param, beforeSize, targetPath, afterSize);
-            deleteSource(param.isDelete());
+            print(available, begin);
+            deleteSource();
         } catch (Throwable e) {
             throw new OperationException(e.getMessage(), e);
         } finally {
             System.out.println();
         }
     }
+
+    /**
+     * 输出单次操作结果
+     *
+     * @param available
+     * @param begin
+     * @throws OperationException
+     */
+    protected abstract void print(long available, long begin) throws OperationException;
 
     /**
      * 魔术检查
@@ -104,6 +105,15 @@ public abstract class AbstractOperationTemplate {
     protected abstract <T> void bind(T stream) throws OperationException;
 
     /**
+     * 压缩/解压缩操作
+     *
+     * @param source
+     * @param target
+     * @throws OperationException
+     */
+    protected abstract void compress(String source, String target) throws OperationException;
+
+    /**
      * 向目标文件执行写入
      *
      * @param content
@@ -124,6 +134,16 @@ public abstract class AbstractOperationTemplate {
      * @throws NameParseException
      */
     protected abstract String splicTargetFileName(File file) throws NameParseException;
+
+    /**
+     * 设置压缩文件路径
+     *
+     * @param path
+     * @return
+     */
+    protected String getCompressPath(String path) {
+        return String.format("%s%s", path.substring(0, path.lastIndexOf(".")), ".zip");
+    }
 
     /**
      * 返回秘钥器
@@ -173,13 +193,10 @@ public abstract class AbstractOperationTemplate {
 
     /**
      * 删除源文件
-     *
-     * @param isDelete
      */
-    private void deleteSource(boolean isDelete) {
-        if (!isDelete) {
-            return;
+    private void deleteSource() {
+        if (param.isDelete()) {
+            new DelSource().del(param.getSourceFile());
         }
-        new DelSource().del(param.getSourceFile());
     }
 }

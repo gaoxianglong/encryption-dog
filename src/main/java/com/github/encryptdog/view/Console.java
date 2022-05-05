@@ -39,13 +39,13 @@ public class Console implements Runnable {
     /**
      * 需要加/解密的目标文件
      */
-    @CommandLine.Option(names = {"-s", "--source-file"}, paramLabel = "<source file>", required = true, description = "Target files that need to be encrypt and decrypt,Wildcards are supported")
+    @CommandLine.Option(names = {"-s", "--source-file"}, paramLabel = "<source file>", required = true, description = "Target files that need to be encrypt and decrypt,Wildcards are supported.")
     private String sourceFile;
 
     /**
      * 加/解密内容的转储目录,非必填选项，缺省存储在桌面
      */
-    @CommandLine.Option(names = {"-t", "--target-path"}, paramLabel = "<storage path>", description = "Storage path after operation,The default is stored in the user home directory")
+    @CommandLine.Option(names = {"-t", "--target-path"}, paramLabel = "<storage path>", description = "Storage path after operation,The default is stored in the user home directory.")
     private String targetPath = Constants.DEFAULT_USER_DESKTOP_PATH;
 
     /**
@@ -57,20 +57,26 @@ public class Console implements Runnable {
     /**
      * true为加密,false为解密
      */
-    @CommandLine.Option(names = {"-e", "--encrypt"}, description = "The default is decryption mode")
+    @CommandLine.Option(names = {"-e", "--encrypt"}, description = "The default is decryption mode.")
     private boolean encrypt;
 
     /**
      * 加/解密操作结束后是否删除源文件
      */
-    @CommandLine.Option(names = {"-d", "--delete"}, description = "The source file is not deleted after the default operation")
+    @CommandLine.Option(names = {"-d", "--delete"}, description = "The source file is not deleted after the default operation.")
     private boolean delete;
 
     /**
      * 仅限加/解密操作在同一台物理设备上,提升安全系数
      */
-    @CommandLine.Option(names = {"-o", "--only-local"}, description = "Encryption and decryption operations can only be performed on the same physical device")
+    @CommandLine.Option(names = {"-o", "--only-local"}, description = "Encryption and decryption operations can only be performed on the same physical device.")
     private boolean onlyLocal;
+
+    /**
+     * 是否在加密操作完成后执行压缩
+     */
+    @CommandLine.Option(names = {"-c", "--compress"}, description = "Compression is not enabled by default,Turning on compression will increase execution time.")
+    private boolean compress;
 
     @Override
     public void run() {
@@ -90,6 +96,7 @@ public class Console implements Runnable {
             param.setSecretKey(secretKey);
             param.setStore(Boolean.parseBoolean(System.getProperty(Constants.STORE)));
             param.setOnlyLocal(onlyLocal);
+            param.setCompress(compress);
             var aot = encrypt ? new DataEncrypt(param) : new DateDecrypt(param);
             new NameParser().parse(param, sourceFile, aot);
         } catch (DogException t) {
@@ -124,6 +131,8 @@ public class Console implements Runnable {
                 ", secretKey=" + Arrays.toString(secretKey) +
                 ", encrypt=" + encrypt +
                 ", delete=" + delete +
+                ", onlyLocal=" + onlyLocal +
+                ", compress=" + compress +
                 '}';
     }
 }

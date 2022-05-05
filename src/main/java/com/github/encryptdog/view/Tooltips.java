@@ -38,9 +38,9 @@ public class Tooltips {
 //                            "[Before size]:%.2fMB,[After size]:%.2fMB\n[Target path]:%s",
 //                    (boolean) str[0] ? "Encrypt" : "Decrypt",
 //                    str[1], (double) str[1] >= 1 ? "s" : "ms", str[2], str[3], str[4]));
-            case _5 -> print(String.format("\n[%s result]:success\n[Time consuming]:%s," +
+            case _5 -> print(String.format("\n[Result]:success\n[Time consuming]:%s," +
                             "[Before size]:%s,[After size]:%s\n[Target path]:%s",
-                    (boolean) str[0] ? "Encrypt" : "Decrypt", str[1], str[2], str[3], str[4]));
+                    str[0], str[1], str[2], str[3]));
 //            case _6 -> print(String.format(">>> Operation complete <<<\n[Total time]:%.2f%s\n[Results]:" +
 //                            "total files:%s,successes:%s,failures:%s",
 //                    str[0], (double) str[0] >= 1 ? "s" : "ms", str[1], (int) str[1] - (int) str[2], str[2]));
@@ -49,6 +49,7 @@ public class Tooltips {
                     str[0], str[1], (int) str[1] - (int) str[2], str[2]));
             case _7 -> print(String.format("[SecretKey path]:%s", Constants.STORE_SK_PATH));
             case _8 -> print("Please confirm whether the source file needs to be deleted？[Y/N]");
+            case _9 -> print("\nFile compression in progress...");
         }
     }
 
@@ -80,6 +81,6 @@ public class Tooltips {
     }
 
     public enum Number {
-        _1, _2, _3, _4, _5, _6, _7, _8
+        _1, _2, _3, _4, _5, _6, _7, _8, _9
     }
 }

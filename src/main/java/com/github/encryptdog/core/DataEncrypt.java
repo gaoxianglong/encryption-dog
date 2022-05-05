@@ -13,9 +13,9 @@ import com.github.utils.Constants;
 import com.github.utils.Utils;
 
 import javax.crypto.Cipher;
-import java.io.BufferedInputStream;
-import java.io.BufferedOutputStream;
-import java.io.File;
+import java.io.*;
+import java.util.zip.ZipEntry;
+import java.util.zip.ZipOutputStream;
 
 /**
  * 数据加密操作
@@ -26,6 +26,25 @@ import java.io.File;
 public class DataEncrypt extends AbstractOperationTemplate {
     public DataEncrypt(ParamDTO param) {
         super(param);
+    }
+
+    @Override
+    protected void print(long available, long begin) throws OperationException {
+        var beforeSize = Utils.capacityFormat(available);
+        var afterSize = Utils.capacityFormat(new File(targetPath).length());
+        var tp = targetPath;
+        // 是否启用压缩操作
+        if (param.getCompress()) {
+            targetPath = getCompressPath(targetPath);
+            compress(tp, targetPath);
+            afterSize = Utils.capacityFormat(new File(targetPath).length());
+            new DelSource().del(tp);
+        }
+        var end = System.currentTimeMillis();
+        var tc = Utils.timeFormat((end - begin) / 1000);
+        Tooltips.print(Tooltips.Number._5, tc, beforeSize, afterSize, targetPath);
+        // 当设置启动参数-Dstore=true时,将会在临时目录下固化base64秘钥
+        new StoreSecretKey().store(param, beforeSize, targetPath, afterSize);
     }
 
     @Override
@@ -68,6 +87,30 @@ public class DataEncrypt extends AbstractOperationTemplate {
     }
 
     @Override
+    protected void compress(String source, String target) throws OperationException {
+        Tooltips.print(Tooltips.Number._9);
+        try (var in = new BufferedInputStream(new FileInputStream(source));
+             var out = new ZipOutputStream(new BufferedOutputStream(new FileOutputStream(target)))) {
+            out.putNextEntry(new ZipEntry(source.substring(source.lastIndexOf(Constants.SEPARATOR) + 1)));
+            var available = new File(source).length();
+            var content = new byte[Constants.DEFAULT_ENCRYPT_CONTENT_SIZE];
+            var len = -1;
+            long count = len;
+            while ((len = in.read(content)) != -1) {
+                out.write(content, 0, len);
+                out.flush();
+                count += len;
+                // 输出进度条
+                Tooltips.printSchedule((double) count / available * 100);
+            }
+            // 确保最终进度条最终能够追加到100%
+            Tooltips.printSchedule(100);
+        } catch (Throwable e) {
+            throw new OperationException("File compression failed", e);
+        }
+    }
+
+    @Override
     protected void write(byte[] content, int defaultSize, long available,
                          BufferedInputStream in, BufferedOutputStream out) throws OperationException {
         var len = -1;
@@ -96,6 +139,8 @@ public class DataEncrypt extends AbstractOperationTemplate {
                 // 输出进度条
                 Tooltips.printSchedule((double) count / available * 100);
             }
+            // 确保最终进度条最终能够追加到100%
+            Tooltips.printSchedule(100);
         } catch (Throwable e) {
             throw new OperationException(e.getMessage(), e);
         }

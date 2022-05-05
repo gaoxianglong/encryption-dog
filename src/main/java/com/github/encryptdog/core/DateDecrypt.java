@@ -5,7 +5,6 @@
 package com.github.encryptdog.core;
 
 import com.github.encryptdog.exception.DecryptException;
-import com.github.encryptdog.exception.DogException;
 import com.github.encryptdog.exception.NameParseException;
 import com.github.encryptdog.exception.OperationException;
 import com.github.encryptdog.view.ParamDTO;
@@ -17,7 +16,6 @@ import javax.crypto.Cipher;
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
 import java.io.File;
-import java.util.Base64;
 
 /**
  * 数据解密操作
@@ -28,6 +26,15 @@ import java.util.Base64;
 public class DateDecrypt extends AbstractOperationTemplate {
     public DateDecrypt(ParamDTO param) {
         super(param);
+    }
+
+    @Override
+    protected void print(long available, long begin) throws OperationException {
+        var beforeSize = Utils.capacityFormat(available);
+        var afterSize = Utils.capacityFormat(new File(targetPath).length());
+        var end = System.currentTimeMillis();
+        var tc = Utils.timeFormat((end - begin) / 1000);
+        Tooltips.print(Tooltips.Number._5, tc, beforeSize, afterSize, targetPath);
     }
 
     @Override
@@ -70,6 +77,11 @@ public class DateDecrypt extends AbstractOperationTemplate {
         } catch (Throwable e) {
             throw new OperationException(e.getMessage(), e);
         }
+    }
+
+    @Override
+    protected void compress(String source, String target) throws OperationException {
+        //
     }
 
     @Override

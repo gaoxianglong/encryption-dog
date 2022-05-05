@@ -17,10 +17,7 @@ package com.github.encryptdog;
 
 import com.github.encryptdog.view.Banner;
 import com.github.encryptdog.view.Console;
-import com.github.utils.Constants;
 import picocli.CommandLine;
-
-import javax.swing.filechooser.FileSystemView;
 
 /**
  * 加密狗启动器

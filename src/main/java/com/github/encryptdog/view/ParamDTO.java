@@ -53,6 +53,11 @@ public class ParamDTO {
     private boolean onlyLocal;
 
     /**
+     * 是否在加密操作完成后执行压缩
+     */
+    private boolean compress;
+
+    /**
      * Getter method for property <tt>sourceFile</tt>.
      *
      * @return property value of sourceFile
@@ -178,6 +183,14 @@ public class ParamDTO {
         this.onlyLocal = onlyLocal;
     }
 
+    public boolean getCompress() {
+        return compress;
+    }
+
+    public void setCompress(boolean compress) {
+        this.compress = compress;
+    }
+
     @Override
     public String toString() {
         return "ParamDTO{" +
@@ -188,6 +201,7 @@ public class ParamDTO {
                 ", delete=" + delete +
                 ", store=" + store +
                 ", onlyLocal=" + onlyLocal +
+                ", compress=" + compress +
                 '}';
     }
 }
