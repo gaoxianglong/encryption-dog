@@ -34,7 +34,8 @@ Copyright(c) 2021-2031
 
 # encrypt&remove&only-local source
 $ dog -deos /Users/jiushu/Desktop/a.mp4 -t /Users/jiushu/Desktop -k
-Enter value for --secret-key (Both encrypt and decrypt require the same secret key): 11
+Enter value for --secret-key (Both encrypt and decrypt require the same secret key): 
+Enter the secret-key again:
 Please wait...
 
 [Encrypt file number]:1/1
@@ -51,7 +52,7 @@ Please wait...
 
 # decrypt
 $ dog -s /Users/jiushu/Desktop/a.mp4.dog -t /Users/jiushu/Desktop -k
-Enter value for --secret-key (Both encrypt and decrypt require the same secret key): 11
+Enter value for --secret-key (Both encrypt and decrypt require the same secret key): 
 Please wait...
 
 [Decrypt file number]:1/1
