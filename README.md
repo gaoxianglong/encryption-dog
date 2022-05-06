@@ -16,7 +16,6 @@ Welcome to
                  /___/_/                             /___/  
         version: 1.5.4-SNAPSHOT
 
-Missing required options: '--secret-key', '--source-file=<source file>'
 Usage: encrypt-dog [-cdehoV] -k [-k]... -s=<source file> [-t=<storage path>]
   -c, --compress     Compression is not enabled by default,Turning on
                        compression will increase execution time.
