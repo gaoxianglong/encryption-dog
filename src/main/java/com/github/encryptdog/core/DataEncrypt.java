@@ -35,7 +35,7 @@ public class DataEncrypt extends AbstractOperationTemplate {
         var tp = targetPath;
         // 是否启用压缩操作
         if (param.getCompress()) {
-            targetPath = getCompressPath(targetPath);
+            targetPath = String.format("%s.zip", Utils.cancelFileSuffix(targetPath, 2));
             compress(tp, targetPath);
             afterSize = Utils.capacityFormat(new File(targetPath).length());
             new DelSource().del(tp);

@@ -136,16 +136,6 @@ public abstract class AbstractOperationTemplate {
     protected abstract String splicTargetFileName(File file) throws NameParseException;
 
     /**
-     * 设置压缩文件路径
-     *
-     * @param path
-     * @return
-     */
-    protected String getCompressPath(String path) {
-        return String.format("%s%s", path.substring(0, path.lastIndexOf(".")), ".zip");
-    }
-
-    /**
      * 返回秘钥器
      *
      * @param key

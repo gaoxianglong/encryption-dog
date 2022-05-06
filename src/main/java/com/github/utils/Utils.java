@@ -258,4 +258,18 @@ public class Utils {
         }
         return String.format("%.2fMB", (double) size / Constants._1MB);
     }
+
+    /**
+     * 裁剪文件后缀
+     *
+     * @param fn
+     * @param n
+     * @return
+     */
+    public static String cancelFileSuffix(String fn, int n) {
+        if (n < 1) {
+            return fn;
+        }
+        return cancelFileSuffix(fn.substring(0, fn.lastIndexOf(".")), --n);
+    }
 }
