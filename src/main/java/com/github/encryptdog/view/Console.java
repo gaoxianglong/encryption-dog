@@ -98,7 +98,7 @@ public class Console implements Runnable {
             param.setOnlyLocal(onlyLocal);
             param.setCompress(compress);
             var aot = encrypt ? new DataEncrypt(param) : new DateDecrypt(param);
-            new NameParser().parse(param, sourceFile, aot);
+            new NameParser().parse(param, sourceFile, aot, false);
         } catch (DogException t) {
             Utils.printErrMsg(t.getMessage(), encrypt);
         }

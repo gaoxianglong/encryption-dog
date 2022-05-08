@@ -3,7 +3,7 @@
 ```Shell
 git clone https://github.com/gaoxianglong/encryption-dog.git
 mvn package
-alias dog = 'java -Xms512m -Xmx512m -Xmn128m -jar dog-1.5.4.jar'
+alias dog = 'java -Xms512m -Xmx512m -Xmn128m -jar dog-1.5.5.jar'
 ```
 ### use
 ```Shell
@@ -14,7 +14,7 @@ Welcome to
  / _// _ \/ __/ __/ // / _ \/ __/ / _ \/ _ \/ // / _ \/ _ `/
 /___/_//_/\__/_/  \_, / .__/\__/_/\___/_//_/____/\___/\_, / 
                  /___/_/                             /___/  
-        version: 1.5.4-SNAPSHOT
+        version: 1.5.5-SNAPSHOT
 
 Usage: encrypt-dog [-cdehoV] -k [-k]... -s=<source file> [-t=<storage path>]
   -c, --compress     Compression is not enabled by default,Turning on
@@ -86,7 +86,7 @@ $ dog -ces /Users/jiushu/Desktop/a.mp4 -k
 ### store secret-key
 ```shell
 # command
-alias dog = 'java -Ddog-store=true -Xms512m -Xmx512m -Xmn128m -jar dog-1.5.4.jar'
+alias dog = 'java -Ddog-store=true -Xms512m -Xmx512m -Xmn128m -jar dog-1.5.5.jar'
 # store style(secret-key to base64)
 [dog-file]\:a.b.dog,[source]\:a.b,[source-size]\:0.02MB,[target]\:a.b.dog,[target-size]\:0.05MB=MTIzNDU2bmloYW96YXE\=
 ```

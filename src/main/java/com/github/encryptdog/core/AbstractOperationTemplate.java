@@ -35,7 +35,7 @@ public abstract class AbstractOperationTemplate {
      *
      * @throws DogException
      */
-    public void execute() throws DogException {
+    public boolean execute() throws DogException {
         var fileName = param.getSourceFile();
         var file = new File(fileName);
         var isEncrypt = param.isEncrypt();
@@ -56,7 +56,7 @@ public abstract class AbstractOperationTemplate {
             var begin = System.currentTimeMillis();
             // 魔术检测,如果是加密操作,则在文件起始位写入u4/32bit魔术码
             checkMagicNumber(stream);
-            // 设置是否仅限在相同的物理设备上完成加/解密操作
+            // 设置是否仅限在相同的物理设备上完成加/解密操作，紧跟magic_number后面写入
             bind(stream);
             // 将加/解密内容写入目标文件
             write(content, defaultSize, available, in, out);
@@ -67,6 +67,7 @@ public abstract class AbstractOperationTemplate {
         } finally {
             System.out.println();
         }
+        return true;
     }
 
     /**

@@ -29,11 +29,13 @@ public class NameParser {
      * @param param
      * @param sourceFile
      * @param aot
+     * @param debug
+     * @return
      * @throws NameParseException
      */
-    public void parse(ParamDTO param, String sourceFile, AbstractOperationTemplate aot) throws NameParseException {
+    public boolean parse(ParamDTO param, String sourceFile, AbstractOperationTemplate aot, boolean debug) throws NameParseException {
         var sfs = parseSourceFileName(sourceFile);
-        operationConfirmation(sfs);
+        operationConfirmation(sfs, debug);
         Tooltips.print(Tooltips.Number._3);
         final var i = new AtomicInteger();
         final var fc = new AtomicInteger();
@@ -46,6 +48,7 @@ public class NameParser {
                     param.setSourceFile(sf);
                     aot.execute();
                 } catch (DogException t) {
+                    t.printStackTrace();
                     fc.incrementAndGet();
                     Utils.printErrMsg(t.getMessage(), param.isEncrypt());
                 }
@@ -58,14 +61,19 @@ public class NameParser {
         if (param.isStore()) {
             Tooltips.print(Tooltips.Number._7);
         }
+        return fc.get() < 1;
     }
 
     /**
      * 使用通配符时,需要进行源文件确认
      *
      * @param sfs
+     * @param debug,调试时不需要原文件确认
      */
-    private void operationConfirmation(List<String> sfs) {
+    private void operationConfirmation(List<String> sfs, boolean debug) {
+        if (debug) {
+            return;
+        }
         if (sfs.size() < 2) {
             return;
         }
