@@ -82,7 +82,12 @@ Please wait...
 ### batch
 ```shell
 # command
-$ dog -deos '/Users/jiushu/Desktop/*.mp4' -t /Users/jiushu/Desktop -k
+$ dog -es '/Users/jiushu/Desktop/*.mp4' -t /Users/jiushu/Desktop -k
+```
+### binding the same physical device
+```shell
+# command
+$ dog -deos '/Users/jiushu/Desktop/a.mp4' -k
 ```
 ### compress
 ```shell
