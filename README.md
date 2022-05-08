@@ -1,4 +1,4 @@
-<div align=center><img width="350" height="262" src="https://github.com/gaoxianglong/encryption-dog/blob/master/resources/logo.png"/></div>
+<div align=center><img src="https://github.com/gaoxianglong/encryption-dog/blob/master/resources/logo.png"/></div>
 
 [![License](https://img.shields.io/badge/license-Apache%202-4EB1BA.svg)](https://www.apache.org/licenses/LICENSE-2.0.html) ![License](https://img.shields.io/badge/build-passing-brightgreen.svg) ![License](https://img.shields.io/badge/version-0.1--SNAPSHOT-blue.svg)
 > Encryption program with high performance, high security and rich functionsm<br/>
