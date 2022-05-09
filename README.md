@@ -41,7 +41,7 @@ Usage: encrypt-dog [-cdehoV] -k [-k]... [-n=<name>] -s=<source file>
                           Storage path after operation,The default is stored in
                             the user home directory.
   -V, --version           Print version information and exit.
-Copyright(c) 2021-2031
+Copyright(c) 2021 - 2031 gaoxianglong. All Rights Reserved.
 
 # encrypt&remove&only-local source
 $ dog -deos /Users/jiushu/Desktop/a.mp4 -t /Users/jiushu/Desktop -k

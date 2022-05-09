@@ -34,7 +34,7 @@ import java.util.*;
  * @version 1.1-SNAPSHOT
  * @date created in 2021/1/16 4:53 下午
  */
-@CommandLine.Command(name = "encrypt-dog", footer = "Copyright(c) 2021-2031", version = Constants.VERSION, mixinStandardHelpOptions = true)
+@CommandLine.Command(name = "encrypt-dog", footer = "Copyright(c) 2021 - 2031 gaoxianglong. All Rights Reserved.", version = Constants.VERSION, mixinStandardHelpOptions = true)
 public class Console implements Runnable {
     /**
      * 需要加/解密的目标文件
