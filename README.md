@@ -78,6 +78,19 @@ Please wait...
 [Total time]:00:00:05
 [Results]:total files:1,successes:1,failures:0
 ```
+### highest security
+Files encrypted on computer a can only be decrypted on computer a.<br/>
+Principle:
+<div align=center><img src="https://github.com/gaoxianglong/encryption-dog/blob/master/resources/hs.png"/></div>
+
+WARN:Deleting or damaging the random key will never complete decryption.
+```shell
+# command -o, --only-local
+# encrypt
+$ dog -deos /Users/jiushu/Desktop/a.mp4 -k
+# decrypt
+$ dog -ds /Users/jiushu/Desktop/a.mp4.dog -k
+```
 ### batch
 When using batch mode, the source file path must use single quotation marks.
 ```shell
@@ -111,19 +124,6 @@ The default is the same as the source file name.
 $ dog -des /Users/jiushu/Desktop/a.mp4 -n b -k
 # decrypt
 $ dog -ds /Users/jiushu/Desktop/b.mp4.dog -n c -k
-```
-### highest security
-Files encrypted on computer a can only be decrypted on computer a.<br/>
-Principle:
-<div align=center><img src="https://github.com/gaoxianglong/encryption-dog/blob/master/resources/hs.png"/></div>
-
-WARN:Deleting or damaging the random key will never complete decryption.
-```shell
-# command -o, --only-local
-# encrypt
-$ dog -deos /Users/jiushu/Desktop/a.mp4 -k
-# decrypt
-$ dog -ds /Users/jiushu/Desktop/a.mp4.dog -k
 ```
 ### the file is compressed after encryption
 This operation is more time-consuming.
