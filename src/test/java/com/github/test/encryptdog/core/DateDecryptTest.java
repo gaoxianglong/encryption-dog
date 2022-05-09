@@ -116,10 +116,37 @@ public class DateDecryptTest {
     }
 
     /**
+     * dog -os source -t target -k
+     * check pwd
+     */
+    @Test
+    public void testDecrypt_3() throws DogException {
+        // 加密
+        ParamDTO param = new ParamDTO();
+        param.setTargetPath(System.getProperty("java.io.tmpdir"));
+        param.setEncrypt(true);
+        param.setOnlyLocal(true);
+        param.setSecretKey("123456".toCharArray());
+        param.setSourceFile(FILE_PATH);
+        Assert.assertTrue(new DataEncrypt(param).execute());
+        Assert.assertTrue(new File(FILE_PATH).delete());
+
+        // 解密
+        param = new ParamDTO();
+        param.setDelete(true);
+        param.setTargetPath(System.getProperty("java.io.tmpdir"));
+        param.setSecretKey("123456".toCharArray());
+        param.setSourceFile(String.format("%s.dog", FILE_PATH));
+        Assert.assertTrue(new DateDecrypt(param).execute());
+        System.out.println(FILE_PATH);
+        Assert.assertTrue(new File(FILE_PATH).exists());
+    }
+
+    /**
      * batch
      */
     @Test
-    public void testDecrypt_3() throws Throwable {
+    public void testDecrypt_4() throws Throwable {
         // 加密
         var sources = new ArrayList<String>() {{
             for (int i = 0; i < 10; i++) {
@@ -171,7 +198,7 @@ public class DateDecryptTest {
      * dog -s source -t target -n name -k
      */
     @Test
-    public void testDecrypt_4() throws Throwable {
+    public void testDecrypt_5() throws Throwable {
         // 加密
         ParamDTO param = new ParamDTO();
         param.setTargetPath(System.getProperty("java.io.tmpdir"));

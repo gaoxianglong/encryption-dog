@@ -1,6 +1,6 @@
 <div align=center><img src="https://github.com/gaoxianglong/encryption-dog/blob/master/resources/logo.png"/></div>
 
-[![License](https://img.shields.io/badge/license-Apache%202-4EB1BA.svg)](https://www.apache.org/licenses/LICENSE-2.0.html) ![License](https://img.shields.io/badge/build-passing-brightgreen.svg) ![License](https://img.shields.io/badge/version-1.5.6--SNAPSHOT-blue)
+[![License](https://img.shields.io/badge/license-Apache%202-4EB1BA.svg)](https://www.apache.org/licenses/LICENSE-2.0.html) ![License](https://img.shields.io/badge/build-passing-brightgreen.svg) ![License](https://img.shields.io/badge/version-1.5.7--RELEASE-blue)
 > Encryption program with high performance, high security and rich functionsm<br/>
 > Supports binding the same physical device for file encryption and decryption<br/>
 
@@ -9,7 +9,7 @@
 ```Shell
 git clone https://github.com/gaoxianglong/encryption-dog.git
 mvn package
-alias dog = 'java -Xms512m -Xmx512m -Xmn128m -jar dog-1.5.6.jar'
+alias dog = 'java -Xms512m -Xmx512m -Xmn128m -jar dog-1.5.7.jar'
 ```
 ### use
 ```Shell
@@ -20,7 +20,7 @@ Welcome to
  / _// _ \/ __/ __/ // / _ \/ __/ / _ \/ _ \/ // / _ \/ _ `/
 /___/_//_/\__/_/  \_, / .__/\__/_/\___/_//_/____/\___/\_, /
                  /___/_/                             /___/
-	version: 1.5.6-SNAPSHOT
+	version: 1.5.7-SNAPSHOT
 
 Usage: encrypt-dog [-cdehoV] -k [-k]... [-n=<name>] -s=<source file>
                    [-t=<storage path>]
@@ -117,7 +117,9 @@ $ dog -des /Users/jiushu/Desktop/a.mp4 -n b -k
 $ dog -ds /Users/jiushu/Desktop/b.mp4.dog -n c -k
 ```
 ### binding the same physical device
-Files encrypted on computer a can only be decrypted on computer a.
+Highest security,Files encrypted on computer a can only be decrypted on computer a.
+Principle:
+<div align=center><img src="https://github.com/gaoxianglong/encryption-dog/blob/master/resources/hs.png"/></div>
 ```shell
 # command -o, --only-local
 # encrypt
@@ -136,7 +138,7 @@ $ dog -ces /Users/jiushu/Desktop/a.mp4 -k
 WARN:This operation is unsafe. Please use it with caution.
 ```shell
 # command
-alias dog = 'java -Ddog-store=true -Xms512m -Xmx512m -Xmn128m -jar dog-1.5.6.jar'
+alias dog = 'java -Ddog-store=true -Xms512m -Xmx512m -Xmn128m -jar dog-1.5.7.jar'
 # store style(secret-key to base64)
 [dog-file]\:a.b.dog,[source]\:a.b,[source-size]\:0.02MB,[target]\:a.b.dog,[target-size]\:0.05MB=MTIzNDU2bmloYW96YXE\=
 ```

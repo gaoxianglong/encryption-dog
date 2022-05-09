@@ -67,7 +67,7 @@ public class Console implements Runnable {
     private boolean delete;
 
     /**
-     * 仅限加/解密操作在同一台物理设备上,提升安全系数
+     * 仅限加/解密操作在同一台物理设备上,最高安全性
      */
     @CommandLine.Option(names = {"-o", "--only-local"}, description = "Encryption and decryption operations can only be performed on the same physical device.")
     private boolean onlyLocal;

@@ -13,7 +13,6 @@ import com.github.utils.Utils;
 
 import java.io.File;
 import java.util.*;
-import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicInteger;
 
 /**
@@ -48,7 +47,6 @@ public class NameParser {
                     param.setSourceFile(sf);
                     aot.execute();
                 } catch (DogException t) {
-                    t.printStackTrace();
                     fc.incrementAndGet();
                     Utils.printErrMsg(t.getMessage(), param.isEncrypt());
                 }

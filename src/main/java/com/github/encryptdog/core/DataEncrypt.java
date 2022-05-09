@@ -15,6 +15,8 @@ import com.github.utils.Utils;
 import javax.crypto.Cipher;
 import java.io.*;
 import java.util.Objects;
+import java.util.Properties;
+import java.util.UUID;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipOutputStream;
 
@@ -27,6 +29,88 @@ import java.util.zip.ZipOutputStream;
 public class DataEncrypt extends AbstractOperationTemplate {
     public DataEncrypt(ParamDTO param) {
         super(param);
+    }
+
+    /**
+     * 原秘钥
+     */
+    private char[] osk;
+    /**
+     * 随机秘钥
+     */
+    private String rsk;
+
+    @Override
+    protected void authentication() throws OperationException {
+        createStoreFile();
+        if (!param.isOnlyLocal()) {
+            clear();
+            return;
+        }
+        try {
+            // 获取原秘钥
+            osk = param.getSecretKey();
+            // 生成随机秘钥
+            rsk = createSecretKey();
+            // 使用随机秘钥加密文件
+            param.setSecretKey(rsk.toCharArray());
+        } catch (Throwable e) {
+            throw new OperationException(e.getMessage(), e);
+        }
+    }
+
+    /**
+     * 固化随机秘钥至dp文件
+     *
+     * @throws OperationException
+     */
+    private void storeRSK() throws OperationException {
+        if (!param.isOnlyLocal()) {
+            return;
+        }
+        try (var in = new BufferedInputStream(new FileInputStream(Constants.STORE_PWD_FILE_PATH))) {
+            var properties = new Properties();
+            properties.load(in);
+            // 获取随机秘钥(文件的真实加密秘钥)
+            var file = new File(targetPath);
+            if (!file.exists()) {
+                return;
+            }
+            var key = String.format("%s-%s", file.getName(), file.length());
+            // 使用原秘钥加密随机秘钥
+            var temp = new String(encrypt(rsk.getBytes(Constants.CHARSET), osk), Constants.CHARSET);
+            properties.put(key, temp);
+            // 将随机秘钥固化到本地
+            properties.store(new BufferedOutputStream(new FileOutputStream(Constants.STORE_PWD_FILE_PATH)), null);
+        } catch (Throwable e) {
+            throw new OperationException(e.getMessage(), e);
+        }
+    }
+
+    /**
+     * 重复加密相同的目标文件时,如果未开启only-local命令时,解除已存在的物理绑定
+     *
+     * @throws OperationException
+     */
+    private void clear() throws OperationException {
+        try (var in = new BufferedInputStream(new FileInputStream(Constants.STORE_PWD_FILE_PATH))) {
+            var properties = new Properties();
+            properties.load(in);
+            properties.remove(targetPath);
+            properties.store(new BufferedOutputStream(new FileOutputStream(Constants.STORE_PWD_FILE_PATH)), null);
+        } catch (Throwable e) {
+            throw new OperationException(e.getMessage(), e);
+        }
+    }
+
+    /**
+     * 创建高安全性密码
+     *
+     * @return
+     * @throws UnsupportedEncodingException
+     */
+    private String createSecretKey() throws UnsupportedEncodingException {
+        return UUID.randomUUID().toString();
     }
 
     @Override
@@ -83,7 +167,7 @@ public class DataEncrypt extends AbstractOperationTemplate {
             }
             out.flush();
         } catch (Throwable e) {
-            throw new OperationException(e.getMessage(), e);
+            throw new OperationException("Device binding failed", e);
         }
     }
 
@@ -142,6 +226,7 @@ public class DataEncrypt extends AbstractOperationTemplate {
             }
             // 确保最终进度条最终能够追加到100%
             Tooltips.printSchedule(100);
+            storeRSK();
         } catch (Throwable e) {
             throw new OperationException(e.getMessage(), e);
         }
@@ -165,9 +250,13 @@ public class DataEncrypt extends AbstractOperationTemplate {
      * @throws EncryptException
      */
     private byte[] encrypt(byte[] data) throws EncryptException {
+        return encrypt(data, param.getSecretKey());
+    }
+
+    private byte[] encrypt(byte[] data, char[] key) throws EncryptException {
         try {
             var ec = Cipher.getInstance(Constants.DEFAULT_CIPHER_ALGORITHM);
-            ec.init(Cipher.ENCRYPT_MODE, getSecretKey(param.getSecretKey()));
+            ec.init(Cipher.ENCRYPT_MODE, getSecretKey(key));
             // 执行数据加密后再base64编码
             return Utils.toBase64Encode(ec.doFinal(data)).getBytes(Constants.CHARSET);
         } catch (Throwable e) {

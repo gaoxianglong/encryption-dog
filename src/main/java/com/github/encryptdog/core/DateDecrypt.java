@@ -16,7 +16,9 @@ import javax.crypto.Cipher;
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
 import java.io.File;
+import java.io.FileInputStream;
 import java.util.Objects;
+import java.util.Properties;
 
 /**
  * 数据解密操作
@@ -27,6 +29,29 @@ import java.util.Objects;
 public class DateDecrypt extends AbstractOperationTemplate {
     public DateDecrypt(ParamDTO param) {
         super(param);
+    }
+
+    @Override
+    protected void authentication() throws OperationException {
+        createStoreFile();
+        var sf = param.getSourceFile();
+        try (var in = new BufferedInputStream(new FileInputStream(Constants.STORE_PWD_FILE_PATH))) {
+            var properties = new Properties();
+            properties.load(in);
+            var file = new File(sf);
+            var key = String.format("%s-%s", file.getName(), file.length());
+            // 获取随机秘钥
+            var rsk = properties.getProperty(key);
+            if (Objects.isNull(rsk)) {
+                return;
+            }
+            // 使用原秘钥解密对应的随机秘钥
+            var sk = decrypt(rsk.getBytes(Constants.CHARSET), param.getSecretKey());
+            // 使用随机秘钥解密加密文件
+            param.setSecretKey(new String(sk, Constants.CHARSET).toCharArray());
+        } catch (Throwable e) {
+            throw new OperationException(e.getMessage(), e);
+        }
     }
 
     @Override
@@ -144,9 +169,13 @@ public class DateDecrypt extends AbstractOperationTemplate {
      * @throws DecryptException
      */
     private byte[] decrypt(byte[] data) throws DecryptException {
+        return decrypt(data, param.getSecretKey());
+    }
+
+    private byte[] decrypt(byte[] data, char[] key) throws DecryptException {
         try {
             var dc = Cipher.getInstance(Constants.DEFAULT_CIPHER_ALGORITHM);
-            dc.init(Cipher.DECRYPT_MODE, getSecretKey(param.getSecretKey()));
+            dc.init(Cipher.DECRYPT_MODE, getSecretKey(key));
             return dc.doFinal(Utils.toBase64Decode(data));
         } catch (Throwable e) {
             throw new DecryptException("The key is incorrect,Try Again", e);

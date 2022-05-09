@@ -41,7 +41,7 @@ public abstract class AbstractOperationTemplate {
         var isEncrypt = param.isEncrypt();
         // 加/解密文件的后缀检测与拼接
         fileName = checkSourceFile(file, fileName);
-        targetPath = String.format("%s/%s", param.getTargetPath(), fileName);
+        targetPath = String.format("%s%s", param.getTargetPath(), fileName);
         try (var in = new BufferedInputStream(new FileInputStream(param.getSourceFile()));
              var out = new BufferedOutputStream(new FileOutputStream(targetPath))) {
             // 文件总大小，计算百分比进度条时需要使用
@@ -56,8 +56,10 @@ public abstract class AbstractOperationTemplate {
             var begin = System.currentTimeMillis();
             // 魔术检测,如果是加密操作,则在文件起始位写入u4/32bit魔术码
             checkMagicNumber(stream);
-            // 设置是否仅限在相同的物理设备上完成加/解密操作，紧跟magic_number后面写入
+            // 如果开启only-local命令,则紧跟magic_number后面追加物理设备UUID
             bind(stream);
+            // 如果开启only-local命令,则启动double secret key authentication
+            authentication();
             // 将加/解密内容写入目标文件
             write(content, defaultSize, available, in, out);
             print(available, begin);
@@ -69,6 +71,33 @@ public abstract class AbstractOperationTemplate {
         }
         return true;
     }
+
+    /**
+     * 创建真实秘钥固化文件
+     *
+     * @throws OperationException
+     */
+    protected void createStoreFile() throws OperationException {
+        var file = new File(Constants.STORE_PWD_PATH);
+        if (!file.exists()) {
+            file.mkdirs();
+        }
+        file = new File(Constants.STORE_PWD_FILE_PATH);
+        if (!file.exists()) {
+            try {
+                file.createNewFile();
+            } catch (Throwable e) {
+                throw new OperationException(e.getMessage(), e);
+            }
+        }
+    }
+
+    /**
+     * 开启最高安全性时启用
+     *
+     * @throws OperationException
+     */
+    protected abstract void authentication() throws OperationException;
 
     /**
      * 输出单次操作结果
@@ -148,11 +177,11 @@ public abstract class AbstractOperationTemplate {
         try {
             var random = SecureRandom.getInstance(Constants.ALGORITHM);
             random.setSeed(Utils.toBytes(key));
-            // 获取秘钥生成器
             var kg = KeyGenerator.getInstance(Constants.KEY_ALGORITHM);
             kg.init(random);
-            // 生成秘钥
             var generateKey = kg.generateKey();
+
+            // 当秘钥不足192bit时会自动补全,超出则截取前192bit数据
             result = new SecretKeySpec(generateKey.getEncoded(), Constants.KEY_ALGORITHM);
         } catch (Throwable e) {
             throw new OperationException(e.getMessage(), e);

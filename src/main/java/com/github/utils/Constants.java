@@ -15,6 +15,8 @@
  */
 package com.github.utils;
 
+import java.io.File;
+
 /**
  * 相关静态常量类
  *
@@ -38,7 +40,7 @@ public class Constants {
     public static final String DEFAULT_CIPHER_ALGORITHM = "DESede/ECB/PKCS5Padding";
     public static final String ALGORITHM = "SHA1PRNG";
     public static final String CHARSET = "utf-8";
-    public static final String VERSION = "1.5.6-SNAPSHOT";
+    public static final String VERSION = "1.5.7-RELEASE";
     /**
      * 加密文件缺省后缀
      */
@@ -92,7 +94,15 @@ public class Constants {
     /**
      * 缺省用户桌面路径
      */
-    public final static String DEFAULT_USER_DESKTOP_PATH = String.format("%s%s%s", System.getProperty("user.home"), SEPARATOR, "Desktop");
+    public final static String DEFAULT_USER_DESKTOP_PATH = String.format("%s%s%s%s", System.getProperty("user.home"), SEPARATOR, "Desktop", SEPARATOR);
+    /**
+     * 最高安全性密码存储目录地址
+     */
+    public static final String STORE_PWD_PATH = String.format("%s%s.dog", System.getProperty("user.home"), SEPARATOR);
+    /**
+     * 最高安全性密码存储文件地址
+     */
+    public static final String STORE_PWD_FILE_PATH = String.format("%s%sdp", STORE_PWD_PATH, SEPARATOR);
     /**
      * 一小时所对应的秒数
      */

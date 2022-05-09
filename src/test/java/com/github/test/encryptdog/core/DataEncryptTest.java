@@ -27,6 +27,7 @@ import java.io.FileInputStream;
 import java.io.PrintWriter;
 import java.lang.reflect.Array;
 import java.util.ArrayList;
+import java.util.Properties;
 import java.util.UUID;
 import java.util.concurrent.TimeUnit;
 
@@ -177,10 +178,64 @@ public class DataEncryptTest {
     }
 
     /**
-     * default target
+     * check only-local
      */
     @Test
     public void testEncrypt_6() throws Throwable {
+        var param = new ParamDTO();
+        param.setTargetPath(System.getProperty("java.io.tmpdir"));
+        param.setEncrypt(true);
+        param.setOnlyLocal(true);
+        param.setSecretKey("123456".toCharArray());
+        param.setSourceFile(FILE_PATH);
+        Assert.assertTrue(new DataEncrypt(param).execute());
+
+        var temp = String.format("%s.dog", param.getSourceFile());
+        try (var in = new BufferedInputStream(new FileInputStream(Constants.STORE_PWD_FILE_PATH))) {
+            var properties = new Properties();
+            properties.load(in);
+            var file = new File(temp);
+            var sf = properties.get(String.format("%s-%s", file.getName(), file.length()));
+            Assert.assertNotNull(sf);
+        } catch (Throwable e) {
+            e.printStackTrace();
+        }
+        Assert.assertTrue(delete(String.format("%s.dog", FILE_PATH)));
+
+        param.setOnlyLocal(false);
+        Assert.assertTrue(new DataEncrypt(param).execute());
+        temp = String.format("%s.dog", param.getSourceFile());
+        try (var in = new BufferedInputStream(new FileInputStream(Constants.STORE_PWD_FILE_PATH))) {
+            var properties = new Properties();
+            properties.load(in);
+            var file = new File(temp);
+            var sf = properties.get(String.format("%s-%s", file.getName(), file.length()));
+            Assert.assertNull(sf);
+        } catch (Throwable e) {
+            e.printStackTrace();
+        }
+        Assert.assertTrue(delete(String.format("%s.dog", FILE_PATH)));
+
+        param.setOnlyLocal(true);
+        Assert.assertTrue(new DataEncrypt(param).execute());
+        temp = String.format("%s.dog", param.getSourceFile());
+        try (var in = new BufferedInputStream(new FileInputStream(Constants.STORE_PWD_FILE_PATH))) {
+            var properties = new Properties();
+            properties.load(in);
+            var file = new File(temp);
+            var sf = properties.get(String.format("%s-%s", file.getName(), file.length()));
+            Assert.assertNotNull(sf);
+        } catch (Throwable e) {
+            e.printStackTrace();
+        }
+        Assert.assertTrue(delete(String.format("%s.dog", FILE_PATH)));
+    }
+
+    /**
+     * default target
+     */
+    @Test
+    public void testEncrypt_7() throws Throwable {
         ParamDTO param = new ParamDTO();
         // 使用缺省tp
         param.setTargetPath(Constants.DEFAULT_USER_DESKTOP_PATH);
@@ -191,6 +246,7 @@ public class DataEncryptTest {
         // 获取源文件名
         var fn = FILE_PATH.substring(FILE_PATH.lastIndexOf(File.separator));
         Assert.assertTrue(new DataEncrypt(param).execute());
+        System.out.println(String.format("%s%s.dog", Constants.DEFAULT_USER_DESKTOP_PATH, fn));
         Assert.assertTrue(delete(String.format("%s%s.dog", Constants.DEFAULT_USER_DESKTOP_PATH, fn)));
     }
 
@@ -198,7 +254,7 @@ public class DataEncryptTest {
      * dog -ces source -t target -k
      */
     @Test
-    public void testEncrypt_7() throws Throwable {
+    public void testEncrypt_8() throws Throwable {
         ParamDTO param = new ParamDTO();
         param.setCompress(true);
         param.setDelete(true);
@@ -214,7 +270,7 @@ public class DataEncryptTest {
      * batch
      */
     @Test
-    public void testEncrypt_8() throws Throwable {
+    public void testEncrypt_9() throws Throwable {
         var sources = new ArrayList<String>() {{
             for (int i = 0; i < 10; i++) {
                 this.add(String.format("%s%s.txt", System.getProperty("java.io.tmpdir"), System.currentTimeMillis()));
@@ -257,7 +313,7 @@ public class DataEncryptTest {
      * dog -es source -t target -n name -k
      */
     @Test
-    public void testEncrypt_9() throws Throwable {
+    public void testEncrypt_10() throws Throwable {
         ParamDTO param = new ParamDTO();
         param.setDelete(true);
         param.setTargetPath(System.getProperty("java.io.tmpdir"));
