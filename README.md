@@ -86,9 +86,18 @@ Please wait...
 When using batch mode, the source file path must use single quotation marks.
 ```shell
 # encrypt
-$ dog -es '/Users/jiushu/Desktop/*.mp4' -t /Users/jiushu/Desktop -k
+$ dog -es '/Users/jiushu/Desktop/*.mp4' -k
 # decrypt
-$ dog -s '/Users/jiushu/Desktop/*.dog' -t /Users/jiushu/Desktop -k
+$ dog -s '/Users/jiushu/Desktop/*.dog' -k
+```
+### set target path
+The default is stored in the user home directory.
+```shell
+# command -t, --target-path=<storage path>
+# encrypt
+$ dog -es /Users/jiushu/Desktop/a.mp4 -t /Users/jiushu/ -k
+# decrypt
+$ dog -s /Users/jiushu/a.mp4.dog -t /Users/jiushu/Desktop -k
 ```
 ### delete source file
 ```shell
@@ -114,7 +123,7 @@ Files encrypted on computer a can only be decrypted on computer a.
 # encrypt
 $ dog -deos /Users/jiushu/Desktop/a.mp4 -k
 # decrypt
-$ dog -ds /Users/jiushu/Desktop/a.mp4 -k
+$ dog -ds /Users/jiushu/Desktop/a.mp4.dog -k
 ```
 ### the file is compressed after encryption
 This operation is more time-consuming.
