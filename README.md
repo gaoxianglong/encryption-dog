@@ -83,7 +83,9 @@ Please wait...
 |  :-:         |        :-:          |  :-:           |   :-:          |    :-:       |     :-:       |      :-:     |
 | DOG FORMAT   |        .dog         |  u4/32bit      |   0x19890225   |    header    |       1       |      ...     |
 ### batch
+
 ```shell
+When using batch mode, the source file path must use single quotation marks.
 # encrypt
 $ dog -es '/Users/jiushu/Desktop/*.mp4' -t /Users/jiushu/Desktop -k
 # decrypt
@@ -98,6 +100,7 @@ $ dog -des /Users/jiushu/Desktop/a.mp4 -k
 $ dog -ds /Users/jiushu/Desktop/a.mp4.dog -k
 ```
 ### set target file name
+The default is the same as the source file name.
 ```shell
 # command -n, --set-name=<name>
 # encrypt
@@ -106,6 +109,7 @@ $ dog -des /Users/jiushu/Desktop/a.mp4 -n b -k
 $ dog -ds /Users/jiushu/Desktop/b.mp4.dog -n c -k
 ```
 ### binding the same physical device
+Files encrypted on computer a can only be decrypted on computer a.
 ```shell
 # command -o, --only-local
 # encrypt
@@ -114,12 +118,14 @@ $ dog -deos /Users/jiushu/Desktop/a.mp4 -k
 $ dog -ds /Users/jiushu/Desktop/a.mp4 -k
 ```
 ### the file is compressed after encryption
+This operation is more time-consuming.
 ```shell
 # command -c, --compress
 # encrypt
 $ dog -ces /Users/jiushu/Desktop/a.mp4 -k
 ```
 ### store secret-key
+This operation is unsafe. Please use it with caution.
 ```shell
 # command
 alias dog = 'java -Ddog-store=true -Xms512m -Xmx512m -Xmn128m -jar dog-1.5.6.jar'
