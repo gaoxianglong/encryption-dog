@@ -6,13 +6,13 @@
 
 ## Use of EncryptionDog
 ### install
-```Shell
+```shell
 git clone https://github.com/gaoxianglong/encryption-dog.git
 mvn package
 alias dog = 'java -Xms512m -Xmx512m -Xmn128m -jar dog-1.5.7.jar'
 ```
 ### use
-```Shell
+```shell
 $ dog -h
 Welcome to
    ____                       __  _           ___
