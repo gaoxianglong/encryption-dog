@@ -166,4 +166,31 @@ public class DateDecryptTest {
             Assert.assertTrue(new File(x).delete());
         });
     }
+
+    /**
+     * dog -s source -t target -n name -k
+     */
+    @Test
+    public void testDecrypt_4() throws Throwable {
+        // 加密
+        ParamDTO param = new ParamDTO();
+        param.setTargetPath(System.getProperty("java.io.tmpdir"));
+        param.setEncrypt(true);
+        param.setDelete(true);
+        param.setSecretKey("123456".toCharArray());
+        param.setSourceFile(FILE_PATH);
+        Assert.assertTrue(new DataEncrypt(param).execute());
+
+        // 解密
+        param = new ParamDTO();
+        param.setDelete(true);
+        param.setTargetPath(System.getProperty("java.io.tmpdir"));
+        param.setSecretKey("123456".toCharArray());
+        param.setSourceFile(String.format("%s.dog", FILE_PATH));
+        param.setName("test");
+        Assert.assertTrue(new DateDecrypt(param).execute());
+        System.out.println(String.format("%stest.txt", System.getProperty("java.io.tmpdir")));
+        Assert.assertTrue(new File(String.format("%stest.txt", System.getProperty("java.io.tmpdir"))).exists());
+        Assert.assertTrue(new File(String.format("%stest.txt", System.getProperty("java.io.tmpdir"))).delete());
+    }
 }

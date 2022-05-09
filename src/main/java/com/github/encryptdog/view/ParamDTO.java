@@ -56,6 +56,18 @@ public class ParamDTO {
      * 是否在加密操作完成后执行压缩
      */
     private boolean compress;
+    /**
+     * 显示设置目标文件的名称
+     */
+    private String name;
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
 
     /**
      * Getter method for property <tt>sourceFile</tt>.
@@ -202,6 +214,7 @@ public class ParamDTO {
                 ", store=" + store +
                 ", onlyLocal=" + onlyLocal +
                 ", compress=" + compress +
+                ", name='" + name + '\'' +
                 '}';
     }
 }

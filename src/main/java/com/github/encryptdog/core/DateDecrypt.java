@@ -16,6 +16,7 @@ import javax.crypto.Cipher;
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
 import java.io.File;
+import java.util.Objects;
 
 /**
  * 数据解密操作
@@ -122,11 +123,17 @@ public class DateDecrypt extends AbstractOperationTemplate {
 
     @Override
     protected String splicTargetFileName(File file) throws NameParseException {
+        var dn = file.getName();
+        var n = param.getName();
         // 后缀为.dog表示为加密文件
-        if (!file.getName().endsWith(Constants.DEFAULT_SUFFIX)) {
+        if (!dn.endsWith(Constants.DEFAULT_SUFFIX)) {
             throw new NameParseException("File suffix must be .dog");
         }
-        return file.getName().substring(0, file.getName().length() - Constants.DEFAULT_SUFFIX.length());
+        if (Objects.nonNull(n)) {
+            var suffix = Utils.getFileSuffix(Utils.cancelFileSuffix(dn, 1));
+            return String.format("%s%s", n, suffix);
+        }
+        return Utils.cancelFileSuffix(dn, 1);
     }
 
     /**

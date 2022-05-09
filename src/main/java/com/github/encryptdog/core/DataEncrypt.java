@@ -14,6 +14,7 @@ import com.github.utils.Utils;
 
 import javax.crypto.Cipher;
 import java.io.*;
+import java.util.Objects;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipOutputStream;
 
@@ -148,8 +149,12 @@ public class DataEncrypt extends AbstractOperationTemplate {
 
     @Override
     protected String splicTargetFileName(File file) throws NameParseException {
+        var dn = file.getName();
+        var suffix = Utils.getFileSuffix(dn);
+        var n = param.getName();
         // 源文件后缀拼接.dog表示为加密文件
-        return String.format("%s%s", file.getName(), Constants.DEFAULT_SUFFIX);
+        return String.format("%s%s", Objects.isNull(n) ? dn : String.format("%s%s", n, suffix),
+                Constants.DEFAULT_SUFFIX);
     }
 
     /**

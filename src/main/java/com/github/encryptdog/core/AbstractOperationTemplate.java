@@ -40,7 +40,7 @@ public abstract class AbstractOperationTemplate {
         var file = new File(fileName);
         var isEncrypt = param.isEncrypt();
         // 加/解密文件的后缀检测与拼接
-        fileName = checkSourceFile(file, fileName, isEncrypt);
+        fileName = checkSourceFile(file, fileName);
         targetPath = String.format("%s/%s", param.getTargetPath(), fileName);
         try (var in = new BufferedInputStream(new FileInputStream(param.getSourceFile()));
              var out = new BufferedOutputStream(new FileOutputStream(targetPath))) {
@@ -165,12 +165,11 @@ public abstract class AbstractOperationTemplate {
      *
      * @param file
      * @param fileName
-     * @param isEncrypt
      * @return
      * @throws OperationException
      * @throws NameParseException
      */
-    private String checkSourceFile(File file, String fileName, boolean isEncrypt) throws OperationException, NameParseException {
+    private String checkSourceFile(File file, String fileName) throws OperationException, NameParseException {
         if (!file.exists()) {
             throw new OperationException(String.format("file %s does not exist", fileName));
         }

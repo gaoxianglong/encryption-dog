@@ -254,6 +254,23 @@ public class DataEncryptTest {
     }
 
     /**
+     * dog -es source -t target -n name -k
+     */
+    @Test
+    public void testEncrypt_9() throws Throwable {
+        ParamDTO param = new ParamDTO();
+        param.setDelete(true);
+        param.setTargetPath(System.getProperty("java.io.tmpdir"));
+        param.setEncrypt(true);
+        param.setSecretKey("123456".toCharArray());
+        param.setSourceFile(FILE_PATH);
+        param.setName("test");
+        Assert.assertTrue(new DataEncrypt(param).execute());
+        Assert.assertTrue(new File(String.format("%stest.txt.dog", System.getProperty("java.io.tmpdir"))).exists());
+        Assert.assertTrue(new File(String.format("%stest.txt.dog", System.getProperty("java.io.tmpdir"))).delete());
+    }
+
+    /**
      * dog -es source -t target -k
      * check magic
      */

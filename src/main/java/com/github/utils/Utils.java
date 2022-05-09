@@ -272,4 +272,14 @@ public class Utils {
         }
         return cancelFileSuffix(fn.substring(0, fn.lastIndexOf(".")), --n);
     }
+
+    /**
+     * 获取文件后缀
+     *
+     * @param fn
+     * @return
+     */
+    public static String getFileSuffix(String fn) {
+        return fn.substring(fn.lastIndexOf("."));
+    }
 }

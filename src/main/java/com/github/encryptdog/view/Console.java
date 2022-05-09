@@ -78,6 +78,12 @@ public class Console implements Runnable {
     @CommandLine.Option(names = {"-c", "--compress"}, description = "Compression is not enabled by default,Turning on compression will increase execution time.")
     private boolean compress;
 
+    /**
+     * 显示设置目标文件名称
+     */
+    @CommandLine.Option(names = {"-n", "--set-name"}, description = "Set the name of the target file.")
+    private String name;
+
     @Override
     public void run() {
         try {
@@ -97,6 +103,7 @@ public class Console implements Runnable {
             param.setStore(Boolean.parseBoolean(System.getProperty(Constants.STORE)));
             param.setOnlyLocal(onlyLocal);
             param.setCompress(compress);
+            param.setName(name);
             var aot = encrypt ? new DataEncrypt(param) : new DateDecrypt(param);
             new NameParser().parse(param, sourceFile, aot, false);
         } catch (DogException t) {
@@ -133,6 +140,7 @@ public class Console implements Runnable {
                 ", delete=" + delete +
                 ", onlyLocal=" + onlyLocal +
                 ", compress=" + compress +
+                ", name='" + name + '\'' +
                 '}';
     }
 }
