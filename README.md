@@ -83,9 +83,8 @@ Please wait...
 |  :-:         |        :-:          |  :-:           |   :-:          |    :-:       |     :-:       |      :-:     |
 | DOG FORMAT   |        .dog         |  u4/32bit      |   0x19890225   |    header    |       1       |      ...     |
 ### batch
-
-```shell
 When using batch mode, the source file path must use single quotation marks.
+```shell
 # encrypt
 $ dog -es '/Users/jiushu/Desktop/*.mp4' -t /Users/jiushu/Desktop -k
 # decrypt
