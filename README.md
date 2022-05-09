@@ -84,17 +84,39 @@ Please wait...
 | DOG FORMAT   |        .dog         |  u4/32bit      |   0x19890225   |    header    |       1       |      ...     |
 ### batch
 ```shell
-# command
+# encrypt
 $ dog -es '/Users/jiushu/Desktop/*.mp4' -t /Users/jiushu/Desktop -k
+# decrypt
+$ dog -s '/Users/jiushu/Desktop/*.dog' -t /Users/jiushu/Desktop -k
+```
+### delete source file
+```shell
+# command -d, --delete
+# encrypt
+$ dog -des /Users/jiushu/Desktop/a.mp4 -k
+# decrypt
+$ dog -ds /Users/jiushu/Desktop/a.mp4.dog -k
+```
+### set target file name
+```shell
+# command -n, --set-name=<name>
+# encrypt
+$ dog -des /Users/jiushu/Desktop/a.mp4 -n b -k
+# decrypt
+$ dog -ds /Users/jiushu/Desktop/b.mp4.dog -n c -k
 ```
 ### binding the same physical device
 ```shell
-# command
-$ dog -deos '/Users/jiushu/Desktop/a.mp4' -k
+# command -o, --only-local
+# encrypt
+$ dog -deos /Users/jiushu/Desktop/a.mp4 -k
+# decrypt
+$ dog -ds /Users/jiushu/Desktop/a.mp4 -k
 ```
-### compress
+### the file is compressed after encryption
 ```shell
-# command
+# command -c, --compress
+# encrypt
 $ dog -ces /Users/jiushu/Desktop/a.mp4 -k
 ```
 ### store secret-key
