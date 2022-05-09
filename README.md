@@ -124,7 +124,7 @@ This operation is more time-consuming.
 $ dog -ces /Users/jiushu/Desktop/a.mp4 -k
 ```
 ### store secret-key
-This operation is unsafe. Please use it with caution.
+WARN:This operation is unsafe. Please use it with caution.
 ```shell
 # command
 alias dog = 'java -Ddog-store=true -Xms512m -Xmx512m -Xmn128m -jar dog-1.5.6.jar'
