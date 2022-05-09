@@ -78,10 +78,6 @@ Please wait...
 [Total time]:00:00:05
 [Results]:total files:1,successes:1,failures:0
 ```
-### file structure
-|  file        | file extension name |  type          |   magic number |   location   |    amount     |     ascii    |
-|  :-:         |        :-:          |  :-:           |   :-:          |    :-:       |     :-:       |      :-:     |
-| DOG FORMAT   |        .dog         |  u4/32bit      |   0x19890225   |    header    |       1       |      ...     |
 ### batch
 When using batch mode, the source file path must use single quotation marks.
 ```shell
@@ -144,3 +140,7 @@ alias dog = 'java -Ddog-store=true -Xms512m -Xmx512m -Xmn128m -jar dog-1.5.7.jar
 # store style(secret-key to base64)
 [dog-file]\:a.b.dog,[source]\:a.b,[source-size]\:0.02MB,[target]\:a.b.dog,[target-size]\:0.05MB=MTIzNDU2bmloYW96YXE\=
 ```
+### file structure
+|  file        | file extension name |  type          |   magic number |   location   |    amount     |     ascii    |
+|  :-:         |        :-:          |  :-:           |   :-:          |    :-:       |     :-:       |      :-:     |
+| DOG FORMAT   |        .dog         |  u4/32bit      |   0x19890225   |    header    |       1       |      ...     |
