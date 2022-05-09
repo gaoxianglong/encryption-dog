@@ -42,41 +42,6 @@ Usage: encrypt-dog [-cdehoV] -k [-k]... [-n=<name>] -s=<source file>
                             the user home directory.
   -V, --version           Print version information and exit.
 Copyright(c) 2021 - 2031 gaoxianglong. All Rights Reserved.
-
-# encrypt&remove&only-local source
-$ dog -deos /Users/jiushu/Desktop/a.mp4 -t /Users/jiushu/Desktop -k
-Enter value for --secret-key (Both encrypt and decrypt require the same secret key): 
-Enter the secret-key again:
-Please wait...
-
-[Encrypt file number]:1/1
-[Source path]:/Users/jiushu/Desktop/a.mp4
-[Estimated time]:00:00:06
-[>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>] 100%
-[Encrypt result]:success
-[Time consuming]:00:00:05,[Before size]:107.22MB,[After size]:142.96MB
-[Target path]:/Users/jiushu/Desktop//a.mp4.dog
-
->>> Operation complete <<<
-[Total time]:00:00:05
-[Results]:total files:1,successes:1,failures:0
-
-# decrypt
-$ dog -s /Users/jiushu/Desktop/a.mp4.dog -t /Users/jiushu/Desktop -k
-Enter value for --secret-key (Both encrypt and decrypt require the same secret key): 
-Please wait...
-
-[Decrypt file number]:1/1
-[Source path]:/Users/jiushu/Desktop/a.mp4.dog
-[Estimated time]:00:00:06
-[>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>] 100%
-[Decrypt result]:success
-[Time consuming]:00:00:05,[Before size]:142.96MB,[After size]:107.22MB
-[Target path]:/Users/jiushu/Desktop//a.mp4
-
->>> Operation complete <<<
-[Total time]:00:00:05
-[Results]:total files:1,successes:1,failures:0
 ```
 ### highest security
 Files encrypted on computer a can only be decrypted on computer a.<br/>
@@ -88,8 +53,38 @@ WARN:Deleting or damaging the random key will never complete decryption.
 # command -o, --only-local
 # encrypt
 $ dog -deos /Users/jiushu/Desktop/a.mp4 -k
+Enter value for --secret-key (Both encrypt and decrypt require the same secret key):
+Enter the secret-key again:
+Please wait...
+
+[Encrypt file number]:1/1
+[Source path]:/Users/jiushu/Desktop/a.mp4
+[Estimated time]:00:00:06
+[>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>] 100%
+[Encrypt result]:success
+[Time consuming]:00:00:05,[Before size]:107.22MB,[After size]:142.96MB
+[Target path]:/Users/jiushu/Desktop/a.mp4.dog
+
+>>> Operation complete <<<
+[Total time]:00:00:05
+[Results]:total files:1,successes:1,failures:0
+
 # decrypt
 $ dog -ds /Users/jiushu/Desktop/a.mp4.dog -k
+Enter value for --secret-key (Both encrypt and decrypt require the same secret key):
+Please wait...
+
+[Decrypt file number]:1/1
+[Source path]:/Users/jiushu/Desktop/a.mp4.dog
+[Estimated time]:00:00:06
+[>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>] 100%
+[Decrypt result]:success
+[Time consuming]:00:00:05,[Before size]:142.96MB,[After size]:107.22MB
+[Target path]:/Users/jiushu/Desktop/a.mp4
+
+>>> Operation complete <<<
+[Total time]:00:00:05
+[Results]:total files:1,successes:1,failures:0
 ```
 ### batch
 When using batch mode, the source file path must use single quotation marks.
