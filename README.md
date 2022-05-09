@@ -116,8 +116,8 @@ $ dog -des /Users/jiushu/Desktop/a.mp4 -n b -k
 # decrypt
 $ dog -ds /Users/jiushu/Desktop/b.mp4.dog -n c -k
 ```
-### binding the same physical device
-Highest security,Files encrypted on computer a can only be decrypted on computer a.<br/>
+### highest security
+Files encrypted on computer a can only be decrypted on computer a.<br/>
 Principle:
 <div align=center><img src="https://github.com/gaoxianglong/encryption-dog/blob/master/resources/hs.png"/></div>
 
