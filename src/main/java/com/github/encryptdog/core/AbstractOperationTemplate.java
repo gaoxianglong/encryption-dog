@@ -56,7 +56,7 @@ public abstract class AbstractOperationTemplate {
             var begin = System.currentTimeMillis();
             // 魔术检测,如果是加密操作,则在文件起始位写入u4/32bit魔术码
             checkMagicNumber(stream);
-            // 如果开启only-local命令,则紧跟magic_number后面追加物理设备UUID
+            // 如果开启only-local命令,则紧跟magic后面追加物理设备UUID
             bind(stream);
             // 如果开启only-local命令,则启动double secret key authentication
             authentication();
