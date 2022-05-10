@@ -133,7 +133,7 @@ WARN:This operation is unsafe. Please use it with caution.
 # command
 alias dog = 'java -Ddog-store=true -Xms512m -Xmx512m -Xmn128m -jar dog-1.5.7.jar'
 # store style(secret-key to base64)
-[dog-file]\:a.b.dog,[source]\:a.b,[source-size]\:0.02MB,[target]\:a.b.dog,[target-size]\:0.05MB=MTIzNDU2bmloYW96YXE\=
+[source]\:a.b,[source-size]\:0.02MB,[target]\:a.b.dog,[target-size]\:0.05MB=MTIzNDU2bmloYW96YXE\=
 ```
 ### file structure
 |  file        | file extension name |  type          |   magic number |   location   |    amount     |     ascii    |
