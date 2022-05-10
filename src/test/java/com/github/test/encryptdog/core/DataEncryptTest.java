@@ -21,11 +21,7 @@ import com.github.utils.Constants;
 import com.github.utils.Utils;
 import org.junit.*;
 
-import java.io.BufferedInputStream;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.PrintWriter;
-import java.lang.reflect.Array;
+import java.io.*;
 import java.util.ArrayList;
 import java.util.Properties;
 import java.util.UUID;
@@ -324,6 +320,58 @@ public class DataEncryptTest {
         Assert.assertTrue(new DataEncrypt(param).execute());
         Assert.assertTrue(new File(String.format("%stest.txt.dog", System.getProperty("java.io.tmpdir"))).exists());
         Assert.assertTrue(new File(String.format("%stest.txt.dog", System.getProperty("java.io.tmpdir"))).delete());
+    }
+
+    /**
+     * -Ddog-store
+     */
+    @Test
+    public void testEncrypt_11() throws Throwable {
+        ParamDTO param = new ParamDTO();
+        param.setDelete(true);
+        param.setTargetPath(System.getProperty("java.io.tmpdir"));
+        param.setEncrypt(true);
+        param.setStore(true);
+        param.setSecretKey("123456".toCharArray());
+        param.setSourceFile(FILE_PATH);
+        Assert.assertTrue(new DataEncrypt(param).execute());
+        Assert.assertTrue(new File(String.format("%s.dog", FILE_PATH)).exists());
+        Assert.assertTrue(new File(String.format("%s.dog", FILE_PATH)).delete());
+    }
+
+    /**
+     * -Ddog-store
+     */
+    @Test
+    public void testEncrypt_12() throws Throwable {
+        ParamDTO param = new ParamDTO();
+        param.setDelete(true);
+        param.setOnlyLocal(true);
+        param.setTargetPath(System.getProperty("java.io.tmpdir"));
+        param.setEncrypt(true);
+        param.setStore(true);
+        param.setSecretKey("123456".toCharArray());
+        param.setSourceFile(FILE_PATH);
+        Assert.assertTrue(new DataEncrypt(param).execute());
+        Assert.assertTrue(new File(String.format("%s.dog", FILE_PATH)).exists());
+        Assert.assertTrue(new File(String.format("%s.dog", FILE_PATH)).delete());
+
+        try (BufferedReader in = new BufferedReader(new FileReader(Constants.STORE_SK_PATH))) {
+            var properties = new Properties();
+            properties.load(in);
+            properties.forEach((x, y) -> {
+                if (x.toString().indexOf(param.getSourceFile()) != -1) {
+                    Assert.assertEquals("123456",
+                            new String(Utils.toBase64Decode(y.toString().getBytes())));
+                    // 转储的密码不能是RSK
+                    Assert.assertNotNull(new String(param.getSecretKey()),
+                            new String(Utils.toBase64Decode(y.toString().getBytes())));
+                    return;
+                }
+            });
+        } catch (Throwable e) {
+            e.printStackTrace();
+        }
     }
 
     /**

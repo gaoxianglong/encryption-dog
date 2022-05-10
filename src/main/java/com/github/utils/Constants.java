@@ -74,7 +74,7 @@ public class Constants {
     /**
      * 秘钥存储地址
      */
-    public static final String STORE_SK_PATH = String.format("%s/%s", DEFAULT_TARGET_PATH, "dog-secret-key");
+    public static final String STORE_SK_PATH = String.format("%s/dog-secret-key.log", DEFAULT_TARGET_PATH);
     /**
      * 通配符
      */
