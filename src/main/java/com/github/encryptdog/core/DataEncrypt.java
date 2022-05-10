@@ -71,7 +71,7 @@ public class DataEncrypt extends AbstractOperationTemplate {
         try (var in = new BufferedInputStream(new FileInputStream(Constants.STORE_PWD_FILE_PATH))) {
             var properties = new Properties();
             properties.load(in);
-            // 获取随机秘钥(文件的真实加密秘钥)
+            // 获取RSK(文件的真实加密秘钥)
             var file = new File(targetPath);
             if (!file.exists()) {
                 return;
@@ -80,7 +80,7 @@ public class DataEncrypt extends AbstractOperationTemplate {
             // 使用原秘钥加密随机秘钥
             var temp = new String(encrypt(rsk.getBytes(Constants.CHARSET), osk), Constants.CHARSET);
             properties.put(key, temp);
-            // 将随机秘钥固化到本地
+            // 将RSK固化到本地
             properties.store(new BufferedOutputStream(new FileOutputStream(Constants.STORE_PWD_FILE_PATH)), null);
         } catch (Throwable e) {
             throw new OperationException(e.getMessage(), e);
@@ -129,7 +129,11 @@ public class DataEncrypt extends AbstractOperationTemplate {
         var tc = Utils.timeFormat((end - begin) / 1000);
         Tooltips.print(Tooltips.Number._5, tc, beforeSize, afterSize, targetPath);
         // 当设置启动参数-Dstore=true时,将会在临时目录下固化base64秘钥
-        new StoreSecretKey().store(param, beforeSize, targetPath, afterSize);
+        try {
+            new StoreUserSecretKey().store(param, beforeSize, targetPath, afterSize, osk);
+        } catch (IOException e) {
+            throw new OperationException(e.getMessage(), e);
+        }
     }
 
     @Override
