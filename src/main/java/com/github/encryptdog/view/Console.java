@@ -87,12 +87,7 @@ public class Console implements Runnable {
     @Override
     public void run() {
         try {
-            if (Objects.isNull(secretKey) || secretKey.length <= 0) {
-                throw new OperationException("Secret-key cannot be empty");
-            }
-            if (Objects.isNull(sourceFile) || sourceFile.isBlank()) {
-                throw new OperationException("Source file cannot be empty");
-            }
+            validate();
             // double check pwd
             checkSecretKey();
             ParamDTO param = new ParamDTO();
@@ -127,6 +122,18 @@ public class Console implements Runnable {
         var newSecretKey = console.readPassword("Enter the secret-key again: ");
         if (Objects.isNull(newSecretKey) || !(Objects.equals(new String(secretKey), new String(newSecretKey)))) {
             throw new OperationException("The two secret-key do not match");
+        }
+    }
+
+    private void validate() throws OperationException {
+        if (Objects.isNull(secretKey) || secretKey.length <= 0) {
+            throw new OperationException("Secret-key cannot be empty");
+        }
+        if (secretKey.length < 6) {
+            throw new OperationException("The length of the secret key shall be at least 6 digits");
+        }
+        if (Objects.isNull(sourceFile) || sourceFile.isBlank()) {
+            throw new OperationException("Source file cannot be empty");
         }
     }
 
