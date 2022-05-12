@@ -274,6 +274,21 @@ public class Utils {
     }
 
     /**
+     * 删除指定文件
+     *
+     * @param fp
+     * @return
+     */
+    public static boolean deleteFile(String fp) {
+        var result = false;
+        var file = new File(fp);
+        if (file.exists()) {
+            result = file.delete();
+        }
+        return result;
+    }
+
+    /**
      * 获取文件后缀
      *
      * @param fn

@@ -36,6 +36,7 @@ public abstract class AbstractOperationTemplate {
      * @throws DogException
      */
     public boolean execute() throws DogException {
+        var result = false;
         var fileName = param.getSourceFile();
         var file = new File(fileName);
         var isEncrypt = param.isEncrypt();
@@ -64,12 +65,17 @@ public abstract class AbstractOperationTemplate {
             write(content, defaultSize, available, in, out);
             print(available, begin);
             deleteSource();
+            result = true;
         } catch (Throwable e) {
             throw new OperationException(e.getMessage(), e);
         } finally {
+            if (!result) {
+                // 无论加解密是否成功,目标文件已经提前创建，如果操作失败则删除目标文件
+                Utils.deleteFile(targetPath);
+            }
             System.out.println();
         }
-        return true;
+        return result;
     }
 
     /**
