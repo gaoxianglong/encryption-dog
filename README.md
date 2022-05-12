@@ -48,7 +48,9 @@ Files encrypted on computer a can only be decrypted on computer a.<br/>
 Principle:
 <div align=center><img src="https://github.com/gaoxianglong/encryption-dog/blob/master/resources/hs.png"/></div>
 
-WARN:Deleting or damaging the random key will never complete decryption.
+WARN:
+> Deleting or damaging the random key will never complete decryption.<br/>
+> When this mode is selected, the name cannot be modified after file encryption.<br/>
 ```shell
 # command -o, --only-local
 # encrypt
