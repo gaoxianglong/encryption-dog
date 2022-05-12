@@ -375,6 +375,31 @@ public class DataEncryptTest {
     }
 
     /**
+     * 同名target覆盖测试
+     *
+     * @throws Throwable
+     */
+    @Test
+    public void testEncrypt_13() throws Throwable {
+        ParamDTO param = new ParamDTO();
+        param.setTargetPath(System.getProperty("java.io.tmpdir"));
+        param.setEncrypt(true);
+        param.setSecretKey("123456".toCharArray());
+        param.setSourceFile(FILE_PATH);
+        Assert.assertTrue(new DataEncrypt(param).execute());
+        Assert.assertTrue(new DataEncrypt(param).execute());
+        var file = new File(FILE_PATH);
+        var fn = file.getName();
+        Assert.assertTrue(file.delete());
+        file = new File(System.getProperty("java.io.tmpdir"));
+        for (var f : file.listFiles()) {
+            if (f.isFile() && f.getName().indexOf(fn) != -1) {
+                Assert.assertTrue(delete(f.getPath()));
+            }
+        }
+    }
+
+    /**
      * dog -es source -t target -k
      * check magic
      */

@@ -42,7 +42,7 @@ public abstract class AbstractOperationTemplate {
         var isEncrypt = param.isEncrypt();
         // 加/解密文件的后缀检测与拼接
         fileName = checkSourceFile(file, fileName);
-        targetPath = String.format("%s%s", param.getTargetPath(), fileName);
+        targetPath = fileExists(String.format("%s%s", param.getTargetPath(), fileName));
         try (var in = new BufferedInputStream(new FileInputStream(param.getSourceFile()));
              var out = new BufferedOutputStream(new FileOutputStream(targetPath))) {
             // 文件总大小，计算百分比进度条时需要使用
@@ -96,6 +96,23 @@ public abstract class AbstractOperationTemplate {
                 throw new OperationException(e.getMessage(), e);
             }
         }
+    }
+
+    /**
+     * 检查目标文件是否存在，如果已存在则变更目标文件名称避免数据覆盖
+     *
+     * @param fp
+     * @return
+     */
+    private String fileExists(String fp) {
+        var file = new File(fp);
+        if (file.exists()) {
+            var suffix = Utils.getFileSuffix(fp);
+            // 格式为name-时间戳.dog
+            fp = String.format("%s-%s%s", Utils.cancelFileSuffix(fp, 1),
+                    System.nanoTime(), suffix);
+        }
+        return fp;
     }
 
     /**
