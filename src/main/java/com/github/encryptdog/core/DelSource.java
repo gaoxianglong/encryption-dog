@@ -16,6 +16,7 @@
 package com.github.encryptdog.core;
 
 import com.github.encryptdog.view.Tooltips;
+import com.github.utils.Utils;
 
 import java.io.File;
 import java.util.Scanner;
@@ -39,6 +40,6 @@ public class DelSource {
     }
 
     public boolean del(String path) {
-        return new File(path).delete();
+        return Utils.deleteFile(path);
     }
 }
