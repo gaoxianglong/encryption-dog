@@ -13,11 +13,20 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.github.utils;/**
+package com.github.utils;
+
+import java.util.UUID;
+
+/**
+ * 随机数UUID
  *
  * @author gao_xianglong@sina.com
- * @date created in 2022/5/16 18:22
  * @version 0.1-SNAPSHOT
+ * @date created in 2022/5/16 18:22
  */
-public class RamdomWorker {
+public class RamdomWorker implements IdWorker<String> {
+    @Override
+    public String nextId() throws Throwable {
+        return UUID.randomUUID().toString();
+    }
 }

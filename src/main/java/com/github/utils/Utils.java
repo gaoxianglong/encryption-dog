@@ -24,7 +24,6 @@ import java.nio.CharBuffer;
 import java.nio.charset.Charset;
 import java.text.SimpleDateFormat;
 import java.util.*;
-import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 
 /**
@@ -164,7 +163,11 @@ public class Utils {
         String uuid = null;
         var os = System.getProperty("os.name");
         try {
-            uuid = "Mac OS X".equalsIgnoreCase(os) ? getHardwareUUID() : getMacAddress();
+            // 优先取HardwareUUID,失败则去MAC ID
+            uuid = getHardwareUUID();
+            if (Objects.isNull(uuid)) {
+                uuid = getMacAddress();
+            }
         } catch (Throwable e) {
             throw new OperationException("Failed to get hardware-uuid", e);
         }

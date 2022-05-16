@@ -50,7 +50,6 @@ Principle:
 
 WARN:
 > Deleting or damaging the random key will never complete decryption.<br/>
-> When this mode is selected, the name cannot be modified after file encryption.<br/>
 ```shell
 # command -o, --only-local
 # encrypt

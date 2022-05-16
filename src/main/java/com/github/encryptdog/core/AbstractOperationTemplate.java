@@ -25,6 +25,10 @@ import java.security.SecureRandom;
 public abstract class AbstractOperationTemplate {
     protected ParamDTO param;
     protected String targetPath;
+    /**
+     * 文件的身份ID，--only-local命令下使用
+     */
+    protected Long f_uuid;
 
     public AbstractOperationTemplate(ParamDTO param) {
         this.param = param;

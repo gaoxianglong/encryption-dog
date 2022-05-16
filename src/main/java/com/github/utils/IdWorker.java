@@ -15,17 +15,19 @@
  */
 package com.github.utils;
 
+import com.github.encryptdog.exception.OperationException;
+
 /**
- * 
  * @author gao_xianglong@sina.com
  * @version 0.1-SNAPSHOT
  * @date created in 2022/5/16 18:18
  */
-public interface SequnceID<T> {
+public interface IdWorker<T> {
     /**
      * 获取全局唯一ID
      *
      * @return
+     * @throws Throwable
      */
-    T getSequnceID();
+    T nextId() throws Throwable;
 }

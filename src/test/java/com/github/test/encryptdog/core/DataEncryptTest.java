@@ -14,10 +14,12 @@ package com.github.test.encryptdog.core;/*
  * limitations under the License.
  */
 
+import com.github.encryptdog.core.AbstractOperationTemplate;
 import com.github.encryptdog.core.DataEncrypt;
 import com.github.encryptdog.core.NameParser;
 import com.github.encryptdog.view.ParamDTO;
 import com.github.utils.Constants;
+import com.github.utils.SnowflakeWorker;
 import com.github.utils.Utils;
 import org.junit.*;
 
@@ -102,6 +104,7 @@ public class DataEncryptTest {
         param.setEncrypt(true);
         param.setSecretKey("123456".toCharArray());
         param.setSourceFile(FILE_PATH);
+        param.setIdWorker(new SnowflakeWorker(Constants.IDC_ID, Constants.WORKER_ID));
         Assert.assertTrue(new File(FILE_PATH).exists());
         Assert.assertTrue(new DataEncrypt(param).execute());
         Assert.assertFalse(new File(FILE_PATH).exists());
@@ -109,15 +112,19 @@ public class DataEncryptTest {
                 new FileInputStream(String.format(String.format("%s.dog", FILE_PATH))))) {
             var temp = new byte[Constants.MAGIC_NUMBER_SIZE];
             in.read(temp);
-            var uuid = Utils.toBase64Encode(Utils.getUUID().getBytes(Constants.CHARSET)).getBytes(Constants.CHARSET);
             temp = new byte[Constants.UUID_FLAG_SIZE];
             in.read(temp);
             var size = Utils.bytes2Int(temp);
-            Assert.assertEquals(size, uuid.length);
+            // 获取硬件UUID
+            var uuid = Utils.toBase64Encode(Utils.getUUID().getBytes(Constants.CHARSET)).getBytes(Constants.CHARSET);
             temp = new byte[size];
             in.read(temp);
+            var temp2 = new String(Utils.toBase64Decode(temp), Constants.CHARSET);
+            var temp3 = temp2.split("&&&");
+            Assert.assertEquals(2, temp3.length);
             Assert.assertEquals(new String(Utils.toBase64Decode(uuid), Constants.CHARSET),
-                    new String(Utils.toBase64Decode(temp), Constants.CHARSET));
+                    temp3[0]);
+            Assert.assertTrue(temp3[1].matches("^[0-9]{0,}$"));
         }
         Assert.assertTrue(delete(String.format("%s.dog", FILE_PATH)));
     }
@@ -156,6 +163,7 @@ public class DataEncryptTest {
         param.setOnlyLocal(true);
         param.setSecretKey("123456".toCharArray());
         param.setSourceFile(FILE_PATH);
+        param.setIdWorker(new SnowflakeWorker(Constants.IDC_ID, Constants.WORKER_ID));
         Assert.assertTrue(new DataEncrypt(param).execute());
         try (BufferedInputStream in = new BufferedInputStream(
                 new FileInputStream(String.format(String.format("%s.dog", FILE_PATH))))) {
@@ -184,42 +192,38 @@ public class DataEncryptTest {
         param.setOnlyLocal(true);
         param.setSecretKey("123456".toCharArray());
         param.setSourceFile(FILE_PATH);
-        Assert.assertTrue(new DataEncrypt(param).execute());
+        param.setIdWorker(new SnowflakeWorker(Constants.IDC_ID, Constants.WORKER_ID));
+        var encrypt = new DataEncrypt(param);
+        Assert.assertTrue(encrypt.execute());
+
+        var cls = AbstractOperationTemplate.class;
+        var field = cls.getDeclaredField("f_uuid");
+        field.setAccessible(true);
+        String f_uuid = String.valueOf(field.get(encrypt));
+        System.out.println(f_uuid);
 
         var temp = String.format("%s.dog", param.getSourceFile());
         try (var in = new BufferedInputStream(new FileInputStream(Constants.STORE_PWD_FILE_PATH))) {
             var properties = new Properties();
             properties.load(in);
-            var file = new File(temp);
-            var sf = properties.get(String.format("%s-%s", file.getName(), file.length()));
+            var sf = properties.get(f_uuid);
             Assert.assertNotNull(sf);
         } catch (Throwable e) {
             e.printStackTrace();
         }
         Assert.assertTrue(delete(String.format("%s.dog", FILE_PATH)));
 
-        param.setOnlyLocal(false);
-        Assert.assertTrue(new DataEncrypt(param).execute());
-        temp = String.format("%s.dog", param.getSourceFile());
-        try (var in = new BufferedInputStream(new FileInputStream(Constants.STORE_PWD_FILE_PATH))) {
-            var properties = new Properties();
-            properties.load(in);
-            var file = new File(temp);
-            var sf = properties.get(String.format("%s-%s", file.getName(), file.length()));
-            Assert.assertNull(sf);
-        } catch (Throwable e) {
-            e.printStackTrace();
-        }
-        Assert.assertTrue(delete(String.format("%s.dog", FILE_PATH)));
-
         param.setOnlyLocal(true);
-        Assert.assertTrue(new DataEncrypt(param).execute());
+        Assert.assertTrue(encrypt.execute());
+        field = cls.getDeclaredField("f_uuid");
+        field.setAccessible(true);
+        f_uuid = String.valueOf(field.get(encrypt));
         temp = String.format("%s.dog", param.getSourceFile());
+        System.out.println(f_uuid);
         try (var in = new BufferedInputStream(new FileInputStream(Constants.STORE_PWD_FILE_PATH))) {
             var properties = new Properties();
             properties.load(in);
-            var file = new File(temp);
-            var sf = properties.get(String.format("%s-%s", file.getName(), file.length()));
+            var sf = properties.get(f_uuid);
             Assert.assertNotNull(sf);
         } catch (Throwable e) {
             e.printStackTrace();
@@ -352,6 +356,7 @@ public class DataEncryptTest {
         param.setStore(true);
         param.setSecretKey("123456".toCharArray());
         param.setSourceFile(FILE_PATH);
+        param.setIdWorker(new SnowflakeWorker(Constants.IDC_ID, Constants.WORKER_ID));
         Assert.assertTrue(new DataEncrypt(param).execute());
         Assert.assertTrue(new File(String.format("%s.dog", FILE_PATH)).exists());
         Assert.assertTrue(new File(String.format("%s.dog", FILE_PATH)).delete());

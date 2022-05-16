@@ -15,6 +15,8 @@
  */
 package com.github.encryptdog.view;
 
+import com.github.utils.IdWorker;
+
 import java.util.Arrays;
 
 /**
@@ -60,6 +62,15 @@ public class ParamDTO {
      * 显示设置目标文件的名称
      */
     private String name;
+    private IdWorker idWorker;
+
+    public IdWorker getIdWorker() {
+        return idWorker;
+    }
+
+    public void setIdWorker(IdWorker idWorker) {
+        this.idWorker = idWorker;
+    }
 
     public String getName() {
         return name;
