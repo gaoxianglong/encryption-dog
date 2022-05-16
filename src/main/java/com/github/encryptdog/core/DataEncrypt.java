@@ -10,13 +10,14 @@ import com.github.encryptdog.exception.OperationException;
 import com.github.encryptdog.view.ParamDTO;
 import com.github.encryptdog.view.Tooltips;
 import com.github.utils.Constants;
+import com.github.utils.RamdomWorker;
+import com.github.utils.SnowflakeWorker;
 import com.github.utils.Utils;
 
 import javax.crypto.Cipher;
 import java.io.*;
 import java.util.Objects;
 import java.util.Properties;
-import java.util.UUID;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipOutputStream;
 
@@ -72,11 +73,10 @@ public class DataEncrypt extends AbstractOperationTemplate {
             var properties = new Properties();
             properties.load(in);
             // 获取RSK(文件的真实加密秘钥)
-            var file = new File(targetPath);
-            if (!file.exists()) {
+            if (!new File(targetPath).exists()) {
                 return;
             }
-            var key = String.format("%s-%s", file.getName(), file.length());
+            var key = String.valueOf(f_uuid);
             // 使用原秘钥加密随机秘钥
             var temp = new String(encrypt(rsk.getBytes(Constants.CHARSET), osk), Constants.CHARSET);
             properties.put(key, temp);
@@ -107,10 +107,10 @@ public class DataEncrypt extends AbstractOperationTemplate {
      * 创建高安全性密码
      *
      * @return
-     * @throws UnsupportedEncodingException
+     * @throws Throwable
      */
-    private String createSecretKey() throws UnsupportedEncodingException {
-        return UUID.randomUUID().toString();
+    private String createSecretKey() throws Throwable {
+        return new RamdomWorker().nextId();
     }
 
     @Override
@@ -160,8 +160,11 @@ public class DataEncrypt extends AbstractOperationTemplate {
         var out = (BufferedOutputStream) stream;
         try {
             if (param.isOnlyLocal()) {
-                // 获取物理设备唯一标识,并进行base64加密
-                var uuid = Utils.toBase64Encode(Utils.getUUID().getBytes(Constants.CHARSET)).getBytes(Constants.CHARSET);
+                // 获取sid
+                f_uuid = ((SnowflakeWorker) param.getIdWorker()).nextId();
+                // 将sid和硬件uuid进行拼接
+                var temp = String.format("%s&&&%s", Utils.getUUID(), f_uuid);
+                var uuid = Utils.toBase64Encode(temp.getBytes(Constants.CHARSET)).getBytes(Constants.CHARSET);
                 var size = Utils.int2Bytes(uuid.length);
                 out.write(size, 0, size.length);
                 out.write(uuid, 0, uuid.length);

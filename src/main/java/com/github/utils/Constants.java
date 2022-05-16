@@ -119,4 +119,6 @@ public class Constants {
      * 1MB对应的字节大小
      */
     public static final int _1MB = 0X100000;
+    public static final long IDC_ID = (long) (Math.random() * (~(-1L << 5L)));
+    public static final long WORKER_ID = (long) (Math.random() * (~(-1L << 5L)));
 }

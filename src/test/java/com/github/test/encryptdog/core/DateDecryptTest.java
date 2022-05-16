@@ -20,6 +20,8 @@ import com.github.encryptdog.core.DateDecrypt;
 import com.github.encryptdog.core.NameParser;
 import com.github.encryptdog.exception.DogException;
 import com.github.encryptdog.view.ParamDTO;
+import com.github.utils.Constants;
+import com.github.utils.SnowflakeWorker;
 import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
@@ -99,6 +101,7 @@ public class DateDecryptTest {
         param.setOnlyLocal(true);
         param.setSecretKey("123456".toCharArray());
         param.setSourceFile(FILE_PATH);
+        param.setIdWorker(new SnowflakeWorker(Constants.IDC_ID, Constants.WORKER_ID));
         Assert.assertTrue(new DataEncrypt(param).execute());
 
         // 解密
@@ -128,6 +131,7 @@ public class DateDecryptTest {
         param.setOnlyLocal(true);
         param.setSecretKey("123456".toCharArray());
         param.setSourceFile(FILE_PATH);
+        param.setIdWorker(new SnowflakeWorker(Constants.IDC_ID, Constants.WORKER_ID));
         Assert.assertTrue(new DataEncrypt(param).execute());
         Assert.assertTrue(new File(FILE_PATH).delete());
 
@@ -138,7 +142,6 @@ public class DateDecryptTest {
         param.setSecretKey("123456".toCharArray());
         param.setSourceFile(String.format("%s.dog", FILE_PATH));
         Assert.assertTrue(new DateDecrypt(param).execute());
-        System.out.println(FILE_PATH);
         Assert.assertTrue(new File(FILE_PATH).exists());
     }
 

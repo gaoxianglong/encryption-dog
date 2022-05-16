@@ -34,12 +34,13 @@ public class DateDecrypt extends AbstractOperationTemplate {
     @Override
     protected void authentication() throws OperationException {
         createStoreFile();
-        var sf = param.getSourceFile();
+        if (Objects.isNull(f_uuid)) {
+            return;
+        }
         try (var in = new BufferedInputStream(new FileInputStream(Constants.STORE_PWD_FILE_PATH))) {
             var properties = new Properties();
             properties.load(in);
-            var file = new File(sf);
-            var key = String.format("%s-%s", file.getName(), file.length());
+            var key = String.valueOf(f_uuid);
             // 获取随机秘钥
             var rsk = properties.getProperty(key);
             if (Objects.isNull(rsk)) {
@@ -47,7 +48,6 @@ public class DateDecrypt extends AbstractOperationTemplate {
             }
             // 使用原秘钥解密对应的随机秘钥
             var sk = decrypt(rsk.getBytes(Constants.CHARSET), param.getSecretKey());
-            // 使用随机秘钥解密加密文件
             param.setSecretKey(new String(sk, Constants.CHARSET).toCharArray());
         } catch (Throwable e) {
             throw new OperationException(e.getMessage(), e);
@@ -73,7 +73,7 @@ public class DateDecrypt extends AbstractOperationTemplate {
             throw new OperationException(e.getMessage(), e);
         }
         if (Utils.bytes2Int(mn) != Constants.MAGIC_NUMBER) {
-            throw new OperationException("The target file is not a dog file,magic number:0x19890225");
+            throw new OperationException("Bad magic number");
         }
     }
 
@@ -96,10 +96,15 @@ public class DateDecrypt extends AbstractOperationTemplate {
             temp = new byte[size];
             // 读取物理设备的uuid
             in.read(temp);
-            var uuid = new String(Utils.toBase64Decode(temp), Constants.CHARSET);
+            var ids = new String(Utils.toBase64Decode(temp), Constants.CHARSET).split("&&&");
+            if (ids.length != 2) {
+                throw new OperationException("The file header is corrupted");
+            }
+            var uuid = ids[0];
             if (!Utils.getUUID().equals(uuid)) {
                 throw new OperationException("The UUID does not match,Please decrypt on the same physical device");
             }
+            f_uuid = Long.parseLong(ids[1]);
         } catch (Throwable e) {
             throw new OperationException(e.getMessage(), e);
         }

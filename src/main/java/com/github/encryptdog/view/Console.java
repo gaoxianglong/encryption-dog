@@ -22,6 +22,7 @@ import com.github.encryptdog.core.NameParser;
 import com.github.encryptdog.exception.DogException;
 import com.github.encryptdog.exception.OperationException;
 import com.github.utils.Constants;
+import com.github.utils.SnowflakeWorker;
 import com.github.utils.Utils;
 import picocli.CommandLine;
 
@@ -99,6 +100,7 @@ public class Console implements Runnable {
             param.setOnlyLocal(onlyLocal);
             param.setCompress(compress);
             param.setName(name);
+            param.setIdWorker(new SnowflakeWorker(Constants.IDC_ID, Constants.WORKER_ID));
             var aot = encrypt ? new DataEncrypt(param) : new DateDecrypt(param);
             new NameParser().parse(param, sourceFile, aot, false);
         } catch (DogException t) {
