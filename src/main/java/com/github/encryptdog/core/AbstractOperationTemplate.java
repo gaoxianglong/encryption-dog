@@ -110,13 +110,13 @@ public abstract class AbstractOperationTemplate {
      */
     private String fileExists(String fp) {
         var file = new File(fp);
-        if (file.exists()) {
-            var suffix = Utils.getFileSuffix(fp);
-            // 格式为name-时间戳.dog
-            fp = String.format("%s-%s%s", Utils.cancelFileSuffix(fp, 1),
-                    System.nanoTime(), suffix);
+        if (!file.exists()) {
+            return fp;
         }
-        return fp;
+        var suffix = Utils.getFileSuffix(fp);
+        // 格式为name-时间戳.dog
+        return String.format("%s-%s%s", Utils.cancelFileSuffix(fp, 1),
+                System.nanoTime(), suffix);
     }
 
     /**
