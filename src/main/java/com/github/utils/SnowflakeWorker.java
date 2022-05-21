@@ -25,42 +25,45 @@ import com.github.encryptdog.exception.OperationException;
  * @date created in 2022/5/14 16:15
  */
 public class SnowflakeWorker implements IdWorker<Long> {
-    /**
-     * 时间纪元
-     */
     private final long INIT_EPOCH = 1652697002988L;
+    private final long AVAILABLE = 63L;
+    private final long TIMESTAMP_BITS = 41L;
     private final long WORKER_ID_BITS = 5L;
     private final long IDC_ID_BITS = 5L;
+    private final long SEQUENCE_BITS = 12L;
     private final long MAX_WORKER_ID = ~(-1L << WORKER_ID_BITS);
     private final long MAX_IDC_ID = ~(-1L << IDC_ID_BITS);
-    private final long SEQUENCE_BITS = 12L;
+    private final long MAX_SEQUENCE = ~(-1L << SEQUENCE_BITS);
     /**
-     * workerId左移12位
+     * << 22bit
      */
-    private final long WORKER_ID_SHIFT = SEQUENCE_BITS;
+    private final long TIMESTAMP_SHIFT = AVAILABLE - TIMESTAMP_BITS;
     /**
-     * idcId左移17位
+     * << 17bit
      */
-    private final long IDC_ID_SHIFT = SEQUENCE_BITS + WORKER_ID_BITS;
+    private final long IDC_ID_SHIFT = AVAILABLE - (TIMESTAMP_BITS + IDC_ID_BITS);
     /**
-     * 时间戳左移22位
+     * << 12bit
      */
-    private final long TIMESTAMP_SHIFT = SEQUENCE_BITS + WORKER_ID_BITS + IDC_ID_BITS;
-    private final long SEQUENCE_MASK = ~(-1L << SEQUENCE_BITS);
-    private long lastTimestamp = -1L;
+    private final long WORKER_ID_SHIFT = AVAILABLE - (TIMESTAMP_BITS + IDC_ID_BITS + WORKER_ID_BITS);
+    private long lts = -1L;
     private long idcId;
     private long workerId;
-    private long sequence;
+    private long sequence = (long) (Math.random() * 100);
 
     public SnowflakeWorker(long idcId, long workerId) throws OperationException {
-        if (idcId < 0 || idcId > MAX_IDC_ID) {
-            throw new OperationException("idcId input error");
-        }
-        if (workerId < 0 || workerId > MAX_WORKER_ID) {
-            throw new OperationException("workerId input error");
-        }
+        check(idcId, workerId);
         this.idcId = idcId;
         this.workerId = workerId;
+    }
+
+    private void check(long idcId, long workerId) throws OperationException {
+        if (idcId < 0 || idcId > MAX_IDC_ID) {
+            throw new OperationException("idc-id input error");
+        }
+        if (workerId < 0 || workerId > MAX_WORKER_ID) {
+            throw new OperationException("worker-id input error");
+        }
     }
 
     @Override
@@ -68,21 +71,26 @@ public class SnowflakeWorker implements IdWorker<Long> {
         return getSequenceId();
     }
 
+
     private synchronized long getSequenceId() throws OperationException {
         var ct = System.currentTimeMillis();
-        if (ct < lastTimestamp) {
-            throw new OperationException("");
+        if (ct < lts) {
+            throw new OperationException("currentTimeMillis < lastTimeMillis");
         }
-        if (ct == lastTimestamp) {
-            sequence = (++sequence) & SEQUENCE_MASK;
+        if (ct == lts) {
+            sequence = (++sequence) & MAX_SEQUENCE;
             if (sequence == 0) {
-                ct = tilNextMillis(lastTimestamp);
+                sequence = (long) (Math.random() * 100);
+                ct = tilNextMillis(lts);
             }
         } else {
-            sequence = 0;
+            sequence = (long) (Math.random() * 100);
         }
-        lastTimestamp = ct;
-        return ((ct - INIT_EPOCH) << TIMESTAMP_SHIFT) | (idcId << IDC_ID_SHIFT) | (workerId << WORKER_ID_SHIFT) | sequence;
+        lts = ct;
+        return ((ct - INIT_EPOCH) << TIMESTAMP_SHIFT)
+                | (idcId << IDC_ID_SHIFT)
+                | (workerId << WORKER_ID_SHIFT)
+                | sequence;
     }
 
     private long tilNextMillis(long lastTimestamp) {
