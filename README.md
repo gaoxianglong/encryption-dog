@@ -33,7 +33,8 @@ Usage: encrypt-dog [-cdehoV] -k [-k]... [-n=<name>] -s=<source file>
   -k, --secret-key        Both encrypt and decrypt require the same secret key
   -n, --set-name=<name>   Set the name of the target file.
   -o, --only-local        Encryption and decryption operations can only be
-                            performed on the same physical device.
+                            performed on the same physical device.Only Apple
+                            Mac is supported
   -s, --source-file=<source file>
                           Target files that need to be encrypt and decrypt,
                             Wildcards are supported.
