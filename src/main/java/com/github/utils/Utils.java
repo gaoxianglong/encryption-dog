@@ -161,17 +161,37 @@ public class Utils {
      */
     public static String getUUID() throws OperationException {
         String uuid = null;
-        var os = System.getProperty("os.name");
+        var os = getOSName();
         try {
-            // 优先取HardwareUUID,失败则去MAC ID
+//            // 优先取HardwareUUID,失败则去MAC ID
+//            uuid = getHardwareUUID();
+//            if (Objects.isNull(uuid)) {
+//                uuid = getMacAddress();
+//            }
+            // --only-local命令仅支持mac
             uuid = getHardwareUUID();
-            if (Objects.isNull(uuid)) {
-                uuid = getMacAddress();
-            }
         } catch (Throwable e) {
             throw new OperationException("Failed to get hardware-uuid", e);
         }
         return uuid;
+    }
+
+    /**
+     * 操作系统验证
+     *
+     * @return
+     */
+    public static boolean isMac() {
+        return Utils.getOSName().toLowerCase().startsWith("mac");
+    }
+
+    /**
+     * 获取操作系统名称
+     *
+     * @return
+     */
+    public static String getOSName() {
+        return System.getProperty("os.name");
     }
 
     /**

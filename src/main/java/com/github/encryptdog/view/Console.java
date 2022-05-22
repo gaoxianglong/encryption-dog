@@ -70,7 +70,7 @@ public class Console implements Runnable {
     /**
      * 仅限加/解密操作在同一台物理设备上,最高安全性
      */
-    @CommandLine.Option(names = {"-o", "--only-local"}, description = "Encryption and decryption operations can only be performed on the same physical device.")
+    @CommandLine.Option(names = {"-o", "--only-local"}, description = "Encryption and decryption operations can only be performed on the same physical device.Only Apple Mac is supported")
     private boolean onlyLocal;
 
     /**
@@ -97,7 +97,7 @@ public class Console implements Runnable {
             param.setEncrypt(encrypt);
             param.setSecretKey(secretKey);
             param.setStore(Boolean.parseBoolean(System.getProperty(Constants.STORE)));
-            param.setOnlyLocal(onlyLocal);
+            param.setOnlyLocal(Utils.isMac() ? onlyLocal : false);
             param.setCompress(compress);
             param.setName(name);
             param.setIdWorker(new SnowflakeWorker(Constants.IDC_ID, Constants.WORKER_ID));
