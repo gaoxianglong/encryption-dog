@@ -61,11 +61,12 @@ public class Constants {
     /**
      * 魔术长度4bytes
      */
-    public static final int MAGIC_NUMBER_SIZE = 4;
+    public static final int MAGIC_NUMBER_BYTES = 4;
     /**
-     * UUID长度4bytes
+     * UUID长度1bytes
      */
-    public static final int UUID_FLAG_SIZE = 4;
+    public static final int UUID_BYTES = 1;
+    public static final int FILE_ID_BYTES = 8;
     public static final String LINE = System.getProperty("line.separator");
     /**
      * VM参数,加密操作时在系统临时目录下转储对应加密文件的秘钥信息,慎用

@@ -66,7 +66,7 @@ public class DateDecrypt extends AbstractOperationTemplate {
     @Override
     protected <T> void checkMagicNumber(T stream) throws OperationException {
         var in = (BufferedInputStream) stream;
-        var mn = new byte[Constants.MAGIC_NUMBER_SIZE];
+        var mn = new byte[Constants.MAGIC_NUMBER_BYTES];
         try {
             in.read(mn);
         } catch (Throwable e) {
@@ -86,25 +86,25 @@ public class DateDecrypt extends AbstractOperationTemplate {
     @Override
     protected <T> void bind(T stream) throws OperationException {
         var in = (BufferedInputStream) stream;
-        var temp = new byte[Constants.UUID_FLAG_SIZE];
+        var temp = new byte[Constants.UUID_BYTES];
         try {
+            // 读取hardwareUUID长度
             in.read(temp);
-            var size = Utils.bytes2Int(temp);
-            if (size < 1) {
+            var length = temp[0] & 0xff;
+            if (0 == length) {
                 return;
             }
-            temp = new byte[size];
-            // 读取物理设备的uuid
+            temp = new byte[length];
+            // 读取hardwareUUID
             in.read(temp);
-            var ids = new String(Utils.toBase64Decode(temp), Constants.CHARSET).split("&&&");
-            if (ids.length != 2) {
-                throw new OperationException("The file header is corrupted");
-            }
-            var uuid = ids[0];
+            var uuid = new String(Utils.toBase64Decode(temp), Constants.CHARSET);
             if (!Utils.getUUID().equals(uuid)) {
                 throw new OperationException("The UUID does not match,Please decrypt on the same physical device");
             }
-            f_uuid = Long.parseLong(ids[1]);
+            temp = new byte[Constants.FILE_ID_BYTES];
+            // 读取fileUUID
+            in.read(temp);
+            f_uuid = Utils.bytes2Long(temp);
         } catch (Throwable e) {
             throw new OperationException(e.getMessage(), e);
         }

@@ -110,21 +110,18 @@ public class DataEncryptTest {
         Assert.assertFalse(new File(FILE_PATH).exists());
         try (BufferedInputStream in = new BufferedInputStream(
                 new FileInputStream(String.format(String.format("%s.dog", FILE_PATH))))) {
-            var temp = new byte[Constants.MAGIC_NUMBER_SIZE];
+            var temp = new byte[Constants.MAGIC_NUMBER_BYTES];
             in.read(temp);
-            temp = new byte[Constants.UUID_FLAG_SIZE];
+            temp = new byte[Constants.UUID_BYTES];
             in.read(temp);
-            var size = Utils.bytes2Int(temp);
+            var size = temp[0] & 0xff;
             // 获取硬件UUID
             var uuid = Utils.toBase64Encode(Utils.getUUID().getBytes(Constants.CHARSET)).getBytes(Constants.CHARSET);
             temp = new byte[size];
             in.read(temp);
             var temp2 = new String(Utils.toBase64Decode(temp), Constants.CHARSET);
-            var temp3 = temp2.split("&&&");
-            Assert.assertEquals(2, temp3.length);
             Assert.assertEquals(new String(Utils.toBase64Decode(uuid), Constants.CHARSET),
-                    temp3[0]);
-            Assert.assertTrue(temp3[1].matches("^[0-9]{0,}$"));
+                    temp2);
         }
         Assert.assertTrue(delete(String.format("%s.dog", FILE_PATH)));
     }
@@ -142,12 +139,11 @@ public class DataEncryptTest {
         Assert.assertTrue(new DataEncrypt(param).execute());
         try (BufferedInputStream in = new BufferedInputStream(
                 new FileInputStream(String.format(String.format("%s.dog", FILE_PATH))))) {
-            var temp = new byte[Constants.MAGIC_NUMBER_SIZE];
+            var temp = new byte[Constants.MAGIC_NUMBER_BYTES];
             in.read(temp);
-            temp = new byte[Constants.UUID_FLAG_SIZE];
+            temp = new byte[Constants.UUID_BYTES];
             in.read(temp);
-            var size = Utils.bytes2Int(temp);
-            Assert.assertEquals(size, 0);
+            Assert.assertEquals(temp[0] & 0xff, 0);
         }
         Assert.assertTrue(delete(String.format("%s.dog", FILE_PATH)));
     }
@@ -167,16 +163,15 @@ public class DataEncryptTest {
         Assert.assertTrue(new DataEncrypt(param).execute());
         try (BufferedInputStream in = new BufferedInputStream(
                 new FileInputStream(String.format(String.format("%s.dog", FILE_PATH))))) {
-            var temp = new byte[Constants.MAGIC_NUMBER_SIZE];
+            var temp = new byte[Constants.MAGIC_NUMBER_BYTES];
             in.read(temp);
-            temp = new byte[Constants.UUID_FLAG_SIZE];
+            temp = new byte[Constants.UUID_BYTES];
             in.read(temp);
-            var size = Utils.bytes2Int(temp);
-            temp = new byte[size];
+            temp = new byte[temp[0] & 0xff];
             in.read(temp);
-            var uuid = Utils.toBase64Encode(UUID.randomUUID().toString().getBytes(Constants.CHARSET)).getBytes(Constants.CHARSET);
-            Assert.assertNotEquals(new String(Utils.toBase64Decode(uuid), Constants.CHARSET),
-                    new String(Utils.toBase64Decode(temp), Constants.CHARSET));
+            temp = new byte[Constants.FILE_ID_BYTES];
+            in.read(temp);
+            Assert.assertEquals(Utils.bytes2Long(temp), param.getFileId());
         }
         Assert.assertTrue(delete(String.format("%s.dog", FILE_PATH)));
     }
@@ -418,9 +413,9 @@ public class DataEncryptTest {
         Assert.assertTrue(new DataEncrypt(param).execute());
         try (BufferedInputStream in = new BufferedInputStream(
                 new FileInputStream(String.format(String.format("%s.dog", FILE_PATH))))) {
-            var temp = new byte[Constants.MAGIC_NUMBER_SIZE];
+            var temp = new byte[Constants.MAGIC_NUMBER_BYTES];
             var len = in.read(temp);
-            Assert.assertEquals(Constants.MAGIC_NUMBER_SIZE, len);
+            Assert.assertEquals(Constants.MAGIC_NUMBER_BYTES, len);
             Assert.assertEquals(Utils.bytes2Int(temp), Constants.MAGIC_NUMBER);
         }
         Assert.assertTrue(delete(String.format("%s.dog", FILE_PATH)));

@@ -320,4 +320,29 @@ public class Utils {
     public static String getFileSuffix(String fn) {
         return fn.substring(fn.lastIndexOf("."));
     }
+
+    /**
+     * long转字节数组
+     *
+     * @param x
+     * @return
+     */
+    public static byte[] long2Bytes(long x) {
+        var buffer = ByteBuffer.allocate(8);
+        buffer.putLong(0, x);
+        return buffer.array();
+    }
+
+    /**
+     * 字节数组转long
+     *
+     * @param bytes
+     * @return
+     */
+    public static long bytes2Long(byte[] bytes) {
+        var buffer = ByteBuffer.allocate(8);
+        buffer.put(bytes, 0, bytes.length);
+        buffer.flip();
+        return buffer.getLong();
+    }
 }
