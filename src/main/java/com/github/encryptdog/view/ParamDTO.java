@@ -63,6 +63,15 @@ public class ParamDTO {
      */
     private String name;
     private IdWorker idWorker;
+    private long fileId;
+
+    public long getFileId() {
+        return fileId;
+    }
+
+    public void setFileId(long fileId) {
+        this.fileId = fileId;
+    }
 
     public IdWorker getIdWorker() {
         return idWorker;
@@ -226,6 +235,8 @@ public class ParamDTO {
                 ", onlyLocal=" + onlyLocal +
                 ", compress=" + compress +
                 ", name='" + name + '\'' +
+                ", idWorker=" + idWorker +
+                ", fileId=" + fileId +
                 '}';
     }
 }

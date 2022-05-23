@@ -13,9 +13,11 @@ import com.github.utils.Constants;
 import com.github.utils.RamdomWorker;
 import com.github.utils.SnowflakeWorker;
 import com.github.utils.Utils;
+import org.w3c.dom.ls.LSOutput;
 
 import javax.crypto.Cipher;
 import java.io.*;
+import java.nio.ByteBuffer;
 import java.util.Objects;
 import java.util.Properties;
 import java.util.zip.ZipEntry;
@@ -160,17 +162,18 @@ public class DataEncrypt extends AbstractOperationTemplate {
         var out = (BufferedOutputStream) stream;
         try {
             if (param.isOnlyLocal()) {
+                // 获取hardwareUUID
+                var hardwareUUID = Utils.toBase64Encode(Utils.getUUID()
+                        .getBytes(Constants.CHARSET)).getBytes(Constants.CHARSET);
+                out.write(new byte[]{(byte) (hardwareUUID.length & 0xff)});
+                out.write(hardwareUUID, 0, hardwareUUID.length);
                 // 获取sid
                 f_uuid = ((SnowflakeWorker) param.getIdWorker()).nextId();
-                // 将sid和硬件uuid进行拼接
-                var temp = String.format("%s&&&%s", Utils.getUUID(), f_uuid);
-                var uuid = Utils.toBase64Encode(temp.getBytes(Constants.CHARSET)).getBytes(Constants.CHARSET);
-                var size = Utils.int2Bytes(uuid.length);
-                out.write(size, 0, size.length);
-                out.write(uuid, 0, uuid.length);
+                // 记录f_uuid回查用
+                param.setFileId(f_uuid);
+                out.write(Utils.long2Bytes(f_uuid));
             } else {
-                var size = Utils.int2Bytes(0);
-                out.write(size, 0, size.length);
+                out.write(new byte[Constants.UUID_BYTES]);
             }
             out.flush();
         } catch (Throwable e) {
