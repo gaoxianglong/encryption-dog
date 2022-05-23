@@ -1,6 +1,6 @@
 <div align=center><img src="https://github.com/gaoxianglong/encryption-dog/blob/master/resources/logo.png"/></div>
 
-[![License](https://img.shields.io/badge/license-Apache%202-4EB1BA.svg)](https://www.apache.org/licenses/LICENSE-2.0.html) ![License](https://img.shields.io/badge/build-passing-brightgreen.svg) ![License](https://img.shields.io/badge/version-1.5.7--RELEASE-blue)
+[![License](https://img.shields.io/badge/license-Apache%202-4EB1BA.svg)](https://www.apache.org/licenses/LICENSE-2.0.html) ![License](https://img.shields.io/badge/build-passing-brightgreen.svg) ![License](https://img.shields.io/badge/version-1.5.8--RELEASE-blue)
 > Encryption program with high performance, high security and rich functionsm.<br/>
 > Supports binding the same physical device for file encryption and decryption.<br/>
 
@@ -9,7 +9,7 @@
 ```shell
 git clone https://github.com/gaoxianglong/encryption-dog.git
 mvn package
-alias dog = 'java -Xms512m -Xmx512m -Xmn128m -jar dog-1.5.7.jar'
+alias dog = 'java -Xms512m -Xmx512m -Xmn128m -jar dog-1.5.8.jar'
 ```
 ### use
 ```shell
@@ -20,7 +20,7 @@ Welcome to
  / _// _ \/ __/ __/ // / _ \/ __/ / _ \/ _ \/ // / _ \/ _ `/
 /___/_//_/\__/_/  \_, / .__/\__/_/\___/_//_/____/\___/\_, /
                  /___/_/                             /___/
-	version: 1.5.7-SNAPSHOT
+	version: 1.5.8-SNAPSHOT
 
 Usage: encrypt-dog [-cdehoV] -k [-k]... [-n=<name>] -s=<source file>
                    [-t=<storage path>]
@@ -133,7 +133,7 @@ $ dog -ces /Users/jiushu/Desktop/a.mp4 -k
 WARN:This operation is unsafe. Please use it with caution.
 ```shell
 # command
-alias dog = 'java -Ddog-store=true -Xms512m -Xmx512m -Xmn128m -jar dog-1.5.7.jar'
+alias dog = 'java -Ddog-store=true -Xms512m -Xmx512m -Xmn128m -jar dog-1.5.8.jar'
 # store style(secret-key to base64)
 [source]\:a.b,[source-size]\:0.02MB,[target]\:a.b.dog,[target-size]\:0.05MB=MTIzNDU2bmloYW96YXE\=
 ```
