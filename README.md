@@ -11,6 +11,11 @@ git clone https://github.com/gaoxianglong/encryption-dog.git
 mvn package
 alias dog = 'java -Xms512m -Xmx512m -Xmn128m -jar dog-1.5.8.jar'
 ```
+or
+```shell
+$ wget https://github.com/gaoxianglong/encryption-dog/releases/download/1.5.7-RELEASE/dog-1.5.7.jar
+alias dog = 'java -Xms512m -Xmx512m -Xmn128m -jar dog-1.5.7.jar'
+```
 ### use
 ```shell
 $ dog -h
