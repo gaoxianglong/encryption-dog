@@ -15,9 +15,11 @@
  */
 package com.github.encryptdog.view;
 
+import com.github.utils.Constants;
 import com.github.utils.IdWorker;
 
 import java.util.Arrays;
+import java.util.Objects;
 
 /**
  * @author gao_xianglong@sina.com
@@ -122,7 +124,11 @@ public class ParamDTO {
      * @param targetPath value to be assigned to property targetPath
      */
     public void setTargetPath(String targetPath) {
-        this.targetPath = targetPath;
+        if (Objects.isNull(targetPath)) {
+            return;
+        }
+        this.targetPath = !targetPath.endsWith(Constants.SEPARATOR) ?
+                String.format("%s%s", targetPath, Constants.SEPARATOR) : targetPath;
     }
 
     /**
