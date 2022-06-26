@@ -127,12 +127,6 @@ public class Console implements Runnable {
         }
     }
 
-    public static void main(String[] args) {
-        ParamDTO paramDTO = new ParamDTO();
-        paramDTO.setTargetPath("aa//");
-        System.out.println(paramDTO.getTargetPath());
-    }
-
     private void validate() throws OperationException {
         if (Objects.isNull(secretKey) || secretKey.length <= 0) {
             throw new OperationException("Secret-key cannot be empty");
