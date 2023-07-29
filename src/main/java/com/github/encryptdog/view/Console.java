@@ -40,72 +40,95 @@ public class Console implements Runnable {
     /**
      * 需要加/解密的目标文件
      */
-    @CommandLine.Option(names = {"-s", "--source-file"}, paramLabel = "<source file>", required = true, description = "Target files that need to be encrypt and decrypt,Wildcards are supported.")
-    private String sourceFile;
+    @CommandLine.Option(names = { "-s",
+                                  "--source-file" }, paramLabel = "<source file>", required = true, description = "Target files that need to be encrypt and decrypt,Wildcards are supported.")
+    private String  sourceFile;
+
+    /**
+     * 是否自动加/解密子目录,非必填选项,缺省不自动加/解密子目录下的文件
+     */
+    @CommandLine.Option(names = { "-b",
+                                  "--sub-directory" }, paramLabel = "<sub directory>", description = "Automatically encrypt and decrypt files in subdirectories,default to false.")
+    private boolean subdirectory;
 
     /**
      * 加/解密内容的转储目录,非必填选项，缺省存储在桌面
      */
-    @CommandLine.Option(names = {"-t", "--target-path"}, paramLabel = "<storage path>", description = "Storage path after operation,The default is stored in the user home directory.")
-    private String targetPath = Constants.DEFAULT_USER_DESKTOP_PATH;
+    @CommandLine.Option(names = { "-t",
+                                  "--target-path" }, paramLabel = "<storage path>", description = "Storage path after operation,The default is stored in the user home directory.")
+    private String  targetPath = Constants.DEFAULT_USER_DESKTOP_PATH;
 
     /**
      * 秘钥,采用密码选项，不在控制台回显密码
      */
-    @CommandLine.Option(names = {"-k", "--secret-key"}, paramLabel = "<secret key>", required = true, description = "Both encrypt and decrypt require the same secret key", interactive = true)
-    private char[] secretKey;
+    @CommandLine.Option(names = { "-k",
+                                  "--secret-key" }, paramLabel = "<secret key>", required = true, description = "Both encrypt and decrypt require the same secret key", interactive = true)
+    private char[]  secretKey;
 
     /**
      * true为加密,false为解密
      */
-    @CommandLine.Option(names = {"-e", "--encrypt"}, description = "The default is decryption mode.")
+    @CommandLine.Option(names = { "-e", "--encrypt" }, description = "The default is decryption mode.")
     private boolean encrypt;
 
     /**
      * 加/解密操作结束后是否删除源文件
      */
-    @CommandLine.Option(names = {"-d", "--delete"}, description = "The source file is not deleted after the default operation.")
+    @CommandLine.Option(names = { "-d", "--delete" }, description = "The source file is not deleted after the default operation.")
     private boolean delete;
 
     /**
      * 仅限加/解密操作在同一台物理设备上,最高安全性
      */
-    @CommandLine.Option(names = {"-o", "--only-local"}, description = "Encryption and decryption operations can only be performed on the same physical device.Only Apple Mac is supported")
+    @CommandLine.Option(names = { "-o",
+                                  "--only-local" }, description = "Encryption and decryption operations can only be performed on the same physical device.Only Apple Mac is supported")
     private boolean onlyLocal;
 
     /**
      * 是否在加密操作完成后执行压缩
      */
-    @CommandLine.Option(names = {"-c", "--compress"}, description = "Compression is not enabled by default,Turning on compression will increase execution time.")
+    @CommandLine.Option(names = { "-c", "--compress" }, description = "Compression is not enabled by default,Turning on compression will increase execution time.")
     private boolean compress;
 
     /**
      * 显示设置目标文件名称
      */
-    @CommandLine.Option(names = {"-n", "--set-name"}, description = "Set the name of the target file.")
-    private String name;
+    @CommandLine.Option(names = { "-n", "--set-name" }, description = "Set the name of the target file.")
+    private String  name;
 
     @Override
     public void run() {
         try {
             validate();
             // double check pwd
-            checkSecretKey();
-            ParamDTO param = new ParamDTO();
-            param.setTargetPath(targetPath);
-            param.setDelete(new DelSource().deleteConfirmation(delete));
-            param.setEncrypt(encrypt);
-            param.setSecretKey(secretKey);
-            param.setStore(Boolean.parseBoolean(System.getProperty(Constants.STORE)));
-            param.setOnlyLocal(Utils.isMac() ? onlyLocal : false);
-            param.setCompress(compress);
-            param.setName(name);
-            param.setIdWorker(new SnowflakeWorker(Constants.IDC_ID, Constants.WORKER_ID));
+            //checkSecretKey();
+            // 参数组装
+            ParamDTO param = build();
             var aot = encrypt ? new DataEncrypt(param) : new DateDecrypt(param);
             new NameParser().parse(param, sourceFile, aot, false);
         } catch (DogException t) {
             Utils.printErrMsg(t.getMessage(), encrypt);
         }
+    }
+
+    /**
+     * 参数组装
+     * @return
+     * @throws OperationException
+     */
+    private ParamDTO build() throws OperationException {
+        ParamDTO param = new ParamDTO();
+        param.setTargetPath(targetPath);
+        param.setDelete(new DelSource().deleteConfirmation(delete));
+        param.setEncrypt(encrypt);
+        param.setSecretKey(secretKey);
+        param.setStore(Boolean.parseBoolean(System.getProperty(Constants.STORE)));
+        param.setOnlyLocal(Utils.isMac() ? onlyLocal : false);
+        param.setCompress(compress);
+        param.setName(name);
+        param.setSubdirectory(subdirectory);
+        param.setIdWorker(new SnowflakeWorker(Constants.IDC_ID, Constants.WORKER_ID));
+        return param;
     }
 
     /**
@@ -141,15 +164,7 @@ public class Console implements Runnable {
 
     @Override
     public String toString() {
-        return "Console{" +
-                "sourceFile='" + sourceFile + '\'' +
-                ", targetPath='" + targetPath + '\'' +
-                ", secretKey=" + Arrays.toString(secretKey) +
-                ", encrypt=" + encrypt +
-                ", delete=" + delete +
-                ", onlyLocal=" + onlyLocal +
-                ", compress=" + compress +
-                ", name='" + name + '\'' +
-                '}';
+        return "Console{" + "sourceFile='" + sourceFile + '\'' + ", targetPath='" + targetPath + '\'' + ", secretKey=" + Arrays.toString(secretKey) + ", encrypt=" + encrypt
+               + ", delete=" + delete + ", onlyLocal=" + onlyLocal + ", compress=" + compress + ", name='" + name + '\'' + '}';
     }
 }

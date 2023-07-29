@@ -33,7 +33,7 @@ public class NameParser {
      * @throws NameParseException
      */
     public boolean parse(ParamDTO param, String sourceFile, AbstractOperationTemplate aot, boolean debug) throws NameParseException {
-        var sfs = parseSourceFileName(sourceFile);
+        var sfs = parseSourceFileName(sourceFile, param.isSubdirectory());
         operationConfirmation(sfs, debug);
         Tooltips.print(Tooltips.Number._3);
         final var i = new AtomicInteger();
@@ -91,35 +91,33 @@ public class NameParser {
 
     /**
      * 解析源文件名称
-     *
      * @param sf
+     * @param subdirectory
      * @return
      * @throws NameParseException
      */
-    private List<String> parseSourceFileName(String sf) throws NameParseException {
+    private List<String> parseSourceFileName(String sf, boolean subdirectory) throws NameParseException {
         var result = new ArrayList<String>();
+
+        // 通配符相邻去重
         var nsf = duplicateRemoval(sf);
         if (Objects.nonNull(nsf)) {
             var t1 = nsf.split(Constants.SEPARATOR);
             var t2 = t1[t1.length - 1];
+
+            // 解析出原目标目录
             var t3 = nsf.substring(0, nsf.indexOf(t2));
             nsf = String.format("%s%s%s", "^", nsf, "$");
-            nsf = nsf.replaceAll("\\*\\.", "*\\\\.").
-                    replaceAll("\\*", Constants.WILDCARD_MATCHING_RULE);
+
+            // 解析出匹配规则
+            nsf = nsf.replaceAll("\\*\\.", "*\\\\.").replaceAll("\\*", Constants.WILDCARD_MATCHING_RULE);
             var file = new File(t3);
             if (!file.exists()) {
                 throw new NameParseException(String.format("directory %s does not exist", t3));
             }
-            for (var f : file.listFiles()) {
-                if (!f.isFile()) {
-                    continue;
-                }
-                var path = f.getPath();
-                if (path.matches(nsf)) {
-                    // 将满足通配符规则的都添加到集合中
-                    result.add(path);
-                }
-            }
+
+            // 遍历目标目录以及子目录下的所有文件
+            findAllFiles(file, result, nsf, subdirectory);
             if (result.isEmpty()) {
                 throw new NameParseException(String.format("file %s does not exist", sf));
             }
@@ -127,6 +125,47 @@ public class NameParser {
             result.add(sf);
         }
         return result;
+    }
+
+    /**
+     * 遍历目标目录以及子目录下的所有文件
+     * @param file
+     * @param list
+     * @param nsf
+     * @param subdirectory
+     */
+    private void findAllFiles(File file, List<String> list, String nsf, boolean subdirectory) {
+        for (var f : file.listFiles()) {
+            if (!f.isFile()) {
+                if (subdirectory) {
+                    // 重设nsf匹配规则
+                    var newNsf = resetNsf(nsf, f.getName());
+                    findAllFiles(f, list, newNsf, subdirectory);
+                }
+                continue;
+            }
+            var path = f.getPath();
+            if (path.matches(nsf)) {
+                // 将满足通配符规则的都添加到集合中
+                list.add(path);
+            }
+        }
+    }
+
+    /**
+     * 重设nsf匹配规则
+     * @param nsf
+     * @param name
+     * @return
+     */
+    private String resetNsf(String nsf, String name) {
+        // 解析出最后的匹配规则,子目录匹配也采用此规则
+        var rule = nsf.substring(nsf.lastIndexOf(Constants.SEPARATOR) + 1);
+        // 去掉原nsf的后缀规则
+        nsf = nsf.substring(0, nsf.lastIndexOf(rule) - 1);
+
+        // 拼接格式为nsf+path+rule,before:/Users/johngao/Desktop/*dog after:/Users/johngao/Desktop/test/*dog
+        return String.format("%s%s%s%s%s", nsf, Constants.SEPARATOR, name, Constants.SEPARATOR, rule);
     }
 
     /**

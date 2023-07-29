@@ -31,41 +31,61 @@ public class ParamDTO {
      * 需要加/解密的目标文件
      */
     private String sourceFile;
+
+    /**
+     * 是否自动加/解密子目录,非必填选项,缺省不自动加/解密子目录下的文件
+     * @return
+     */
+    public boolean isSubdirectory() {
+        return subdirectory;
+    }
+
+    /**
+     * 是否自动加/解密子目录下的文件
+     */
+    private boolean  subdirectory;
+
     /**
      * 加/解密内容的转储目录
      */
-    private String targetPath;
+    private String   targetPath;
+
     /**
      * 秘钥,采用密码选项，不在控制台回显密码
      */
-    private char[] secretKey;
+    private char[]   secretKey;
+
     /**
      * true为加密,false为解密
      */
-    private boolean encrypt;
+    private boolean  encrypt;
+
     /**
      * 加/解密操作结束后是否删除源文件
      */
-    private boolean delete;
+    private boolean  delete;
+
     /**
      * 秘钥是否转储
      */
-    private boolean store;
+    private boolean  store;
+
     /**
      * 是否允许加/解密操作只能在同一物理设备上执行
      */
-    private boolean onlyLocal;
+    private boolean  onlyLocal;
 
     /**
      * 是否在加密操作完成后执行压缩
      */
-    private boolean compress;
+    private boolean  compress;
+
     /**
      * 显示设置目标文件的名称
      */
-    private String name;
+    private String   name;
     private IdWorker idWorker;
-    private long fileId;
+    private long     fileId;
 
     public long getFileId() {
         return fileId;
@@ -127,8 +147,7 @@ public class ParamDTO {
         if (Objects.isNull(targetPath)) {
             return;
         }
-        this.targetPath = !targetPath.endsWith(Constants.SEPARATOR) ?
-                String.format("%s%s", targetPath, Constants.SEPARATOR) : targetPath;
+        this.targetPath = !targetPath.endsWith(Constants.SEPARATOR) ? String.format("%s%s", targetPath, Constants.SEPARATOR) : targetPath;
     }
 
     /**
@@ -229,20 +248,18 @@ public class ParamDTO {
         this.compress = compress;
     }
 
+    public void setSubdirectory(boolean subdirectory) {
+        this.subdirectory = subdirectory;
+    }
+
+    public boolean isCompress() {
+        return compress;
+    }
+
     @Override
     public String toString() {
-        return "ParamDTO{" +
-                "sourceFile='" + sourceFile + '\'' +
-                ", targetPath='" + targetPath + '\'' +
-                ", secretKey=" + Arrays.toString(secretKey) +
-                ", encrypt=" + encrypt +
-                ", delete=" + delete +
-                ", store=" + store +
-                ", onlyLocal=" + onlyLocal +
-                ", compress=" + compress +
-                ", name='" + name + '\'' +
-                ", idWorker=" + idWorker +
-                ", fileId=" + fileId +
-                '}';
+        return "ParamDTO{" + "sourceFile='" + sourceFile + '\'' + ", subdirectory=" + subdirectory + ", targetPath='" + targetPath + '\'' + ", secretKey="
+               + Arrays.toString(secretKey) + ", encrypt=" + encrypt + ", delete=" + delete + ", store=" + store + ", onlyLocal=" + onlyLocal + ", compress=" + compress
+               + ", name='" + name + '\'' + ", idWorker=" + idWorker + ", fileId=" + fileId + '}';
     }
 }

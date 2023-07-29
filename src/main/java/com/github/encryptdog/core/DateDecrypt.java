@@ -79,8 +79,7 @@ public class DateDecrypt extends AbstractOperationTemplate {
 
     @Override
     protected int getDefaultSize(long available) {
-        return available < Constants.DEFAULT_DECRYPT_CONTENT_SIZE ?
-                (int) available : Constants.DEFAULT_DECRYPT_CONTENT_SIZE;
+        return available < Constants.DEFAULT_DECRYPT_CONTENT_SIZE ? (int) available : Constants.DEFAULT_DECRYPT_CONTENT_SIZE;
     }
 
     @Override
@@ -116,8 +115,7 @@ public class DateDecrypt extends AbstractOperationTemplate {
     }
 
     @Override
-    protected void write(byte[] content, int defaultSize, long available,
-                         BufferedInputStream in, BufferedOutputStream out) throws OperationException {
+    protected void write(byte[] content, int defaultSize, long available, BufferedInputStream in, BufferedOutputStream out) throws OperationException {
         var len = -1;
         long count = len;
         // 显示预计耗时标识
@@ -137,8 +135,7 @@ public class DateDecrypt extends AbstractOperationTemplate {
                 // 输出加密的预计耗时
                 if (visibleFlag) {
                     var end = System.currentTimeMillis();
-                    Utils.printTimeConsuming(available, (double) (end - begin) / 1000,
-                            Constants.DEFAULT_DECRYPT_CONTENT_SIZE);
+                    Utils.printTimeConsuming(available, (double) (end - begin) / 1000, Constants.DEFAULT_DECRYPT_CONTENT_SIZE);
                     visibleFlag = false;
                 }
                 // 输出进度条

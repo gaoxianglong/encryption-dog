@@ -163,11 +163,11 @@ public class Utils {
         String uuid = null;
         var os = getOSName();
         try {
-//            // 优先取HardwareUUID,失败则去MAC ID
-//            uuid = getHardwareUUID();
-//            if (Objects.isNull(uuid)) {
-//                uuid = getMacAddress();
-//            }
+            //            // 优先取HardwareUUID,失败则去MAC ID
+            //            uuid = getHardwareUUID();
+            //            if (Objects.isNull(uuid)) {
+            //                uuid = getMacAddress();
+            //            }
             // --only-local命令仅支持mac
             uuid = getHardwareUUID();
         } catch (Throwable e) {
@@ -263,9 +263,7 @@ public class Utils {
         time -= hour * Constants.HOUR;
         var min = time / Constants.MINUTE;
         time -= min * Constants.MINUTE;
-        result.append(String.format("%02d", hour)).append(":").
-                append(String.format("%02d", min)).append(":").
-                append(String.format("%02d", time));
+        result.append(String.format("%02d", hour)).append(":").append(String.format("%02d", min)).append(":").append(String.format("%02d", time));
         return result.toString();
     }
 

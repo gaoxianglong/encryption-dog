@@ -1,6 +1,6 @@
 <div align=center><img src="https://github.com/gaoxianglong/encryption-dog/blob/master/resources/logo.png"/></div>
 
-[![License](https://img.shields.io/badge/license-Apache%202-4EB1BA.svg)](https://www.apache.org/licenses/LICENSE-2.0.html) ![License](https://img.shields.io/badge/build-passing-brightgreen.svg) ![License](https://img.shields.io/badge/version-1.5.8--RELEASE-blue)
+[![License](https://img.shields.io/badge/license-Apache%202-4EB1BA.svg)](https://www.apache.org/licenses/LICENSE-2.0.html) ![License](https://img.shields.io/badge/build-passing-brightgreen.svg) ![License](https://img.shields.io/badge/version-1.5.9--RELEASE-blue)
 > Encryption program with high performance, high security and rich functionsm.<br/>
 > Supports binding the same physical device for file encryption and decryption.<br/>
 
@@ -9,7 +9,7 @@
 ```shell
 git clone https://github.com/gaoxianglong/encryption-dog.git
 mvn package
-alias dog = 'java -Xms512m -Xmx512m -Xmn128m -jar dog-1.5.8.jar'
+alias dog = 'java -Xms512m -Xmx512m -Xmn128m -jar dog-1.5.9.jar'
 ```
 or
 ```shell
@@ -25,10 +25,12 @@ Welcome to
  / _// _ \/ __/ __/ // / _ \/ __/ / _ \/ _ \/ // / _ \/ _ `/
 /___/_//_/\__/_/  \_, / .__/\__/_/\___/_//_/____/\___/\_, /
                  /___/_/                             /___/
-	version: 1.5.8-SNAPSHOT
+	version: 1.5.9-RELEASE
 
-Usage: encrypt-dog [-cdehoV] -k [-k]... [-n=<name>] -s=<source file>
+Usage: encrypt-dog [-bcdehoV] -k [-k]... [-n=<name>] -s=<source file>
                    [-t=<storage path>]
+  -b, --sub-directory     Automatically encrypt and decrypt files in
+                            subdirectories,default to false.
   -c, --compress          Compression is not enabled by default,Turning on
                             compression will increase execution time.
   -d, --delete            The source file is not deleted after the default
@@ -67,7 +69,7 @@ Please wait...
 [Encrypt file number]:1/1
 [Source path]:/Users/jiushu/Desktop/a.mp4
 [Estimated time]:00:00:06
-[>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>] 100%
+[>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>] 100%
 [Encrypt result]:success
 [Time consuming]:00:00:05,[Before size]:107.22MB,[After size]:142.96MB
 [Target path]:/Users/jiushu/Desktop/a.mp4.dog
@@ -84,7 +86,7 @@ Please wait...
 [Decrypt file number]:1/1
 [Source path]:/Users/jiushu/Desktop/a.mp4.dog
 [Estimated time]:00:00:06
-[>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>] 100%
+[>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>] 100%
 [Decrypt result]:success
 [Time consuming]:00:00:05,[Before size]:142.96MB,[After size]:107.22MB
 [Target path]:/Users/jiushu/Desktop/a.mp4
@@ -138,7 +140,7 @@ $ dog -ces /Users/jiushu/Desktop/a.mp4 -k
 WARN:This operation is unsafe. Please use it with caution.
 ```shell
 # command
-alias dog = 'java -Ddog-store=true -Xms512m -Xmx512m -Xmn128m -jar dog-1.5.8.jar'
+alias dog = 'java -Ddog-store=true -Xms512m -Xmx512m -Xmn128m -jar dog-1.5.9.jar'
 # store style(secret-key to base64)
 [source]\:a.b,[source-size]\:0.02MB,[target]\:a.b.dog,[target-size]\:0.05MB=MTIzNDU2bmloYW96YXE\=
 ```

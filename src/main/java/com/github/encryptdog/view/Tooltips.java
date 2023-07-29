@@ -32,34 +32,34 @@ public class Tooltips {
             case _1 -> print("Source file list:");
             case _2 -> print("Please confirm whether it is these files [Y/N]");
             case _3 -> print("Please wait...\n");
-            case _4 -> print(String.format("[%s file number]:%s/%s\n[Source path]:%s",
-                    (boolean) str[0] ? "Encrypt" : "Decrypt", str[1], str[2], str[3]));
-//            case _5 -> print(String.format("\n[%s result]:success\n[Time-consuming]:%.2f%s," +
-//                            "[Before size]:%.2fMB,[After size]:%.2fMB\n[Target path]:%s",
-//                    (boolean) str[0] ? "Encrypt" : "Decrypt",
-//                    str[1], (double) str[1] >= 1 ? "s" : "ms", str[2], str[3], str[4]));
-            case _5 -> print(String.format("\n[Result]:success\n[Time consuming]:%s," +
-                            "[Before size]:%s,[After size]:%s\n[Target path]:%s",
-                    str[0], str[1], str[2], str[3]));
-//            case _6 -> print(String.format(">>> Operation complete <<<\n[Total time]:%.2f%s\n[Results]:" +
-//                            "total files:%s,successes:%s,failures:%s",
-//                    str[0], (double) str[0] >= 1 ? "s" : "ms", str[1], (int) str[1] - (int) str[2], str[2]));
-            case _6 -> print(String.format(">>> Operation complete <<<\n[Total time]:%s\n[Results]:" +
-                            "total files:%s,successes:%s,failures:%s",
-                    str[0], str[1], (int) str[1] - (int) str[2], str[2]));
+            case _4 -> print(String.format("[%s file number]:%s/%s\n[Source path]:%s", (boolean) str[0] ? "Encrypt" : "Decrypt", str[1], str[2], str[3]));
+            //            case _5 -> print(String.format("\n[%s result]:success\n[Time-consuming]:%.2f%s," +
+            //                            "[Before size]:%.2fMB,[After size]:%.2fMB\n[Target path]:%s",
+            //                    (boolean) str[0] ? "Encrypt" : "Decrypt",
+            //                    str[1], (double) str[1] >= 1 ? "s" : "ms", str[2], str[3], str[4]));
+            case _5 -> print(String.format("\n[Result]:success\n[Time consuming]:%s," + "[Before size]:%s,[After size]:%s\n[Target path]:%s", str[0], str[1], str[2], str[3]));
+            //            case _6 -> print(String.format(">>> Operation complete <<<\n[Total time]:%.2f%s\n[Results]:" +
+            //                            "total files:%s,successes:%s,failures:%s",
+            //                    str[0], (double) str[0] >= 1 ? "s" : "ms", str[1], (int) str[1] - (int) str[2], str[2]));
+            case _6 -> print(String.format(">>> Operation complete <<<\n[Total time]:%s\n[Results]:" + "total files:%s,successes:%s,failures:%s", str[0], str[1],
+                (int) str[1] - (int) str[2], str[2]));
             case _7 -> print(String.format("[SecretKey path]:%s", Constants.STORE_SK_PATH));
             case _8 -> print("Please confirm whether the source file needs to be deleted？[Y/N]");
             case _9 -> print("\nFile compression in progress...");
         }
     }
 
+    /**
+     * 输出进度条
+     * @param value
+     */
     public static void printSchedule(double value) {
         var percent = (int) value;
-        var length = Constants.TOTLE_LENGTH;
+        var totleLength = Constants.TOTLE_LENGTH;
         // 清空前一次的控制台输出
-//        for (var i = 0; i < length + 10; i++) {
-//            System.out.print("\b");
-//        }
+        //        for (var i = 0; i < length + 10; i++) {
+        //            System.out.print("\b");
+        //        }
         // 使用\r替代\b
         System.out.print("\r");
         System.out.print("[");
@@ -69,7 +69,7 @@ public class Tooltips {
         }
         System.out.print(">");
         // 空位补空格占位
-        for (var i = 0; i < length - percent; i++) {
+        for (var i = 0; i < totleLength - percent; i++) {
             System.out.print(" ");
         }
         System.out.print("]");
@@ -81,6 +81,6 @@ public class Tooltips {
     }
 
     public enum Number {
-        _1, _2, _3, _4, _5, _6, _7, _8, _9
+                        _1, _2, _3, _4, _5, _6, _7, _8, _9
     }
 }

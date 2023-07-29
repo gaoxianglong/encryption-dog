@@ -24,11 +24,11 @@ import java.security.SecureRandom;
  */
 public abstract class AbstractOperationTemplate {
     protected ParamDTO param;
-    protected String targetPath;
+    protected String   targetPath;
     /**
      * 文件的身份ID，--only-local命令下使用
      */
-    protected Long f_uuid;
+    protected Long     f_uuid;
 
     public AbstractOperationTemplate(ParamDTO param) {
         this.param = param;
@@ -47,8 +47,7 @@ public abstract class AbstractOperationTemplate {
         // 加/解密文件的后缀检测与拼接
         fileName = checkSourceFile(file, fileName);
         targetPath = fileExists(String.format("%s%s", param.getTargetPath(), fileName));
-        try (var in = new BufferedInputStream(new FileInputStream(param.getSourceFile()));
-             var out = new BufferedOutputStream(new FileOutputStream(targetPath))) {
+        try (var in = new BufferedInputStream(new FileInputStream(param.getSourceFile())); var out = new BufferedOutputStream(new FileOutputStream(targetPath))) {
             // 文件总大小，计算百分比进度条时需要使用
             var available = file.length();
             if (available < 1) {
@@ -115,8 +114,7 @@ public abstract class AbstractOperationTemplate {
         }
         var suffix = Utils.getFileSuffix(fp);
         // 格式为name-时间戳.dog
-        return String.format("%s-%s%s", Utils.cancelFileSuffix(fp, 1),
-                System.nanoTime(), suffix);
+        return String.format("%s-%s%s", Utils.cancelFileSuffix(fp, 1), System.nanoTime(), suffix);
     }
 
     /**
@@ -180,8 +178,7 @@ public abstract class AbstractOperationTemplate {
      * @param out
      * @throws OperationException
      */
-    protected abstract void write(byte[] content, int defaultSize, long available,
-                                  BufferedInputStream in, BufferedOutputStream out) throws OperationException;
+    protected abstract void write(byte[] content, int defaultSize, long available, BufferedInputStream in, BufferedOutputStream out) throws OperationException;
 
     /**
      * 拼接目标文件全限定名

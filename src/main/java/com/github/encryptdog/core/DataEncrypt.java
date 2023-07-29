@@ -153,8 +153,7 @@ public class DataEncrypt extends AbstractOperationTemplate {
 
     @Override
     protected int getDefaultSize(long available) {
-        return available < Constants.DEFAULT_ENCRYPT_CONTENT_SIZE ?
-                (int) available : Constants.DEFAULT_ENCRYPT_CONTENT_SIZE;
+        return available < Constants.DEFAULT_ENCRYPT_CONTENT_SIZE ? (int) available : Constants.DEFAULT_ENCRYPT_CONTENT_SIZE;
     }
 
     @Override
@@ -163,9 +162,8 @@ public class DataEncrypt extends AbstractOperationTemplate {
         try {
             if (param.isOnlyLocal()) {
                 // 获取hardwareUUID
-                var hardwareUUID = Utils.toBase64Encode(Utils.getUUID()
-                        .getBytes(Constants.CHARSET)).getBytes(Constants.CHARSET);
-                out.write(new byte[]{(byte) (hardwareUUID.length & 0xff)});
+                var hardwareUUID = Utils.toBase64Encode(Utils.getUUID().getBytes(Constants.CHARSET)).getBytes(Constants.CHARSET);
+                out.write(new byte[] { (byte) (hardwareUUID.length & 0xff) });
                 out.write(hardwareUUID, 0, hardwareUUID.length);
                 // 获取sid
                 f_uuid = ((SnowflakeWorker) param.getIdWorker()).nextId();
@@ -184,8 +182,7 @@ public class DataEncrypt extends AbstractOperationTemplate {
     @Override
     protected void compress(String source, String target) throws OperationException {
         Tooltips.print(Tooltips.Number._9);
-        try (var in = new BufferedInputStream(new FileInputStream(source));
-             var out = new ZipOutputStream(new BufferedOutputStream(new FileOutputStream(target)))) {
+        try (var in = new BufferedInputStream(new FileInputStream(source)); var out = new ZipOutputStream(new BufferedOutputStream(new FileOutputStream(target)))) {
             out.putNextEntry(new ZipEntry(source.substring(source.lastIndexOf(Constants.SEPARATOR) + 1)));
             var available = new File(source).length();
             var content = new byte[Constants.DEFAULT_ENCRYPT_CONTENT_SIZE];
@@ -206,8 +203,7 @@ public class DataEncrypt extends AbstractOperationTemplate {
     }
 
     @Override
-    protected void write(byte[] content, int defaultSize, long available,
-                         BufferedInputStream in, BufferedOutputStream out) throws OperationException {
+    protected void write(byte[] content, int defaultSize, long available, BufferedInputStream in, BufferedOutputStream out) throws OperationException {
         var len = -1;
         long count = len;
         // 显示预计耗时标识
@@ -227,8 +223,7 @@ public class DataEncrypt extends AbstractOperationTemplate {
                 // 输出加密的预计耗时
                 if (visibleFlag) {
                     var end = System.currentTimeMillis();
-                    Utils.printTimeConsuming(available, (double) (end - begin) / 1000,
-                            Constants.DEFAULT_ENCRYPT_CONTENT_SIZE);
+                    Utils.printTimeConsuming(available, (double) (end - begin) / 1000, Constants.DEFAULT_ENCRYPT_CONTENT_SIZE);
                     visibleFlag = false;
                 }
                 // 输出进度条
@@ -248,8 +243,7 @@ public class DataEncrypt extends AbstractOperationTemplate {
         var suffix = Utils.getFileSuffix(dn);
         var n = param.getName();
         // 源文件后缀拼接.dog表示为加密文件
-        return String.format("%s%s", Objects.isNull(n) ? dn : String.format("%s%s", n, suffix),
-                Constants.DEFAULT_SUFFIX);
+        return String.format("%s%s", Objects.isNull(n) ? dn : String.format("%s%s", n, suffix), Constants.DEFAULT_SUFFIX);
     }
 
     /**

@@ -50,11 +50,10 @@ public class StoreUserSecretKey {
         try (var in = new BufferedReader(new FileReader(Constants.STORE_SK_PATH))) {
             var properties = new Properties();
             properties.load(in);
-            var key = String.format("[source]:%s,[source-size]:%s," +
-                    "[target]:%s,[target-size]:%s", s, ss, t, ts);
+            var key = String.format("[source]:%s,[source-size]:%s," + "[target]:%s,[target-size]:%s", s, ss, t, ts);
             properties.setProperty(key, Utils.toBase64Encode(new String(sk).getBytes(Constants.CHARSET)));
             //不再进行追加内容，避免重复
-//          out = new BufferedWriter(new FileWriter(Constants.STORE_SK_PATH, true));
+            //          out = new BufferedWriter(new FileWriter(Constants.STORE_SK_PATH, true));
             out = new BufferedWriter(new FileWriter(Constants.STORE_SK_PATH));
             // 记录转储日志
             properties.store(out, null);
