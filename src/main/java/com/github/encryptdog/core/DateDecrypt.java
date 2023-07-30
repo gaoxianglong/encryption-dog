@@ -57,10 +57,10 @@ public class DateDecrypt extends AbstractOperationTemplate {
     @Override
     protected void print(long available, long begin) throws OperationException {
         var beforeSize = Utils.capacityFormat(available);
-        var afterSize = Utils.capacityFormat(new File(targetPath).length());
+        var afterSize = Utils.capacityFormat(new File(targetFile).length());
         var end = System.currentTimeMillis();
         var tc = Utils.timeFormat((end - begin) / 1000);
-        Tooltips.print(Tooltips.Number._5, tc, beforeSize, afterSize, targetPath);
+        Tooltips.print(Tooltips.Number._5, tc, beforeSize, afterSize, targetFile);
     }
 
     @Override

@@ -30,15 +30,7 @@ public class ParamDTO {
     /**
      * 需要加/解密的目标文件
      */
-    private String sourceFile;
-
-    /**
-     * 是否自动加/解密子目录,非必填选项,缺省不自动加/解密子目录下的文件
-     * @return
-     */
-    public boolean isSubdirectory() {
-        return subdirectory;
-    }
+    private String   sourceFile;
 
     /**
      * 是否自动加/解密子目录下的文件
@@ -86,6 +78,14 @@ public class ParamDTO {
     private String   name;
     private IdWorker idWorker;
     private long     fileId;
+
+    /**
+     * 是否自动加/解密子目录,非必填选项,缺省不自动加/解密子目录下的文件
+     * @return
+     */
+    public boolean isSubdirectory() {
+        return subdirectory;
+    }
 
     public long getFileId() {
         return fileId;

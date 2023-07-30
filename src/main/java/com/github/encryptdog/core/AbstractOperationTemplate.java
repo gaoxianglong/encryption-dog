@@ -15,6 +15,7 @@ import javax.crypto.KeyGenerator;
 import javax.crypto.spec.SecretKeySpec;
 import java.io.*;
 import java.security.SecureRandom;
+import java.util.Objects;
 
 /**
  * 数据加/解密模板抽象类
@@ -24,7 +25,12 @@ import java.security.SecureRandom;
  */
 public abstract class AbstractOperationTemplate {
     protected ParamDTO param;
-    protected String   targetPath;
+
+    /**
+     * 目标文件
+     */
+    protected String   targetFile;
+
     /**
      * 文件的身份ID，--only-local命令下使用
      */
@@ -46,8 +52,11 @@ public abstract class AbstractOperationTemplate {
         var isEncrypt = param.isEncrypt();
         // 加/解密文件的后缀检测与拼接
         fileName = checkSourceFile(file, fileName);
-        targetPath = fileExists(String.format("%s%s", param.getTargetPath(), fileName));
-        try (var in = new BufferedInputStream(new FileInputStream(param.getSourceFile())); var out = new BufferedOutputStream(new FileOutputStream(targetPath))) {
+
+        // 获取目标路径
+        var targetPath = getTargerPath(file.getParent());
+        targetFile = fileExists(String.format("%s%s", targetPath, fileName));
+        try (var in = new BufferedInputStream(new FileInputStream(param.getSourceFile())); var out = new BufferedOutputStream(new FileOutputStream(targetFile))) {
             // 文件总大小，计算百分比进度条时需要使用
             var available = file.length();
             if (available < 1) {
@@ -74,7 +83,7 @@ public abstract class AbstractOperationTemplate {
         } finally {
             if (!result) {
                 // 无论加解密是否成功,目标文件已经提前创建，如果操作失败则删除目标文件
-                Utils.deleteFile(targetPath);
+                Utils.deleteFile(targetFile);
             }
             System.out.println();
         }
@@ -102,8 +111,20 @@ public abstract class AbstractOperationTemplate {
     }
 
     /**
+     * 获取目标存储目录
+     * @param sp
+     * @return
+     */
+    private String getTargerPath(String sp) {
+        var targerPath = param.getTargetPath();
+        if (Objects.isNull(targerPath) || targerPath.trim().length() < 1) {
+            targerPath = String.format("%s%s", sp, Constants.SEPARATOR);
+        }
+        return targerPath;
+    }
+
+    /**
      * 检查目标文件是否存在，如果已存在则变更目标文件名称避免数据覆盖
-     *
      * @param fp
      * @return
      */

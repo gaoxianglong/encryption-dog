@@ -52,11 +52,12 @@ public class Console implements Runnable {
     private boolean subdirectory;
 
     /**
-     * 加/解密内容的转储目录,非必填选项，缺省存储在桌面
+     * 加/解密内容的转储目录,非必填选项，缺省存储在原目录下
      */
     @CommandLine.Option(names = { "-t",
-                                  "--target-path" }, paramLabel = "<storage path>", description = "Storage path after operation,The default is stored in the user home directory.")
-    private String  targetPath = Constants.DEFAULT_USER_DESKTOP_PATH;
+                                  "--target-path" }, paramLabel = "<storage path>", description = "The storage path after the operation is stored in the original path by default.")
+    //    private String  targetPath = Constants.DEFAULT_USER_DESKTOP_PATH;
+    private String  targetPath;
 
     /**
      * 秘钥,采用密码选项，不在控制台回显密码
@@ -101,7 +102,7 @@ public class Console implements Runnable {
         try {
             validate();
             // double check pwd
-            //checkSecretKey();
+            checkSecretKey();
             // 参数组装
             ParamDTO param = build();
             var aot = encrypt ? new DataEncrypt(param) : new DateDecrypt(param);

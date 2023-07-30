@@ -13,11 +13,9 @@ import com.github.utils.Constants;
 import com.github.utils.RamdomWorker;
 import com.github.utils.SnowflakeWorker;
 import com.github.utils.Utils;
-import org.w3c.dom.ls.LSOutput;
 
 import javax.crypto.Cipher;
 import java.io.*;
-import java.nio.ByteBuffer;
 import java.util.Objects;
 import java.util.Properties;
 import java.util.zip.ZipEntry;
@@ -75,7 +73,7 @@ public class DataEncrypt extends AbstractOperationTemplate {
             var properties = new Properties();
             properties.load(in);
             // 获取RSK(文件的真实加密秘钥)
-            if (!new File(targetPath).exists()) {
+            if (!new File(targetFile).exists()) {
                 return;
             }
             var key = String.valueOf(f_uuid);
@@ -98,7 +96,7 @@ public class DataEncrypt extends AbstractOperationTemplate {
         try (var in = new BufferedInputStream(new FileInputStream(Constants.STORE_PWD_FILE_PATH))) {
             var properties = new Properties();
             properties.load(in);
-            properties.remove(targetPath);
+            properties.remove(targetFile);
             properties.store(new BufferedOutputStream(new FileOutputStream(Constants.STORE_PWD_FILE_PATH)), null);
         } catch (Throwable e) {
             throw new OperationException(e.getMessage(), e);
@@ -118,21 +116,21 @@ public class DataEncrypt extends AbstractOperationTemplate {
     @Override
     protected void print(long available, long begin) throws OperationException {
         var beforeSize = Utils.capacityFormat(available);
-        var afterSize = Utils.capacityFormat(new File(targetPath).length());
-        var tp = targetPath;
+        var afterSize = Utils.capacityFormat(new File(targetFile).length());
+        var tp = targetFile;
         // 是否启用压缩操作
         if (param.getCompress()) {
-            targetPath = String.format("%s.zip", Utils.cancelFileSuffix(targetPath, 2));
-            compress(tp, targetPath);
-            afterSize = Utils.capacityFormat(new File(targetPath).length());
+            targetFile = String.format("%s.zip", Utils.cancelFileSuffix(targetFile, 2));
+            compress(tp, targetFile);
+            afterSize = Utils.capacityFormat(new File(targetFile).length());
             new DelSource().del(tp);
         }
         var end = System.currentTimeMillis();
         var tc = Utils.timeFormat((end - begin) / 1000);
-        Tooltips.print(Tooltips.Number._5, tc, beforeSize, afterSize, targetPath);
+        Tooltips.print(Tooltips.Number._5, tc, beforeSize, afterSize, targetFile);
         // 当设置启动参数-Dstore=true时,将会在临时目录下固化base64秘钥
         try {
-            new StoreUserSecretKey().store(param, beforeSize, targetPath, afterSize, osk);
+            new StoreUserSecretKey().store(param, beforeSize, targetFile, afterSize, osk);
         } catch (IOException e) {
             throw new OperationException(e.getMessage(), e);
         }
@@ -237,13 +235,24 @@ public class DataEncrypt extends AbstractOperationTemplate {
         }
     }
 
+    /**
+     * 加/解密文件的后缀检测与拼接
+     * @param file
+     * @return
+     * @throws NameParseException
+     */
     @Override
     protected String splicTargetFileName(File file) throws NameParseException {
+        // 获取源文件文件名
         var dn = file.getName();
+        // 获取源文件后缀,如果不存在后缀为返回""
         var suffix = Utils.getFileSuffix(dn);
+        // 获取显示设定的文件名
         var n = param.getName();
-        // 源文件后缀拼接.dog表示为加密文件
-        return String.format("%s%s", Objects.isNull(n) ? dn : String.format("%s%s", n, suffix), Constants.DEFAULT_SUFFIX);
+        // 如果没有显式设置文件名则用源文件的名称,反之使用自定义文件名+原文件后缀
+        var fileName = Objects.isNull(n) ? dn : String.format("%s%s", n, suffix);
+        // 源文件后缀拼接.dog表示为加密文件,
+        return String.format("%s%s", fileName, Constants.DEFAULT_SUFFIX);
     }
 
     /**

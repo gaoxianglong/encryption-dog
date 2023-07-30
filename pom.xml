@@ -5,8 +5,11 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>com.github</groupId>
     <artifactId>encrypt-dog</artifactId>
-    <version>1.5.9-RELEASE</version>
-    <description>1.5.9-RELEASE 新增子目录自动加/解密功能，样式问题</description>
+    <version>1.6.0-RELEASE</version>
+    <description>
+        1.6.0-RELEASE 缺省文件加/解密后输出到原路径下,文件匹配正则扩展
+        1.5.9-RELEASE 新增子目录自动加/解密功能，样式问题
+    </description>
 
     <properties>
         <java-version>15</java-version>

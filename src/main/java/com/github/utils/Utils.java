@@ -15,6 +15,7 @@
  */
 package com.github.utils;
 
+import com.github.encryptdog.exception.NameParseException;
 import com.github.encryptdog.exception.OperationException;
 
 import java.io.*;
@@ -311,12 +312,15 @@ public class Utils {
 
     /**
      * 获取文件后缀
-     *
      * @param fn
      * @return
      */
     public static String getFileSuffix(String fn) {
-        return fn.substring(fn.lastIndexOf("."));
+        try {
+            return fn.substring(fn.lastIndexOf("."));
+        } catch (Throwable e) {
+            return "";
+        }
     }
 
     /**
